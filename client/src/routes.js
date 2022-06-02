@@ -2,6 +2,11 @@ import { Switch } from "react-router-dom";
 import { Redirect, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import AuthPage from "./pages/AuthPage"
+import RegistrationPage from "./pages/RegistrationPage";
+import AddPackage from "./pages/AddPackage";
+import AddDelivery from "./pages/AddDelivery";
+import AddPayment from "./pages/AddPayment";
+
 const Routes=({currentItem})=>{
     return(
         <Switch>
@@ -27,6 +32,10 @@ const Routes=({currentItem})=>{
       }
 
 <   Route path="/" exact><AuthPage/> </Route>
+<Route path="/register" exact><RegistrationPage /></Route>
+<Route path="/addPackage" exact><AddPackage /></Route>
+<Route path="/addDelivery" exact><AddDelivery /></Route>
+<Route path="/addPayment" exact><AddPayment /></Route>
             <Redirect to="/" ></Redirect>
         </Switch>
     )
