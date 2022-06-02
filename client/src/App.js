@@ -6,9 +6,11 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import { IconButton } from "@mui/material";
+import AuthPage from "./pages/AuthPage"
+import Routes from "./routes"
 //import MessagePage from "./pages/MessagePage"
 //import Routes from "./routes";
-//import Navigation  from "./components/Navigation";
+import Navigation  from "./components/Navigation";
 const theme = createTheme()
 const useStyles = makeStyles(() => ({
  
@@ -41,12 +43,13 @@ function App() {
     <Router>
     <div className={classes.root}>
       <CssBaseline />
-      
+      <Navigation />
       
       <main className={classes.content}>
-     
+      <Routes />
       </main>
       <footer className={classes.footer}>
+
         <IconButton>
         <FacebookIcon/>
         </IconButton>

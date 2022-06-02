@@ -40,17 +40,7 @@ export const Auth=({modalOpen,handleClose,form,submitHandler,changeHandler,formE
     const classes= useStyles();
 
     return(
-        <Dialog
-        open={modalOpen}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-        >
-        <DialogTitle id="form-dialog-title">User Login</DialogTitle>
-        <DialogContent className={classes.dialog}>
-          <DialogContentText>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam quis,
-            esse dolore quod.
-          </DialogContentText>
+         <>
           <TextField
             style={{marginBottom:theme.spacing(2)}}
             required={true}
@@ -85,21 +75,8 @@ export const Auth=({modalOpen,handleClose,form,submitHandler,changeHandler,formE
           >
             Register
           </Link>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            onClick={submitHandler}
-          >
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
-      
+          
+        
+      </>  
     )
 }
