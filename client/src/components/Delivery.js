@@ -1,6 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { TextField,Grid, Typography,Button } from "@mui/material";
+import { TextField,Grid, Typography,Button} from "@mui/material";
+import  {Dropdown} from "react-bootstrap"
 const useStyles=makeStyles(()=>({
     back:{
         margin:"2%",
@@ -18,6 +19,11 @@ const useStyles=makeStyles(()=>({
     },
 
 }))
+const options = [
+    'one', 'two', 'three'
+  ];
+  const defaultOption = options[0];
+  
 
 export const Delivery=({form,sendRegistrationForm,changeHandler})=>{
 const classes=useStyles();
@@ -38,7 +44,18 @@ return(
         <Grid item xs={12}><TextField type="text" value={form.priority} onChange={changeHandler} style={{width:"100%"}}  required label="Priority" id="priority" name="priority" ></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.paymentId} onChange={changeHandler} style={{width:"100%"}}  required label="PaymentId" id="paymentId" name="paymentId"></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.international} onChange={changeHandler} style={{width:"100%"}}  label="International" id="international" name="international"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.stratLocation} onChange={changeHandler} style={{width:"100%"}}  label="Strat Location" id="stratLocation" name="stratLocation"></TextField></Grid>
+        <Grid item xs={6}><Dropdown>
+  <Dropdown.Toggle variant="success" id="dropdown-basic">
+    Dropdown Button
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+    <Dropdown.Item onClick={"fas"}>Action</Dropdown.Item>
+    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown></Grid>
+        <Grid item xs={6}><TextField type="text" value={form.startLocation} onChange={changeHandler} style={{width:"100%"}}  label="startLocation" id="startLocation" name="startLocation"></TextField></Grid>
         <Grid item xs={7}><TextField type="text" value={form.endLocation} onChange={changeHandler} style={{width:"100%"}} required label="End Location" id="endLocation" name="endLocation"></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.message} onChange={changeHandler} style={{width:"100%"}}  label="Message" id="message" name="message"></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.estimatedDate} onChange={changeHandler} style={{width:"100%"}}  label="Estimated Date" id="estimatedDate" name="estimatedDate"></TextField></Grid>
@@ -59,4 +76,5 @@ return(
     </div>
 )
 
-}
+}//<TextField type="text" value={form.stratLocation} onChange={changeHandler} style={{width:"100%"}}  label="Strat Location" id="stratLocation" name="stratLocation"></TextField>
+

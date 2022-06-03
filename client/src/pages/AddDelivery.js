@@ -41,6 +41,6 @@ const AddDelivery=({registerDelivery})=>{
 
 }
 const mapStateToProps = (state) =>({
-    
+   // options:state.NameOfReducer.options
   });
 export default connect(mapStateToProps,{registerDelivery})(AddDelivery)
