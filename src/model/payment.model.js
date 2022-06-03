@@ -1,6 +1,6 @@
 const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
-const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../utility/utility.generators.js");
+const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../src/utility/utility.generators.js");
 
 class Payment {
     idpayment;

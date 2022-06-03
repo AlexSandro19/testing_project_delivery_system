@@ -1,4 +1,4 @@
-const { calculateVolume, calculateAmount } = require("../../utility/utility.calculations");
+const { calculateVolume, calculateAmount } = require("../../src/utility/utility.calculations");
 
 describe("Run tests for calculateVolume function", () => {
 
@@ -39,7 +39,7 @@ describe("Run tests for calculateVolume function", () => {
         //Assert
         expect(result).toEqual(19.965);
     });
- 
+
     test("Pass a valid height = 3.3, width= 1.1, depth= 5.5, and expect a number with value 19.965", () => {
         //Arrange
         const height = 3.3;

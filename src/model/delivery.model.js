@@ -1,7 +1,7 @@
 const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
-const { characterGenerator } = require("../utility/utility.generators");
-const {getDateInSqlFormat } = require("../utility/utility.functions");
+const { characterGenerator } = require("../src/utility/utility.generators");
+const { getDateInSqlFormat } = require("../src/utility/utility.functions");
 class Delivery {
     iddeliveries;
     packages_idpackages;
@@ -311,18 +311,18 @@ class Delivery {
     ) {
         try {
             const response = await execute("INSERT INTO deliveries(packages_idpackages,priority,payment_idpayment,international,start_location,end_location,message,estimated_date,start_date,end_date,uid) "
-            + "VALUES (?,?,?,?,?,?,?,?,?,?,?);",
-            [newDelivery.getPackageId(),
-            newDelivery.getPriority(),
-            newDelivery.getPaymentId(),
-            newDelivery.getInternational(),
-            newDelivery.getStartLocation(),
-            newDelivery.getEndLocation(),
-            newDelivery.getMessage(),
-            newDelivery.getEstimatedDate(),
-            newDelivery.getStartDate(),
-            newDelivery.getEndDate(),
-            newDelivery.getUID()])
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?);",
+                [newDelivery.getPackageId(),
+                newDelivery.getPriority(),
+                newDelivery.getPaymentId(),
+                newDelivery.getInternational(),
+                newDelivery.getStartLocation(),
+                newDelivery.getEndLocation(),
+                newDelivery.getMessage(),
+                newDelivery.getEstimatedDate(),
+                newDelivery.getStartDate(),
+                newDelivery.getEndDate(),
+                newDelivery.getUID()])
             console.log("newDelivery: ", newDelivery)
             console.log("createDelivery response: ", response)
             if (response.affectedRows > 0) {

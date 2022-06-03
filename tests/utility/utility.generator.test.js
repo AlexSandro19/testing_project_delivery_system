@@ -1,4 +1,4 @@
-const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../../utility/utility.generators");
+const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../../src/utility/utility.generators");
 
 describe("Run tests for characterGenerator function", () => {
 
@@ -30,7 +30,7 @@ describe("Run tests for characterGenerator function", () => {
         expect(result).toMatch(/[a-zA-Z0-9]{11}/);
     });
 
-    test("Pass an invalid null value, and expect undefined", () => {      
+    test("Pass an invalid null value, and expect undefined", () => {
         //Arrange
         const length = null
         //Act
@@ -39,7 +39,7 @@ describe("Run tests for characterGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid number: 0, and expect undefined", () => {      
+    test("Pass an invalid number: 0, and expect undefined", () => {
         //Arrange
         const length = 0
         //Act
@@ -48,7 +48,7 @@ describe("Run tests for characterGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid string value, and expect undefined", () => {    
+    test("Pass an invalid string value, and expect undefined", () => {
         //Arrange
         const length = "test"
         //Act
@@ -57,7 +57,7 @@ describe("Run tests for characterGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid number: -1, and expect undefined", () => {      
+    test("Pass an invalid number: -1, and expect undefined", () => {
         //Arrange
         const length = -1
         //Act
@@ -66,7 +66,7 @@ describe("Run tests for characterGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid number: 5.5, and expect undefined", () => {      
+    test("Pass an invalid number: 5.5, and expect undefined", () => {
         //Arrange
         const length = 5.5
         //Act
@@ -107,7 +107,7 @@ describe("Run tests for numberGenerator function", () => {
         expect(result).toMatch(/[0-9]{10}/);
     });
 
-    test("Pass an invalid null value, and expect undefined", () => {      
+    test("Pass an invalid null value, and expect undefined", () => {
         //Arrange
         const length = null
         //Act
@@ -116,7 +116,7 @@ describe("Run tests for numberGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid number: 0, and expect undefined", () => {      
+    test("Pass an invalid number: 0, and expect undefined", () => {
         //Arrange
         const length = 0
         //Act
@@ -125,7 +125,7 @@ describe("Run tests for numberGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid string value, and expect undefined", () => {    
+    test("Pass an invalid string value, and expect undefined", () => {
         //Arrange
         const length = "test"
         //Act
@@ -134,7 +134,7 @@ describe("Run tests for numberGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid number: -1, and expect undefined", () => {      
+    test("Pass an invalid number: -1, and expect undefined", () => {
         //Arrange
         const length = -1
         //Act
@@ -143,7 +143,7 @@ describe("Run tests for numberGenerator function", () => {
         expect(result).toBeUndefined();
     });
 
-    test("Pass an invalid number: 5.5, and expect undefined", () => {      
+    test("Pass an invalid number: 5.5, and expect undefined", () => {
         //Arrange
         const length = 5.5
         //Act
@@ -187,7 +187,7 @@ describe("Run tests for transactionDateGenerator function", () => {
         const type = typeof result
         expect(type).not.toBe("number");
     });
-   
+
     test("Pass nothing, and don't expect an undefined", () => {
 
         const result = transactionDateGenerator();
