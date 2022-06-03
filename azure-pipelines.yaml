@@ -45,12 +45,12 @@ steps:
       codeCoverageTool: Cobertura # or JaCoCo
       summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/*coverage.xml"
       
-  # - task: CopyFiles@2
-  #   inputs:
-  #     Contents: "$(System.DefaultWorkingDirectory)/dist/**" # Pull the build directory (React)
-  #     TargetFolder: "$(Build.ArtifactStagingDirectory)"
+  - task: CopyFiles@2
+    inputs:
+      Contents: "$(System.DefaultWorkingDirectory)/src/**" # Pull the build directory (React)
+      TargetFolder: "$(Build.ArtifactStagingDirectory)"
       
-  # - task: PublishBuildArtifacts@1
-  #   inputs:
-  #     PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-  #     ArtifactName: "build-folder" # output artifact named www
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
+      ArtifactName: "build-folder" # output artifact named www
