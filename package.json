@@ -1,30 +1,43 @@
 {
-  "name": "deliverysystembackend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "dependencies": {
-    "dotenv": "16.0.0",
-    "express": "4.17.3",
-    "express-validator": "^6.14.0",
-    "mysql": "2.18.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon app.js",
-    "dev": "npm run server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aleksan18/DeliverySystem.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/aleksan18/DeliverySystem/issues"
-  },
-  "homepage": "https://github.com/aleksan18/DeliverySystem#readme",
-  "devDependencies": {
-    "nodemon": "^2.0.16"
-  }
+    "name": "deliverysystembackend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "dependencies": {
+        "bcrypt": "5.0.1",
+        "dotenv": "16.0.0",
+        "express": "4.17.3",
+        "express-validator": "^6.14.0",
+        "jest": "^28.1.0",
+        "jest-junit-reporter": "^1.1.0",
+        "jsonwebtoken": "8.5.1",
+        "mongoose": "^6.3.3",
+        "mysql": "2.18.1",
+        "neo4j-driver": "^4.4.5"
+    },
+    "scripts": {
+        "test": "jest",
+        "server": "nodemon app.js",
+        "dev": "npm run server",
+        "lint": "npx eslint .",
+        "lint fix": "npx eslint . --fix",
+        "pretty": "npx prettier . --write"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aleksan18/DeliverySystem.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/aleksan18/DeliverySystem/issues"
+    },
+    "homepage": "https://github.com/aleksan18/DeliverySystem#readme",
+    "devDependencies": {
+        "@eslint/create-config": "^0.2.0",
+        "eslint": "^8.16.0",
+        "eslint-config-prettier": "^8.5.0",
+        "nodemon": "^2.0.16",
+        "prettier": "^2.6.2"
+    }
 }
