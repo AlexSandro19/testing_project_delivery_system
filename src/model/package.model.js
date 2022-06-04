@@ -23,7 +23,7 @@ class Package {
         fragile = Boolean,
         electronics = Boolean,
         oddsized = Boolean,
-        receiver_iduser = Number,
+        receiver_iduser,
     ) {
         this.idpackages = idpackages;
         this.user_iduser = user_iduser;
@@ -113,7 +113,7 @@ class Package {
                     v.fragile,
                     v.electronics,
                     v.oddsized,
-                    v.receiver_id));
+                    v.receiver_iduser));
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {

@@ -1,6 +1,6 @@
 const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
-const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../src/utility/utility.generators.js");
+const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../utility/utility.generators.js");
 
 class Payment {
     idpayment;
@@ -17,7 +17,7 @@ class Payment {
         amount = Number,
         payed = Boolean,
         prepaid = Boolean,
-        transactionid = null,
+        transactionid,
         billing_address = Boolean,
 
     ) {
@@ -26,7 +26,9 @@ class Payment {
         this.amount = amount;
         this.payed = payed;
         this.prepaid = prepaid;
-        this.transactionid = transactionid;
+        this.transactionid =(transactionid == null || transactionid == undefined || typeof transactionid == 'undefined'
+        ? this.transactionid = this.generateTransactionId()
+        : this.transactionid = transactionid);
         this.billing_address = billing_address;
     }
     /**
@@ -221,7 +223,7 @@ class Payment {
                 newPayment.getAmount(),
                 newPayment.getPayed(),
                 newPayment.getPrepaid(),
-                generateTransactionId(),
+                newPayment.getTransactionid(),
                 newPayment.getBillingAddress()])
             console.log("createPayment response: ", response)
             if (response.affectedRows > 0) {

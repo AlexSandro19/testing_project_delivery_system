@@ -1,7 +1,7 @@
 const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
-const { characterGenerator } = require("../src/utility/utility.generators");
-const { getDateInSqlFormat } = require("../src/utility/utility.functions");
+const { characterGenerator } = require("../utility/utility.generators");
+const { getDateInSqlFormat } = require("../utility/utility.functions");
 class Delivery {
     iddeliveries;
     packages_idpackages;
@@ -220,7 +220,7 @@ class Delivery {
     static async updateDelivery(updatedDelivery = Delivery) {
         try {
             const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.getUID()}`])
-            console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
+            console.log("deliveryFromDB",deliveryFromDB)
             const receivedDelivery = new Delivery(
                 deliveryFromDB[0].iddeliveries,
                 deliveryFromDB[0].packages_idpackages,
