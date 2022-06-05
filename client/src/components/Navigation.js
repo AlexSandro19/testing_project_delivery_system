@@ -5,17 +5,10 @@ import { makeStyles } from "@mui/styles";
 import { Button } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import AuthPage  from "../pages/AuthPage";
 import { connect } from "react-redux";
-import {loginRequest} from "../redux/actions/auth";
 import { Loader } from "./Loader";
 import {unsetUser} from "../redux/actions/user"
 
-import AddIcon from '@mui/icons-material/Add';
-import InboxIcon from '@mui/icons-material/Inbox';
-import MailIcon from '@mui/icons-material/Mail';
-
-import { Card, CardActionArea, CardContent,ListItem, ListItemIcon,ListItemText, List, Drawer, Grid, Box, Badge, Divider } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -34,13 +27,12 @@ const useStyles = makeStyles((theme) => ({
     
     const classes = useStyles();
     const [modalOpen, setModalOpen] = useState(false);
-
+    const logOut = ()=>{
+      unsetUser(false);
+        };
     const handleClickOpen = () => {
       setModalOpen(true);
     };
-    const logOut = ()=>{
-      unsetUser();
-    }
     const handleClose = () => {
       setModalOpen(false);
     };
@@ -55,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
             <Typography variant="h5" className={classes.grow}>
             <ButtonBase
             component={NavLink}
-            to="/"
+            to="/profile"
             activeClassName="active"
             >
             <Typography variant="h5" className={classes.grow}>
@@ -64,32 +56,15 @@ const useStyles = makeStyles((theme) => ({
             </ButtonBase>
             </Typography>
             <Button
-            className={classes.button}
-            color="inherit"
-            component={NavLink}
-            to="/profile"
-            activeClassName="active"
-          >
-            View Profile
-          </Button>
-            <Button
-            className={classes.button}
-            component={NavLink}
-            color="inherit"
-            activeClassName="active"
-            to="/orders"
-          >
-            View Orders
-          </Button>
-          <Button
             component={NavLink}
             className={classes.button}
             color="inherit"
+            onClick={logOut}
             activeClassName="active"
-            to="/logout"
-          >
-          LogOut
-          </Button>
+            to="/"
+            >
+            Logout
+            </Button>
             </Toolbar>
         </AppBar>
         </>
@@ -113,25 +88,6 @@ const useStyles = makeStyles((theme) => ({
             </Typography>
             </ButtonBase>
             </Typography>
-            <Button
-            className={classes.button}
-            color="inherit"
-            component={NavLink}
-            to="/auth"
-            activeClassName="active"
-          >
-           Auth
-          </Button>
-            <Button
-            
-            className={classes.button}
-            color="inherit"
-            onClick={handleClickOpen}
-            activeClassName="active"
-            to="/"
-          >
-            Login
-          </Button>
             </Toolbar>
         </AppBar>
 
@@ -148,6 +104,6 @@ const mapStateToProps = (state) => ({
     errors: state.auth.errors,
 });
 
-export default connect(mapStateToProps, { loginRequest,unsetUser })(
+export default connect(mapStateToProps, {unsetUser })(
   Navigation
 );

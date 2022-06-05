@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const storageName = "userData";
-const loginUrl = "/api/auth/login";
-const registerUrl = "/api/auth/register"
+const loginUrl = "/users/login";
+const registerUrl = "/users/register"
 export const loginApi = (email, password) => {
   return axios
     .post(loginUrl, { email, password })

@@ -9,17 +9,14 @@ const useStyles = makeStyles(() => ({
     paper: {
       color:"#989898",
       margin: theme.spacing(15,0,0,50),
-
     },
     avatar: {
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-   
       color:"#989898",
       width: "100%", // Fix IE 11 issue.
-  
       marginTop: theme.spacing(1),
     },
     textField:{
@@ -35,12 +32,16 @@ const useStyles = makeStyles(() => ({
     submit: {
       margin: theme.spacing(3, 1, 2),
     },
+    buttonGroup:{
+      padding:"1px",
+      
+    }
   }));
 export const Auth=({modalOpen,handleClose,form,submitHandler,changeHandler,formErrors})=>{
     const classes= useStyles();
-
+    
     return(
-         <>
+         <form>
           <TextField
             style={{marginBottom:theme.spacing(2)}}
             required={true}
@@ -75,8 +76,10 @@ export const Auth=({modalOpen,handleClose,form,submitHandler,changeHandler,formE
           >
             Register
           </Link>
-          
-        
-      </>  
+          <div className={classes.buttonGroup}>
+          <Button onClick={handleClose} style={{margin:"2px"}} color="error" variant="contained" >Cancel</Button>
+          <Button  onClick={submitHandler} style={{margin:"2px"}} type="submit" variant="contained">Login</Button>
+          </div>
+      </form>  
     )
 }

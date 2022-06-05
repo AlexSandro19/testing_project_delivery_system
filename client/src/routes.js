@@ -6,9 +6,12 @@ import RegistrationPage from "./pages/RegistrationPage";
 import AddPackage from "./pages/AddPackage";
 import AddDelivery from "./pages/AddDelivery";
 import AddPayment from "./pages/AddPayment";
-
-const Routes=({currentItem})=>{
-    return(
+import ProfilePage from "./pages/Profile";
+import UpdateProfile from "./pages/UpdateProfile";
+import ViewOrdersPage from "./pages/ViewOrders";
+const Routes=({successful})=>{
+    if(successful){
+      return(
         <Switch>
             {/*<Route path="/" exact><HomePage/> </Route>
             <Route path="/allitems" exact><ShoppingPage/> </Route>
@@ -31,17 +34,32 @@ const Routes=({currentItem})=>{
       
       }
 
-<   Route path="/" exact><AuthPage/> </Route>
+<Route path="/profile" exact><ProfilePage/></Route>
 <Route path="/register" exact><RegistrationPage /></Route>
 <Route path="/addPackage" exact><AddPackage /></Route>
 <Route path="/addDelivery" exact><AddDelivery /></Route>
 <Route path="/addPayment" exact><AddPayment /></Route>
-            <Redirect to="/" ></Redirect>
+<Route path="/updateProfile" exact><UpdateProfile /></Route>
+<Route path="/viewOrders" exact><ViewOrdersPage /></Route>
+
+            <Redirect to="/profile" ></Redirect>
         </Switch>
+)
+    }else{
+    return(
+      <Switch> 
+      <Route path="/" exact><AuthPage/> </Route>
+      <Route path="/register" exact><RegistrationPage /></Route>
+      <Redirect to="/" ></Redirect>
+      </Switch>
     )
+
+    }
+  
 }
 const mapStateToProps = (state) => ({
     //currentItem: state.items.currentItem
+    successful:state.auth.successful
   });
   
  export default connect(mapStateToProps)(Routes);

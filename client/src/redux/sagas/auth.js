@@ -29,15 +29,14 @@ function* loginFlow(credentials) {
     payload = yield call(loginApi, credentials.email, credentials.password);
     const exp = new Date().valueOf() + expirationTime;
 
-    yield put(setUser(payload.token, payload.userId, payload.role, exp,payload.username,payload.name,payload.email,payload.phone,payload.address,payload.cart,payload.emailConfirmed,payload.orders));
+    yield put(setUser(payload.token, payload.exp,payload.user));
     yield put({
       type: LOGIN_SUCCESS,
     });
 
     setAuthToken({
-      userId: payload.userId,
+      userId: payload.user.idcustomer,
       token: payload.token,
-      role: payload.role,
       exp: exp,
     });
 
@@ -76,8 +75,11 @@ function* loginWatcher() {
       const { payload } = yield take(LOGIN_REQUESTING);
       yield call(loginFlow, payload);
     } else {
-      yield put(setUser(token.token, token.userId, token.role, token.exp));
-      yield put({ type: LOGIN_SUCCESS });
+      const { payload } = yield take(LOGIN_REQUESTING);
+      yield call(loginFlow, payload);
+      yield put({
+        type: LOGIN_SUCCESS,
+      });
     }
     yield take(USER_UNSET);
     token = null;

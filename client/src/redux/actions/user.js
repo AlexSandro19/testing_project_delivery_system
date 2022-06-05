@@ -1,16 +1,26 @@
-import { USER_SET, USER_UNSET,REGISTER_USER,HIDE_MESSAGE } from "../constants/user";
+import { USER_SET, USER_UNSET,REGISTER_USER,HIDE_MESSAGE,UPDATE_USER } from "../constants/user";
 
-export const setUser = (token, userId, role, exp,username,name,email,phone,address,cart,emailConfirmed,orders) => {
+export const setUser = (token, exp,user) => {
+  console.log(exp);
   return {
     type: USER_SET,
     message: {
       text: "Successfully logged in!",
       severity: "success",
     },
-    payload: { token, userId,username,name,email,phone,address,orders,cart,emailConfirmed, role, exp },
+    payload: { token, user, exp },
   };
 };
+export const updateUser = (token,exp,email,firstName,secondName,typeOfUser,password,passwordConfirm,cityId,zipcode,duns,phone,address,companyName) =>{
+  console.log("updateUser");
 
+  return {
+    type: UPDATE_USER,
+    token:token,
+    exp:exp,
+    payload:{email,firstName,secondName,typeOfUser,password,passwordConfirm,cityId,zipcode,duns,phone,address,companyName}
+  }
+}
 export const unsetUser = () => {
   return {
     type: USER_UNSET,

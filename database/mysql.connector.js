@@ -48,7 +48,7 @@ const execute = (
     });
   } catch (error) {
     console.error("[mysql.connector][execute][Error]: ", error);
-    throw new Error("failed to execute MySQL query");
+    throw {value: error.message,message: error.message,param:'inpur'}
   }
 };
 

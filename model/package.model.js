@@ -179,8 +179,9 @@ class Package {
      * @returns the deleted Package item and if it was successful
      */
     static async deletePackage(id = Number) {
-        const getDeletedPackage = await execute("SELECT from Packages Where idpackages=", [`${id}`]);
-        const response = await execute("DELETE from Packages Where idpackages=", [`${id}`]);
+        try{
+            const getDeletedPackage = await execute("SELECT * from packages Where idpackages=?", [`${id}`]);
+        const response = await execute("DELETE from packages Where idpackages=?", [`${id}`]);
         return new Package(
             getDeletedPackage[0].idpackages,
             getDeletedPackage[0].user_iduser,
@@ -192,6 +193,13 @@ class Package {
             getDeletedPackage[0].electronics,
             getDeletedPackage[0].oddsized,
             getDeletedPackage[0].receiver_id)
+        }catch (error) {
+            console.log("[mysql.connector][execute][Error]: ", error);
+            throw { value:"Query failed", 
+                message:error.message,
+            } 
+        }
+        
     }
     /**
       * Creates a new Package entry in the database

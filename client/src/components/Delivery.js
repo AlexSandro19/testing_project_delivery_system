@@ -1,7 +1,11 @@
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
+import {useState} from "react";
 import { TextField,Grid, Typography,Button} from "@mui/material";
-import  {Dropdown} from "react-bootstrap"
+import  {Dropdown} from "react-bootstrap";
+import { NavLink,useHistory } from "react-router-dom";
+import { DeletePackageDialog } from "./DeletePackageDialog";
+
 const useStyles=makeStyles(()=>({
     back:{
         margin:"2%",
@@ -25,15 +29,23 @@ const options = [
   const defaultOption = options[0];
   
 
-export const Delivery=({form,sendRegistrationForm,changeHandler})=>{
+export const Delivery=({idpackages,form,sendAddDeliveryForm,changeHandler,deletePackage})=>{
 const classes=useStyles();
+const history = useHistory();
+const [modalOpen, setModalOpen] = useState(false);
+const handleClose = () => {
+  setModalOpen(false);
+}
+const goBack = () => {
+  // delete package here;
+  deletePackage(idpackages)
+  history.push("/addPackage");
+}
 return(
     <div>
-       
     <Box component="form"
     autoComplete="off"
     width="1000px"
-    onSubmit={sendRegistrationForm}
     >
         
         <div>
@@ -62,9 +74,21 @@ return(
         <Grid item xs={6}><TextField type="text" value={form.startDate} onChange={changeHandler} style={{width:"100%"}}  label="Start Date" id="startDate" name="startDate"></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.endDate} onChange={changeHandler} style={{width:"100%"}}  label="End Date" id="endDate" name="endDate"></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.uid} onChange={changeHandler} style={{width:"100%"}}  label="uid" id="uid" name="uid"></TextField></Grid>
-        <Grid item xs={5}>
-        <Button 
+        <Grid item xs={12}>
+        <Button
+        style={{margin:"1%",width:"40%",height:"70%"}}        
         variant="contained"
+        color="error"
+        onClick={()=>{
+          setModalOpen(true)
+          }}
+        >
+            Cancel
+        </Button>
+        <Button
+        style={{margin:"1%",width:"40%",height:"70%"}}
+        variant="contained"
+        onClick={sendAddDeliveryForm}
         color="primary" type="submit"
         >
             Add
@@ -73,6 +97,7 @@ return(
         </Grid>
         </div>
     </Box>
+    <DeletePackageDialog handleClose={handleClose} modalOpen={modalOpen} deleteFunction={goBack} />
     </div>
 )
 

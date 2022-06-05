@@ -6,31 +6,10 @@ const { check, validationResult } = require("express-validator")
 
 router.post("/addPackage", async (req, res) => {
     // console.log("req.body in /addPackage ", req.body)
-    const {
-        idpackages,
-        user_iduser,
-        weight,
-        height,
-        width,
-        depth,
-        fragile,
-        electronics,
-        oddsized,
-        receiver_iduser,
-    } = req.body;
+    const {userId,form,} = req.body;
+    const {weight,height,width,depth,fragile,electronics,oddsized} = form
     // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
-    const newPackage = new Package(
-        idpackages,
-        user_iduser,
-        weight,
-        height,
-        width,
-        depth,
-        fragile,
-        electronics,
-        oddsized,
-        receiver_iduser
-    )
+    const newPackage = new Package(null,userId, weight,height, width, depth, fragile,electronics,oddsized,null)
     console.log("newPackage inside /addPackage", newPackage.toString())
     const response = await Package.createPackage(newPackage);
     // example of what Delivery.createDelivery() should return 
@@ -46,9 +25,9 @@ router.post("/addPackage", async (req, res) => {
     //   }
     // values can be accessed through response.insertId
     // console.log("response from createDelivery inside /addWholeDelivery", response)
-    newPackage.setIdPackage(response.insertId);
+    console.log(newPackage.toString())
     if (response.affectedRows > 0){
-        return res.status(200).json({ response: { ...req.body, idpackages: newPackage.getIdPackage() } });
+        return res.status(200).json({ ...form,idpackages: response.insertId  });
 
     }else{
         return res.status(500).json({ response: { message: "Internal Server Error" } });
@@ -66,8 +45,8 @@ router.get("/", async (req, res) => {
     // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
     return res.json({ response });
 })
-router.delete("/deletePackage",[
-    check("Id","Id id not provided").exists(),
+router.post("/deletePackage",[
+    check("idpackages","Id is not provided").exists(),
 ], 
 async(req, res)=>{
     try {
@@ -79,8 +58,8 @@ async(req, res)=>{
             });
          }
          
-         var {id} = req.body
-         const response = await Package.deletePackage(id)
+         var {idpackages} = req.body
+         const response = await Package.deletePackage(idpackages)
          return res.status(200).json({response})
       } catch (error) {
         console.log(error);

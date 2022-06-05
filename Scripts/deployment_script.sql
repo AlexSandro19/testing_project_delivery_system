@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `postnord`.`user` (
   `duns` VARCHAR(9) NULL,
   `zip_city_zipcode_idzipcode` INT NOT NULL,
   `zip_city_city_idcity` INT NOT NULL,
-  `password` VARCHAR(15) NOT NULL,
+  `password` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`idcustomer`),
   INDEX `fk_customer_typeofreceiver_customer1_idx` (`type_of_user` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
