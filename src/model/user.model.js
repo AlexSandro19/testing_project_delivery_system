@@ -220,11 +220,13 @@ class User {
                 userFromDB[0].address,
                 userFromDB[0].duns,
                 userFromDB[0].zip_city_zipcode_idzipcode,
-                userFromDB[0].zip_city_city_idcity)
+                userFromDB[0].zip_city_city_idcity,
+                userFromDB[0].password
+                )
             if (!updatedUser.equals(receivedUser)) {
                 const response = await execute(
                     "UPDATE user "
-                    + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=? WHERE idcustomer=?;"
+                    + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=?, password=? WHERE idcustomer=?;"
                     , [updatedUser.getTypeOfUser(),
                     updatedUser.getFirstName(),
                     updatedUser.getSecondName(),
@@ -235,7 +237,9 @@ class User {
                     updatedUser.getDuns(),
                     updatedUser.getZipCode(),
                     updatedUser.getCity(),
-                    updatedUser.getIdCustomer()]);
+                    updatedUser.getPassword(),
+                    updatedUser.getIdCustomer(),
+                ]);
                 if (response.changedRows > 0) {
                     return { userInfoIsSame: false, updatedUser }
                 } else {
@@ -260,21 +264,14 @@ class User {
      */
     static async deleteUser(id = Number) {
         try {
-            const getDeletedUser = await execute("SELECT from user Where idcustomer=", [`${id}`]);
-            const response = await execute("DELETE from user Where idcustomer=", [`${id}`]);
+            const getDeletedUser = await execute("SELECT * from user Where idcustomer=?", [`${id}`]);
+            const response = await execute("DELETE from user Where idcustomer=?", [`${id}`]);
             console.log(response);
-            return new User(getDeletedUser[0].idcustomer,
-                getDeletedUser[0].type_of_user,
-                getDeletedUser[0].firstname,
-                getDeletedUser[0].secondname,
-                getDeletedUser[0].companyname,
-                getDeletedUser[0].email,
-                getDeletedUser[0].phone,
-                getDeletedUser[0].address,
-                getDeletedUser[0].duns,
-                getDeletedUser[0].zip_city_zipcode_idzipcode,
-                getDeletedUser[0].zip_city_city_idcity,
-                getDeletedUser[0].password)
+            if (response.affectedRows > 0) {
+                return { userDeleted: true, deletedUser: getDeletedUser }
+            } else {
+                return { userDeleted: false };
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -286,15 +283,15 @@ class User {
     }
     /**
     * Creates a new user entry in the database
-    * @param {user} newUser Provide the new user to create in the database 
+    * @param {User} newUser Provide the new user to create in the database 
     * @returns  Return the newly created user
     */
     static async createUser(
         newUser = User
     ) {
         try {
-            const response = await execute("INSERT INTO user(type_of_user,firstname,secondname,companyname,email,phone,address,duns,zip_city_zipcode_idzipcode,zip_city_city_idcity) "
-                + "VALUES (?,?,?,?,?,?,?,?,?,?);",
+            const response = await execute("INSERT INTO user(type_of_user,firstname,secondname,companyname,email,phone,address,duns,zip_city_zipcode_idzipcode,zip_city_city_idcity,password) "
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?);",
                 [newUser.getTypeOfUser(),
                 newUser.getFirstName(),
                 newUser.getSecondName(),
@@ -304,7 +301,8 @@ class User {
                 newUser.getAddress(),
                 newUser.getDuns(),
                 newUser.getZipCode(),
-                newUser.getCity(),]);
+                newUser.getCity(),
+                newUser.getPassword(),]);
             console.log("createUser > response: ", response);
             if (response.affectedRows > 0) {
                 newUser.setIdCustomer(response.insertId);

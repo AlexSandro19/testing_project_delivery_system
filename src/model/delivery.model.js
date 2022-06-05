@@ -277,21 +277,14 @@ class Delivery {
      */
     static async deleteDelivery(id = Number) {
         try {
-            const getDeletedDelivery = await execute("SELECT from deliveries Where iddeliveries=?", [`${id}`]);
-            const response = await execute("DELETE from deliveries Where iddeliveries=", [`${id}`]);
-            return new Delivery(
-                getDeletedDelivery[0].iddeliveries,
-                getDeletedDelivery[0].packages_idpackages,
-                getDeletedDelivery[0].priority,
-                getDeletedDelivery[0].payment_idpayment,
-                getDeletedDelivery[0].international,
-                getDeletedDelivery[0].start_location,
-                getDeletedDelivery[0].end_location,
-                getDeletedDelivery[0].message,
-                getDeletedDelivery[0].estimated_date,
-                getDeletedDelivery[0].start_date,
-                getDeletedDelivery[0].end_date,
-                getDeletedDelivery[0].uid)
+            const getDeletedDelivery = await execute("SELECT * from deliveries Where iddeliveries=?", [`${id}`]);
+            const response = await execute("DELETE from deliveries Where iddeliveries=?", [`${id}`]);
+            console.log("response",response)
+            if (response.affectedRows > 0) {
+                return { deliveryDeleted: true, deletedDelivery: getDeletedDelivery }
+            } else {
+                return { deliveryDeleted: false };
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {

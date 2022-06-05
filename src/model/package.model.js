@@ -212,19 +212,13 @@ class Package {
      */
     static async deletePackage(id = Number) {
         try {
-            const getDeletedPackage = await execute("SELECT from Packages Where idpackages=", [`${id}`]);
-            const response = await execute("DELETE from Packages Where idpackages=", [`${id}`]);
-            return new Package(
-                getDeletedPackage[0].idpackages,
-                getDeletedPackage[0].user_iduser,
-                getDeletedPackage[0].weight,
-                getDeletedPackage[0].height,
-                getDeletedPackage[0].width,
-                getDeletedPackage[0].depth,
-                getDeletedPackage[0].fragile,
-                getDeletedPackage[0].electronics,
-                getDeletedPackage[0].oddsized,
-                getDeletedPackage[0].receiver_id)
+            const getDeletedPackage = await execute("SELECT * from Packages Where idpackages=?", [`${id}`]);
+            const response = await execute("DELETE from Packages Where idpackages=?", [`${id}`]);
+            if (response.affectedRows > 0) {
+                return { deletedPackage: true, deletedPackage: getDeletedPackage }
+            } else {
+                return { deletedPackage: false };
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {

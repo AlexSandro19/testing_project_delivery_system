@@ -188,13 +188,14 @@ class Payment {
      */
     static async deletePayment(id = Number) {
         try {
-            const getDeletedPayment = await execute("SELECT FROM payment WHERE idpayment=", [`${id}`]);
+            const getDeletedPayment = await execute("SELECT * FROM payment WHERE idpayment=?", [`${id}`]);
             if (getDeletedPayment[0]) {
-                const response = await execute("DELETE FROM payment WHERE idpayment=", [`${id}`]);
-                return new Payment(getDeletedPayment[0].idpayment,
-                    getDeletedPayment[0].typeofpayment_idtypeofpayment,
-                    getDeletedPayment[0].amount, getDeletedPayment[0].payed,
-                    getDeletedPayment[0].prepaid, getDeletedPayment[0].transactionid, getDeletedPayment[0].billing_address)
+                const response = await execute("DELETE FROM payment WHERE idpayment=?", [`${id}`]);
+                if (response.affectedRows > 0) {
+                    return { paymentDeleted: true, deletedPayment: getDeletedPayment[0] }
+                } else {
+                    return { paymentDeleted: false };
+                }
             } else {
                 return "Payment was not deleted because a payment with that id does not exist."
             }
