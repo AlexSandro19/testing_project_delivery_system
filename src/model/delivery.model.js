@@ -1,7 +1,7 @@
 const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
-const { characterGenerator } = require("../src/utility/utility.generators");
-const { getDateInSqlFormat } = require("../src/utility/utility.functions");
+const { characterGenerator } = require("../utility/utility.generators");
+const { getDateInSqlFormat } = require("../utility/utility.functions");
 class Delivery {
     iddeliveries;
     packages_idpackages;
