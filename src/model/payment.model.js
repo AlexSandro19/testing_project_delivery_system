@@ -1,6 +1,6 @@
 const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
-const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../src/utility/utility.generators.js");
+const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../utility/utility.generators.js");
 
 class Payment {
     idpayment;
@@ -240,7 +240,7 @@ class Payment {
 
     }
     /**
-     * Generates a unique string id with the  format `xxxxxxxxNNNNN - ddmmyy`
+     * Generates a unique string id with the  format `xxxxxxxxNNNNN-ddmmyy`
      *  The `x` represents a character or number from `[a-z],[A-Z],[0-9]` that has been generated randomly.
      * The `N` represents a number from `[0-9]` that has been generated randomly.
      * The `ddmmyy` is based on the current date. `yy` is the last two numbers of the year.
