@@ -1,13 +1,13 @@
 /**
  * Generates a string with length 4 with characters or numbers from `[a-z],[A-Z],[0-9]
- * @param {String}   length of the string that we want returned.
+ * @param {Number} length of the string that we want returned.
  * @returns {String} A semi-randomly generated string
  */
 const characterGenerator = (length) => {
-    if (typeof length == "number" && length > 0 && Number.isInteger(length)){
+    if (typeof length == "number" && (length > 0 && length < 12) && Number.isInteger(length)){
        return Array(length+1).join((Math.random().toString(36)+'00000000000000000').slice(2, 18)).slice(0, length)
     }else{
-        return undefined
+        return null
     }
 };
 /**
@@ -17,7 +17,7 @@ const characterGenerator = (length) => {
  */
 const numberGenerator = (length) => {
 
-    if (typeof length == "number" && length > 0 && Number.isInteger(length)){
+    if (typeof length == "number" && (length > 0 && length < 6) && Number.isInteger(length)){
         let result = ""
         for (let index = 0; index < length; index++) {
             const newNumber = Math.floor((Math.random()*10))
@@ -25,7 +25,7 @@ const numberGenerator = (length) => {
         }
         return result;
     }else{
-        return undefined;
+        return null;
     }
     
 }

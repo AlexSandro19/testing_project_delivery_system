@@ -9,6 +9,6 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
-    "ignorePatterns": ["./node_modules", "./Scripts", "package*.json"],
+    "ignorePatterns": ["node_modules", "src/Scripts", "tests", "package*.json"],
     "rules": {}
 }

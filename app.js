@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express");
+const app = express();
+
 const path = require("path");
 
 const { init } = require("./src/database/mysql.connector");
@@ -15,17 +17,4 @@ app.use("/payments", require("./src/routes/payments.routes"));
 app.use("/locations", require("./src/routes/locations.routes"));
 app.use("/routes", require("./src/routes/routes.routes"));
 
-const PORT = process.env.PORT || 5000;
-
-async function start() {
-    try {
-        app.listen(PORT, () =>
-            console.log(`App has been started on port ${PORT}...`)
-        );
-        init();
-    } catch (e) {
-        process.exit(1);
-    }
-}
-
-start();
+module.exports = app;
