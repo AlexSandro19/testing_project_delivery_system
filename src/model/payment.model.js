@@ -17,7 +17,7 @@ class Payment {
         amount = Number,
         payed = Boolean,
         prepaid = Boolean,
-        transactionid = null,
+        transactionid,
         billing_address = Boolean,
 
     ) {
@@ -26,7 +26,9 @@ class Payment {
         this.amount = amount;
         this.payed = payed;
         this.prepaid = prepaid;
-        this.transactionid = transactionid;
+        this.transactionid =(transactionid == null || transactionid == undefined || typeof transactionid == 'undefined'
+        ? this.transactionid = this.generateTransactionId()
+        : this.transactionid = transactionid);
         this.billing_address = billing_address;
     }
     /**
@@ -186,13 +188,14 @@ class Payment {
      */
     static async deletePayment(id = Number) {
         try {
-            const getDeletedPayment = await execute("SELECT FROM payment WHERE idpayment=", [`${id}`]);
+            const getDeletedPayment = await execute("SELECT * FROM payment WHERE idpayment=?", [`${id}`]);
             if (getDeletedPayment[0]) {
-                const response = await execute("DELETE FROM payment WHERE idpayment=", [`${id}`]);
-                return new Payment(getDeletedPayment[0].idpayment,
-                    getDeletedPayment[0].typeofpayment_idtypeofpayment,
-                    getDeletedPayment[0].amount, getDeletedPayment[0].payed,
-                    getDeletedPayment[0].prepaid, getDeletedPayment[0].transactionid, getDeletedPayment[0].billing_address)
+                const response = await execute("DELETE FROM payment WHERE idpayment=?", [`${id}`]);
+                if (response.affectedRows > 0) {
+                    return { paymentDeleted: true, deletedPayment: getDeletedPayment[0] }
+                } else {
+                    return { paymentDeleted: false };
+                }
             } else {
                 return "Payment was not deleted because a payment with that id does not exist."
             }
@@ -221,7 +224,7 @@ class Payment {
                 newPayment.getAmount(),
                 newPayment.getPayed(),
                 newPayment.getPrepaid(),
-                generateTransactionId(),
+                newPayment.getTransactionid(),
                 newPayment.getBillingAddress()])
             console.log("createPayment response: ", response)
             if (response.affectedRows > 0) {
