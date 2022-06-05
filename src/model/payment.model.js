@@ -12,13 +12,13 @@ class Payment {
     billing_address;
 
     constructor(
-        idpayment = Number,
-        typeofpayment_idtypeofpayment = Number,
-        amount = Number,
-        payed = Boolean,
-        prepaid = Boolean,
+        idpayment,
+        typeofpayment_idtypeofpayment,
+        amount,
+        payed,
+        prepaid,
         transactionid,
-        billing_address = Boolean,
+        billing_address,
 
     ) {
         this.idpayment = idpayment;

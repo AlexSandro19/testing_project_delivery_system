@@ -8,11 +8,11 @@ class Vehicle {
     storage_size;
     free;
     constructor(
-        idvehicles = Number,
-        type_of_vehicles_idtype_of_vehicles = Number,
-        identifier = String,
-        storage_size = Number,
-        free = Boolean,
+        idvehicles,
+        type_of_vehicles_idtype_of_vehicles,
+        identifier,
+        storage_size,
+        free,
     ) {
         this.idvehicles = idvehicles;
         this.type_of_vehicles_idtype_of_vehicles = type_of_vehicles_idtype_of_vehicles;
@@ -85,10 +85,10 @@ class Vehicle {
             const response = await execute("SELECT * FROM vehicles WHERE idvehicles=?", [`${id}`])
 
             return new Vehicle(
-                response[0].idvehicles, 
-                response[0].type_of_vehicles_idtype_of_vehicles, 
-                response[0].identifier, 
-                response[0].storage_size, 
+                response[0].idvehicles,
+                response[0].type_of_vehicles_idtype_of_vehicles,
+                response[0].identifier,
+                response[0].storage_size,
                 response[0].free)
 
         } catch (error) {

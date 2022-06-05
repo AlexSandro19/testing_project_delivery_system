@@ -15,18 +15,18 @@ class User {
     zip_city_city_idcity;
     password
     constructor(
-        idcustomer = Number || null, // CHANGE IT TO JUST NULL
-        type_of_user = Number,
-        firstname = String,
-        secondname = String,
-        companyname = String,
-        email = String,
-        phone = String,
-        address = String,
-        duns = String || null,
-        zip_city_zipcode_idzipcode = Number,
-        zip_city_city_idcity = Number,
-        password = String
+        idcustomer = null, // CHANGE IT TO JUST NULL
+        type_of_user,
+        firstname,
+        secondname,
+        companyname,
+        email,
+        phone,
+        address,
+        duns = null,
+        zip_city_zipcode_idzipcode,
+        zip_city_city_idcity,
+        password
     ) {
         this.idcustomer = idcustomer;
         this.type_of_user = type_of_user;

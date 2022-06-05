@@ -9,12 +9,12 @@ class Driver {
     phone;
     free;
     constructor(
-        idemployees = Number,
-        firstname = String,
-        secondname = String,
-        email = String,
-        phone = String,
-        free = Boolean,
+        idemployees,
+        firstname,
+        secondname,
+        email,
+        phone,
+        free,
     ) {
         this.idemployees = idemployees;
         this.firstname = firstname;

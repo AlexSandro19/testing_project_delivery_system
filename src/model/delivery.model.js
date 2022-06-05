@@ -16,14 +16,14 @@ class Delivery {
     end_date;
     uid;
     constructor(
-        iddeliveries = Number,
-        packages_idpackages = Number,
-        priority = Boolean,
-        payment_idpayment = Number,
-        international = Boolean,
-        start_location = Number,
-        end_location = Number,
-        message = String,
+        iddeliveries,
+        packages_idpackages,
+        priority,
+        payment_idpayment,
+        international,
+        start_location,
+        end_location,
+        message,
         estimated_date = null,
         start_date = null,
         end_date = null,
@@ -238,7 +238,7 @@ class Delivery {
     static async updateDelivery(updatedDelivery = Delivery) {
         try {
             const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.getUID()}`])
-            console.log("deliveryFromDB",deliveryFromDB)
+            console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
             const receivedDelivery = new Delivery(
                 deliveryFromDB[0].iddeliveries,
                 deliveryFromDB[0].packages_idpackages,
@@ -295,14 +295,21 @@ class Delivery {
      */
     static async deleteDelivery(id = Number) {
         try {
-            const getDeletedDelivery = await execute("SELECT * from deliveries Where iddeliveries=?", [`${id}`]);
-            const response = await execute("DELETE from deliveries Where iddeliveries=?", [`${id}`]);
-            console.log("response",response)
-            if (response.affectedRows > 0) {
-                return { deliveryDeleted: true, deletedDelivery: getDeletedDelivery }
-            } else {
-                return { deliveryDeleted: false };
-            }
+            const getDeletedDelivery = await execute("SELECT from deliveries Where iddeliveries=?", [`${id}`]);
+            const response = await execute("DELETE from deliveries Where iddeliveries=", [`${id}`]);
+            return new Delivery(
+                getDeletedDelivery[0].iddeliveries,
+                getDeletedDelivery[0].packages_idpackages,
+                getDeletedDelivery[0].priority,
+                getDeletedDelivery[0].payment_idpayment,
+                getDeletedDelivery[0].international,
+                getDeletedDelivery[0].start_location,
+                getDeletedDelivery[0].end_location,
+                getDeletedDelivery[0].message,
+                getDeletedDelivery[0].estimated_date,
+                getDeletedDelivery[0].start_date,
+                getDeletedDelivery[0].end_date,
+                getDeletedDelivery[0].uid)
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {

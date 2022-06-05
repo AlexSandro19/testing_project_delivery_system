@@ -14,15 +14,15 @@ class Package {
     receiver_iduser;
 
     constructor(
-        idpackages = Number,
-        user_iduser = Number,
-        weight = Number,
-        height = Number,
-        width = Number,
-        depth = Number,
-        fragile = Boolean,
-        electronics = Boolean,
-        oddsized = Boolean,
+        idpackages,
+        user_iduser,
+        weight,
+        height,
+        width,
+        depth,
+        fragile,
+        electronics,
+        oddsized,
         receiver_iduser,
     ) {
         this.idpackages = idpackages;

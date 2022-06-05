@@ -14,17 +14,17 @@ class Route {
     start_date;
     end_date;
     constructor(
-        idroutes = Number,
-        vehicles_idvehicles = Number,
-        employees_idemployees = Number,
-        typeofroute_idtypeofroute = Number,
-        start_location = Number,
-        end_location = Number,
-        international = Boolean,
-        deliveries_iddeliveries = Number,
-        route_order = Number,
-        start_date = DATETIME,
-        end_date = DATETIME,
+        idroutes,
+        vehicles_idvehicles,
+        employees_idemployees,
+        typeofroute_idtypeofroute,
+        start_location,
+        end_location,
+        international,
+        deliveries_iddeliveries,
+        route_order,
+        start_date,
+        end_date,
     ) {
         this.idroutes = idroutes;
         this.vehicles_idvehicles = vehicles_idvehicles;
