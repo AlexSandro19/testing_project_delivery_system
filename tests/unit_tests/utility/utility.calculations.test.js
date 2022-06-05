@@ -1,4 +1,4 @@
-const { calculateVolume, calculateAmount } = require("../../../../src/utility/utility.calculations");
+const { calculateVolume, calculateAmount } = require("../../../src/utility/utility.calculations");
 
 describe("Run tests for calculateVolume function", () => {
 
