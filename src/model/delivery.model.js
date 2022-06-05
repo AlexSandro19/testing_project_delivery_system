@@ -141,19 +141,27 @@ class Delivery {
     static async getAllDeliveries() {
         try {
             const response = await execute("SELECT * FROM deliveries", []);
-            return response.map(v => new Delivery(
-                v.iddeliveries,
-                v.packages_idpackages,
-                v.priority,
-                v.payment_idpayment,
-                v.international,
-                v.start_location,
-                v.end_location,
-                v.message,
-                v.estimated_date,
-                v.start_date,
-                v.end_date,
-                v.uid));
+            if (response.length > 0) {
+                return response.map(v => new Delivery(
+                    v.iddeliveries,
+                    v.packages_idpackages,
+                    v.priority,
+                    v.payment_idpayment,
+                    v.international,
+                    v.start_location,
+                    v.end_location,
+                    v.message,
+                    v.estimated_date,
+                    v.start_date,
+                    v.end_date,
+                    v.uid));
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Delivery not found",
+                    message: "Delivery not found",
+                }
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -171,19 +179,29 @@ class Delivery {
     static async getDelivery(id = Number) {
         try {
             const response = await execute("SELECT * FROM deliveries WHERE iddeliveries=?", [`${id}`])
-            return new Delivery(
-                response[0].iddeliveries,
-                response[0].packages_idpackages,
-                response[0].priority,
-                response[0].payment_idpayment,
-                response[0].international,
-                response[0].start_location,
-                response[0].end_location,
-                response[0].message,
-                response[0].estimated_date,
-                response[0].start_date,
-                response[0].end_date,
-                response[0].uid)
+            if (response.length > 0) {
+                return new Delivery(
+                    response[0].iddeliveries,
+                    response[0].packages_idpackages,
+                    response[0].priority,
+                    response[0].payment_idpayment,
+                    response[0].international,
+                    response[0].start_location,
+                    response[0].end_location,
+                    response[0].message,
+                    response[0].estimated_date,
+                    response[0].start_date,
+                    response[0].end_date,
+                    response[0].uid)
+
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Delivery not found",
+                    message: "Delivery not found",
+                }
+            }
+
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {

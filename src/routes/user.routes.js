@@ -20,7 +20,7 @@ router.post("/register",
             .isAlpha().withMessage("Second name should contain only characters")
             .isLength({ max: 45 }).withMessage("Second name should be no more than 45 characters long"),
         check("companyName").exists().withMessage("Company not provided").trim()
-            .isAlphanumeric().withMessage("Company name can have only characters and/or numbers provided")
+            .isAlphanumeric('en-US', { ignore: " " }).withMessage("Company name can have only characters and/or numbers provided")
             .isLength({ max: 45 }).withMessage("Company name should be no more than 45 characters long"),
         check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
             .normalizeEmail().isEmail().withMessage("Wrong email format")
@@ -36,7 +36,9 @@ router.post("/register",
         check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
-            .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+            .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
+        check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
+        check("confirmPassword").exists({ checkFalsy: true }).withMessage("Confirm password not provided").trim(),
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -85,7 +87,7 @@ router.post("/updateUser", [
         .isAlpha().withMessage("Second name should contain only characters")
         .isLength({ max: 45 }).withMessage("Second name should be no more than 45 characters long"),
     check("companyName").exists().withMessage("Company not provided").trim()
-        .isAlphanumeric().withMessage("Company name can have only characters and/or numbers provided")
+        .isAlphanumeric('en-US', { ignore: " " }).withMessage("Company name can have only characters and/or numbers provided")
         .isLength({ max: 45 }).withMessage("Company name should be no more than 45 characters long"),
     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
         .normalizeEmail().isEmail().withMessage("Wrong email format")
@@ -101,7 +103,8 @@ router.post("/updateUser", [
     check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
     check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
-        .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+        .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
+    check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -116,11 +119,11 @@ router.post("/updateUser", [
         console.log(user);
         const { userInfoIsSame, updatedUser } = await User.updateUser(user)
         if (!userInfoIsSame && typeof updatedUser === 'object') {
-            return res.status(200).json({ response: updatedUser });
+            return res.status(200).json({ response: {user: updatedUser} });
         } else if (!userInfoIsSame && updatedUser === undefined) {
             return res.status(500).json({ response: { message: "Internal Server Error" } });
         } else if (userInfoIsSame) {
-            return res.status(400).json({ response: updatedUser, message: "User was not updated, because the user info is the same" });
+            return res.status(400).json({ response:{ updatedUser, message: "User was not updated, because the user info is the same"} });
         }
     } catch (error) {
         console.log(error);
@@ -146,6 +149,7 @@ router.post("/login", async (req, res) => {
         }
 
         const { email, password } = req.body;
+        console.log("req.body: ", req.body)
         const user = await User.getUserByEmail(email)
         console.log(user);
         if (!user) {
@@ -183,7 +187,8 @@ router.post("/login", async (req, res) => {
 })
 
 router.delete("/deleteUser", [
-    check("Id", "User id not provided").exists(),
+    check("idCustomer").exists({ checkFalsy: true }).withMessage("Customer not provided").trim()
+    .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
 ],
     async (req, res) => {
         try {
@@ -195,9 +200,13 @@ router.delete("/deleteUser", [
                 });
             }
 
-            var { id } = req.body
-            const response = await User.deleteUser(id)
-            return res.status(200).json({ response })
+            var { idCustomer } = req.body
+            const { userdeleted, deletedUser } = await User.deleteUser(idCustomer)
+            if (userdeleted) {
+                return res.status(200).json({ response: {user: deletedUser} });
+            } else {
+                return res.status(500).json({ response: { message: "Internal Server Error when deleting" } });
+            }
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -209,20 +218,18 @@ router.delete("/deleteUser", [
         }
     })
 
-router.post("/getUser", async (req, res) => {
-
-    const user = await User.getUser(43);
+router.get("/getUser", async (req, res) => {
+    const { idcustomer } = req.body
+    const user = await User.getUser(idcustomer);
     console.log(user);
-    const users = await User.getAllUsers();
-    console.log(users);
-    return res.status(200).json({ user });
+    return res.status(200).json({ response: { user } });
 })
 
 router.get("/getUsers", async (req, res) => {
 
     const users = await User.getAllUsers();
     console.log(users);
-    return res.status(200).json({ users });
+    return res.status(200).json({ response: { users } });
 })
 
 module.exports = router;
