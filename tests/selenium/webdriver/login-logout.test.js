@@ -35,11 +35,9 @@ async function loginLogout() {
     //   .getText().then(textValue => {
     //     assert.equal('tested string', textValue);
     //   });
-    console.log(driver.getCurrentUrl().getText())
+    var url = await driver.getCurrentUrl();
+    assert.equal(url, "http://localhost:3000/profile");
 
-
-
-   
   } catch(e) {
     //marking the test as Failed if product has not been added to the cart
     console.log("Error:", e.message)
