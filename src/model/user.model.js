@@ -199,7 +199,7 @@ class User {
                     response[0].zip_city_city_idcity,
                     response[0].password)
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
+               
                 throw {
                     value: "User not found",
                     message: "User not found",

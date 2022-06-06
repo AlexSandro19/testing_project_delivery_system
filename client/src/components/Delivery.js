@@ -6,6 +6,7 @@ import  {Dropdown} from "react-bootstrap";
 import { NavLink,useHistory } from "react-router-dom";
 import { DeletePackageDialog } from "./DeletePackageDialog";
 
+
 const useStyles=makeStyles(()=>({
     back:{
         margin:"2%",
@@ -116,6 +117,9 @@ return(
                     value={converted}
                     onChange={(e)=>{
                       convertCurrency(amount+form.international*35,e.target.value);
+
+                      console.log("convert currency",convertCurrency(amount+form.international*35,e.target.value))
+                      console.log("e.target.value",e.target.value)
                     }}
                     label="endLocation"
                 >
