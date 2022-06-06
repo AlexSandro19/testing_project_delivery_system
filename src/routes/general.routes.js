@@ -22,6 +22,20 @@ router.get("/getAllZipsAndCities",async(req,res)=>{
         });
     }
 })
+router.get("/getAllCurrencies",async(req,res)=>{
+    try{
+        const request = await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies.json`).then((response) => response.data)
+        return res.status(200).send({request})
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({
+            message: "Invalid data",
+            errors: [
+                { value: error, msg: error.message },
+            ],
+        });
+    }
+})
 router.post("/getCurrency", async (req,res)=>{
     try{
         const {amount,baseCurrency,toConvertCurrency} = req.body

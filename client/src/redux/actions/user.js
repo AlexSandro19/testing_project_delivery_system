@@ -31,7 +31,7 @@ export const registerUser=(form)=>{
 
   return{
     type:REGISTER_USER,
-    payload:{form}
+    payload:form
   }
 }
 

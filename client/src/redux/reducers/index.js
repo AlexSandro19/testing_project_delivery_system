@@ -7,6 +7,7 @@ import packages from "./packages";
 import zipcities from "./zipcities";
 import delivery from "./delivery";
 import message from "./message";
+import currency from "./currency";
 export default combineReducers({
-  auth,user,packages,zipcities,delivery,message
+  auth,user,packages,zipcities,delivery,message,currency
   });
