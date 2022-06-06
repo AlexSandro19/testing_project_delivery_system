@@ -52,7 +52,20 @@ const execute = (
   }
 };
 
+/**
+ * closes the connection
+ */
+ const end = () => {
+  pool.end(function (err) {
+    if (err) {
+      return console.log("error:" + err.message);
+    }
+  });
+}
+
 module.exports = {
   init,
   execute,
+  executeTransaction,
+  end
 }
