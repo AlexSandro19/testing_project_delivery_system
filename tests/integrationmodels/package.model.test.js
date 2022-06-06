@@ -1,11 +1,17 @@
 
 const {Package} = require("../../src/model/package.model")
-const { init } = require("../../src/database/mysql.connector");
+const { init, end  } = require("../../src/database/mysql.connector");
 describe('Testing the package', () => {
    let someCreatedPackage;
     beforeAll(async ()=>{
        init()
     })
+
+    afterAll(() => {
+      end()
+    });
+
+
     it('gets All packages', async () => {
        const packages = await Package.getAllPackages()
        expect(packages.length).toBeGreaterThan(0)

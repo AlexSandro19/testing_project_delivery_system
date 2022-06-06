@@ -1,11 +1,17 @@
 
 const {Location} = require("../../src/model/location.model")
-const { init } = require("../../src/database/mysql.connector");
+const { init, end  } = require("../../src/database/mysql.connector");
 describe('Testing the location', () => {
     let someCreatedLocation;
     beforeAll(async ()=>{
         init()
     })
+
+    afterAll(() => {
+      end()
+    });
+
+
     it('gets All locations', async () => {
        const locations = await Location.getAllLocations()
        expect(locations.length).toBeGreaterThan(0)
@@ -38,15 +44,13 @@ describe('Testing the location', () => {
      });
 
      it(' deletes location', async () => {
-            
-        
-      
+
         const {deletedLocation} = await Location.deleteLocation(someCreatedLocation.idlocation)
         console.log("when we update Location :   ",deletedLocation)
         //const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
        
-        expect(deletedLocation[0]).toEqual(someCreatedLocation)
+        expect(deletedLocation).toEqual(someCreatedLocation)
      });
      
     

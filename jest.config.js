@@ -90,7 +90,7 @@ module.exports = {
   // moduleNameMapper: {},
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  // modulePathIgnorePatterns: [],
+  modulePathIgnorePatterns: ["jmeter", "client"],
 
   // Activates notifications for test results
   // notify: false,

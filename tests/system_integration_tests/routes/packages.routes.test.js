@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../../../app");
-const { init, end } = require("../../../src/database/mysql.connector");
+const { init, end } = require("../../../src/database/mysql.connector")
 
 let saveCreatedPackage; 
 

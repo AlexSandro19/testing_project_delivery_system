@@ -82,7 +82,7 @@ class Delivery {
         const seconds = (this.estimated_date.getSeconds() >= 10) ? `${this.estimated_date.getSeconds()}` : `0${this.estimated_date.getSeconds()}`
         // Date format that Mysql expects to receive: YYYY-MM-DD HH:MI:SS 
         const res = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`
-        console.log("getEstimatedDateInSqlFormat: ", res)
+        // console.log("getEstimatedDateInSqlFormat: ", res)
         return res
     }
     getStartDate() { return this.start_date }
@@ -100,7 +100,7 @@ class Delivery {
     getUID() { return this.uid }
     setUID(value) { this.uid = value }
 
-    equals(delivery = new Delivery) {
+    equals(delivery) {
         console.log("delivery: ", delivery);
         console.log("delivery.getIdDeliveries(): ", delivery.getIdDeliveries());
 
@@ -238,9 +238,9 @@ class Delivery {
     static async updateDelivery(updatedDelivery) {
         try {
             console.log("updatedDelivery",updatedDelivery)
-            console.log("updatedDelivery uid",updatedDelivery.getUID())
+            console.log("updatedDelivery uid",updatedDelivery.uid)
         
-            const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.getUID()}`])
+            const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.uid}`])
             console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
             const receivedDelivery = new Delivery(
                 deliveryFromDB[0].iddeliveries,
@@ -390,17 +390,17 @@ class Delivery {
     generateUUID() {
         let uid = "";
         while (uid.length < 36) {
-            console.log(uid.length)
+            // console.log(uid.length)
             switch (uid.length) {
                 case 8:
-                    console.log(uid);
+                    // console.log(uid);
                     uid = uid + "-";
-                    console.log(uid);
+                    // console.log(uid);
                     break;
                 case 13:
-                    console.log(uid);
+                    // console.log(uid);
                     uid = uid + "-";
-                    console.log(uid);
+                    // console.log(uid);
                     break;
                 case 18:
                     uid = uid + "-";
@@ -409,7 +409,7 @@ class Delivery {
                     uid = uid + "-";
                     break;
                 default:
-                    console.log(uid);
+                    // console.log(uid);
                     uid = uid + "" + characterGenerator(4);
                 case 36:
                     break;

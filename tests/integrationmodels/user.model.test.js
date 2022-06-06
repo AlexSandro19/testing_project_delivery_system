@@ -1,14 +1,19 @@
 
 const {User} = require("../../src/model/user.model")
-const { init } = require("../../src/database/mysql.connector");
+const { init, end } = require("../../src/database/mysql.connector");
 describe('Testing the user', () => {
     let someCreatedUser;
     beforeAll(async ()=>{
      init()
     })
+
+    afterAll(() => {
+      end()
+    });
+
     it('gets All users', async () => {
        const users = await User.getAllUsers()
-       expect(users.length).toEqual(41)
+       expect(users.length).toBeGreaterThan(0)
     });
 
     it(' adds users', async () => {

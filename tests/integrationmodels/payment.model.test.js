@@ -1,22 +1,30 @@
 
 const {Payment} = require("../../src/model/payment.model")
-const { init } = require("../../src/database/mysql.connector");
+const { init, end  } = require("../../src/database/mysql.connector");
 describe('Testing the payment', () => {
 
    let someCreatedPayment;
     beforeAll(async ()=>{
      init()
     })
+
+    afterAll(() => {
+      end()
+    });
     
     it('gets All payments', async () => {
        const payments = await Payment.getAllPayments()
-       expect(payments.length).toEqual(10)
+       expect(payments.length).toBeGreaterThan(0)
     });
 
     it(' adds payment', async () => {
-     
+     let generatedTransactionId = "";
+     for (let index = 0; index < 20; index++) {
+       const generateNumber = Math.floor(Math.random() * 10)  // generate number 0-9
+       generatedTransactionId += generateNumber
+     }
         const newPayment = new Payment(
-           null,1,1,1,1,"32",1
+           null,1,1,1,1,generatedTransactionId,"1"
        )
        console.log("newPayment",newPayment)
       
