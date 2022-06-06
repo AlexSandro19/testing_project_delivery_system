@@ -40,18 +40,19 @@ describe("Run tests for calculateVolume function", () => {
         expect(result).toEqual(19.965);
     });
 
-    test("Pass a valid height = 3.3, width= 1.1, depth= 5.5, and expect a number with value 19.965", () => {
+    test("Pass a valid height = 50, width= 50, depth= 50, and expect a number with value 6565.125", () => {
         //Arrange
-        const height = 3.3;
-        const width = 1.1;
-        const depth = 5.5;
+        const height = 50;
+        const width = 50;
+        const depth = 50;
         //Act
         const result = calculateVolume(height, width, depth);
         //Assert
-        expect(result).toEqual(19.965);
+        expect(result).toEqual(125000);
     });
 
-    test("Pass a valid height = 10.5, width= 20.5, depth= 30.5, and expect a number with value 19.965", () => {
+
+    test("Pass a valid height = 100, width= 20.5, depth= 30.5, and expect a number with value 6565.125", () => {
         //Arrange
         const height = 10.5;
         const width = 20.5;
@@ -60,6 +61,17 @@ describe("Run tests for calculateVolume function", () => {
         const result = calculateVolume(height, width, depth);
         //Assert
         expect(result).toEqual(6565.125);
+    });
+
+    test("Pass a valid height = 100, width= 100, depth= 100, and expect a number with value 6565.125", () => {
+        //Arrange
+        const height = 100;
+        const width = 100;
+        const depth = 100;
+        //Act
+        const result = calculateVolume(height, width, depth);
+        //Assert
+        expect(result).toEqual(1000000);
     });
 
     test("Pass an invalid height = 0 and valid width = 0.01, depth = 1, and expect null", () => {
@@ -128,6 +140,17 @@ describe("Run tests for calculateVolume function", () => {
         expect(result).toBeNull();
     });
 
+    test("Pass a valid height = 1000, width= 1000, depth= 1000, and expect a number with value 6565.125", () => {
+        //Arrange
+        const height = 1000;
+        const width = 1000;
+        const depth = 1000;
+        //Act
+        const result = calculateVolume(height, width, depth);
+        //Assert
+        expect(result).toBeNull();
+    });
+
     test("Pass nothing, and expect null", () => {
 
         //Act
@@ -138,9 +161,9 @@ describe("Run tests for calculateVolume function", () => {
 })
 
 describe("Run tests for calculateAmount function", () => {
-   
+
     describe("Test volume values and keep the rest of variables with valid values", () => {
-        
+
         test("Pass valid value for package weight = 1, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -154,7 +177,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass valid value for package weight = 2, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 2;
@@ -182,7 +205,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass valid value for package weight = 799.9, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 799.9;
@@ -196,7 +219,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass valid value for package weight = 800, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 800;
@@ -210,7 +233,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package weight = 800.1, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 52.5", () => {
             //Arrange
             const weight = 800.1;
@@ -224,7 +247,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package weight = 6650, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 52.5", () => {
             //Arrange
             const weight = 6650;
@@ -238,7 +261,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package weight = 12499.9, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 52.5", () => {
             //Arrange
             const weight = 12499.9;
@@ -252,7 +275,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package weight = 12500, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 12500;
@@ -266,7 +289,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package weight = 12500.1, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 12500.1;
@@ -280,7 +303,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package weight = 100000, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 100000;
@@ -294,10 +317,10 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
-        test("Pass valid value for package weight = 9999999, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
+
+        test("Pass valid value for package weight = 999999, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
-            const weight = 9999999;
+            const weight = 999999;
             const volume = 1;
             const international = 0;
             const electronics = 0;
@@ -309,9 +332,9 @@ describe("Run tests for calculateAmount function", () => {
             expect(result).toEqual(70);
         });
 
-        test("Pass valid value for package weight = 10000000, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
+        test("Pass valid value for package weight = 1000000, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
-            const weight = 10000000;
+            const weight = 1000000;
             const volume = 1;
             const international = 0;
             const electronics = 0;
@@ -323,9 +346,9 @@ describe("Run tests for calculateAmount function", () => {
             expect(result).toEqual(70);
         });
 
-        test("Pass invalid value for package weight = 10000001, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
+        test("Pass invalid value for package weight = 1000001, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
-            const weight = 10000001;
+            const weight = 1000001;
             const volume = 1;
             const international = 0;
             const electronics = 0;
@@ -336,7 +359,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-      
+
         test("Pass invalid value for package weight = -1, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = -1;
@@ -364,7 +387,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-      
+
         test("Pass invalid value for package weight = 'str', while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = "str";
@@ -378,7 +401,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-      
+
         test("Pass invalid value for package weight = null, while rest is : volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = null;
@@ -394,9 +417,9 @@ describe("Run tests for calculateAmount function", () => {
         });
 
     })
-   
+
     describe("Test weight values and keep the rest of variables with valid values", () => {
-        
+
         test("Pass valid value for package volume = 1, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -410,7 +433,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass valid value for package volume = 2, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -438,7 +461,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package volume = 3.1, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -452,7 +475,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package volume = 4, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -466,7 +489,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package volume = 5, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 52.5", () => {
             //Arrange
             const weight = 1;
@@ -481,7 +504,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(52.5);
         });
-        
+
         test("Pass valid value for package volume = 5.1, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 52.5", () => {
             //Arrange
             const weight = 1;
@@ -495,7 +518,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package volume = 27.5, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 52.5", () => {
             //Arrange
             const weight = 1;
@@ -509,7 +532,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package volume = 49, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 1;
@@ -523,7 +546,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package volume = 50, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 1;
@@ -537,7 +560,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass invalid value for package volume = 51, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 1;
@@ -551,7 +574,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-      
+
         test("Pass invalid value for package volume = -1, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 1;
@@ -579,7 +602,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-      
+
         test("Pass invalid value for package volume = 'str', while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 1;
@@ -593,7 +616,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-      
+
         test("Pass invalid value for package volume = null, while rest is : weight = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 70", () => {
             //Arrange
             const weight = 1;
@@ -611,7 +634,7 @@ describe("Run tests for calculateAmount function", () => {
     })
 
     describe("Test international values and keep the rest of variables with valid values", () => {
-        
+
         test("Pass valid value for package international = 1, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -625,7 +648,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package international = 0, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -639,7 +662,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass invalid value for package international = -1, while rest is : weight = 1, volume = 1, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -653,7 +676,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package international = 2, while rest is : weight = 1, volume = 1, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -667,7 +690,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package international = 'str', while rest is : weight = 1, volume = 1, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -681,7 +704,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package international = null, while rest is : weight = 1, volume = 1, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -697,7 +720,7 @@ describe("Run tests for calculateAmount function", () => {
         });
     })
     describe("Test electonics values and keep the rest of variables with valid values", () => {
-        
+
         test("Pass valid value for package electronics = 1, while rest is : weight = 1, volume = 1, international = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -711,7 +734,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package electronics = 0, while rest is : weight = 1, volume = 1, international = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -725,7 +748,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass invalid value for package electronics = -1, while rest is : weight = 1, volume = 1, international = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -739,7 +762,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package electronics = 2, while rest is : weight = 1, volume = 1, international = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -753,7 +776,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package electronics = 'str', while rest is : weight = 1, volume = 1, international = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -767,7 +790,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package electronics = null, while rest is : weight = 1, volume = 1, international = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -783,7 +806,7 @@ describe("Run tests for calculateAmount function", () => {
         });
     })
     describe("Test oddsized values and keep the rest of variables with valid values", () => {
-        
+
         test("Pass valid value for package oddsized = 1, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -797,7 +820,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package oddsized = 0, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -811,7 +834,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass invalid value for package oddsized = -1, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -825,7 +848,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package oddsized = 2, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -839,7 +862,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package oddsized = 'str', while rest is : weight = 1, volume = 1, international = 0, electronics = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -853,7 +876,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package oddsized = null, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -869,7 +892,7 @@ describe("Run tests for calculateAmount function", () => {
         });
     })
     describe("Test fragile values and keep the rest of variables with valid values", () => {
-        
+
         test("Pass valid value for package fragile = 1, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -883,7 +906,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(70);
         });
-        
+
         test("Pass valid value for package fragile = 0, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -897,7 +920,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(35);
         });
-        
+
         test("Pass invalid value for package fragile = -1, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -911,7 +934,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package fragile = 2, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -925,7 +948,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package fragile = 'str', while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -939,7 +962,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toBeNull();
         });
-        
+
         test("Pass invalid value for package fragile = null, while rest is : weight = 1, volume = 1, international = 0, electronics = 0, oddsized = 0, and expect a number with value 35", () => {
             //Arrange
             const weight = 1;
@@ -956,7 +979,7 @@ describe("Run tests for calculateAmount function", () => {
     })
 
     describe("Test test all variables with valid values", () => {
-        
+
         test("Pass valid value for package weight = 400, volume = 2, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 400;
@@ -998,7 +1021,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(175);
         });
-        
+
         test("Pass valid value for package weight = 6650, volume = 4, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 6650;
@@ -1040,7 +1063,7 @@ describe("Run tests for calculateAmount function", () => {
             //Assert
             expect(result).toEqual(210);
         });
-        
+
         test("Pass valid value for package weight = 100000, volume = 27.5, international = 0, electronics = 0, oddsized = 0, fragile = 0 and expect a number with value 35", () => {
             //Arrange
             const weight = 100000;
@@ -1201,3 +1224,19 @@ describe("Run tests for calculateAmount function", () => {
 })
 
 
+
+describe("Run parameterized tests with calculateVolume function", () => {
+    it.each([
+        [1, 1, 1, 1],
+        [2.5, 2.5, 2.5, 15.625],
+        [5, 5, 5, 125],
+        [0.01, 0.01, 0.01, 1],
+        [20.5, 30.5, 40.5, 25322.625],
+        [100, 100, 100, 1000000],
+    ])(
+        (height, width, depth, result) => {
+            const response = calculateVolume(height, width, depth);
+            expect(response).toEqual(result);
+        }
+    );
+});
