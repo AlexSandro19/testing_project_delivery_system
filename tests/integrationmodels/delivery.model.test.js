@@ -39,7 +39,8 @@ let someCreatedDelivery;
    it(' updates delivery', async () => {
       const date = new Date("2022-01-01T12:00:00.000")
    
- 
+      someCreatedDelivery.message += "asd"
+
       const {updatedDelivery} = await Delivery.updateDelivery(someCreatedDelivery)
       console.log("when we update delivery :   ",updatedDelivery)
       const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
