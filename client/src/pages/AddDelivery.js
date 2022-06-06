@@ -24,7 +24,7 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
   const loadState = useCallback(() =>{
     getCurrencies();
     setConverted(newAmount);
-    console.log(newAmount)
+    console.log(newAmount);
     setForm({
       amount:amount,
       priority:0,
