@@ -165,18 +165,6 @@ class Package {
             }
         }
 
-        return new Package(
-            response[0].idpackages,
-            response[0].user_iduser,
-            response[0].weight,
-            response[0].height,
-            response[0].width,
-            response[0].depth,
-            response[0].fragile,
-            response[0].electronics,
-            response[0].oddsized,
-            response[0].receiver_id)
-
     }
     /**
      * 
