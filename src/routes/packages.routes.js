@@ -144,7 +144,7 @@ router.post("/deletePackage", [
                 });
             }
 
-            var { idpackages } = req.body
+            const { idpackages } = req.body
             const { packageDeleted, deletedPackage } = await Package.deletePackage(idpackages)
             if (packageDeleted) {
                 return res.status(200).json({ package: deletedPackage });

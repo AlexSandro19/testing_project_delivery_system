@@ -37,6 +37,7 @@ router.post("/register",
         check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm password not provided").trim(),
     ], async (req, res) => {
         try {
+            console.log("user.register > req.body: ", req.body)
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({
@@ -45,7 +46,6 @@ router.post("/register",
                 });
             }
             const { typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password, passwordConfirm } = req.body;
-
             if (password !== passwordConfirm) {
                 return res.status(400).json({
                     message: "Confirm password is not correct",
@@ -53,8 +53,8 @@ router.post("/register",
                 });
               }
             const hashedPassword = await bcrypt.hash(password, 12);
-            const user = new User(undefined, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
-            console.log(user)
+            const user = new User(null, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
+            console.log("user: ", user)
             const { userCreated, createdUser } = await User.createUser(user)
             if (userCreated) {
                 return res.status(200).json({ createdUser });
@@ -98,7 +98,7 @@ router.post("/updateUser", [
         .isLength({ min: 9, max: 9 }).withMessage("DUNS should be 9 characters long (format: XXXXXXXXX)"),
     check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-    check("cityId").exists({ checkFalsy: true }).withMessage("City not provided").trim()
+    check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
     check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
     check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm Password not provided").trim(),
@@ -111,7 +111,7 @@ router.post("/updateUser", [
                 message: "Invalid data while creating a user",
             });
         }
-        const { idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode,password,passwordConfirm, cityId } = req.body;
+        const { idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode,password,passwordConfirm, city } = req.body;
         
         if (passwordConfirm !== password) {
           return res.status(400).json({
@@ -123,7 +123,7 @@ router.post("/updateUser", [
           });
       }
         const hashedPassword = await bcrypt.hash(password, 12);
-        const user = new User(idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, cityId,hashedPassword);
+        const user = new User(idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
    
         console.log(user);
         const { userInfoIsSame, updatedUser } = await User.updateUser(user);
@@ -213,7 +213,7 @@ router.delete("/deleteUser", [
                 });
             }
 
-            var { idCustomer } = req.body
+            const { idCustomer } = req.body
             const { userDeleted, deletedUser } = await User.deleteUser(idCustomer)
             if (userDeleted) {
                 return res.status(200).json({ user: deletedUser });
@@ -244,33 +244,6 @@ router.get("/getUsers", async (req, res) => {
     console.log(users);
     return res.status(200).json({ users });
 })
-
-router.delete("/deleteUser",[
-    check("Id","User id not provided").exists(),
-  ], 
-  async(req, res)=>{
-    try {
-        const errors =validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-              errors: errors.array(),
-              message: "Invalid data while deleting a user",
-            });
-         }
-         
-         const {id} = req.body
-         const response = await User.deleteUser(id)
-         return res.status(200).json({response})
-      } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-        message: "Invalid data",
-        errors: [
-            { value: error, msg: error.message },
-        ],
-    });
-    }
-  })
 
 module.exports = router;
 

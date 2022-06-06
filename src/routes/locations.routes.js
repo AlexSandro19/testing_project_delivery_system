@@ -101,9 +101,9 @@ router.delete("/deleteLocation", [
       }
 
       var { idlocation } = req.body
-      const { paymentDeleted, deletedPayment }  = await Location.deleteLocation(idlocation)
-      if (paymentDeleted) {
-        return res.status(200).json({ payment: deletedPayment });
+      const { locationDeleted, deletedLocation }  = await Location.deleteLocation(idlocation)
+      if (locationDeleted) {
+        return res.status(200).json({ location: deletedLocation });
     } else {
         return res.status(500).json({ message: "Internal Server Error when deleting" });
     }
