@@ -235,8 +235,11 @@ class Delivery {
      * @param {Delivery} updatedDelivery provide the new delivery with which to update the database
      * @returns the updated delivery objecct
      */
-    static async updateDelivery(updatedDelivery = Delivery) {
+    static async updateDelivery(updatedDelivery) {
         try {
+            console.log("updatedDelivery",updatedDelivery)
+            console.log("updatedDelivery uid",updatedDelivery.getUID())
+        
             const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.getUID()}`])
             console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
             const receivedDelivery = new Delivery(

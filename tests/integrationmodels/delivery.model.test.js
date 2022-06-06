@@ -23,13 +23,14 @@ let someCreatedDelivery;
      )
 
      console.log("newDelivery",newDelivery)
-    
+         
       const {createdDelivery} = await Delivery.createDelivery(newDelivery)
       console.log("when we get delivery :   ",createdDelivery)
       const exctractedDelivery = await Delivery.getDelivery(createdDelivery.iddeliveries)
       console.log("when we get delivery :   ",exctractedDelivery)
       expect(createdDelivery).toEqual(exctractedDelivery)
-      someCreatedDelivery = {...createdDelivery}   
+      
+      someCreatedDelivery = createdDelivery
       
       
    });
@@ -37,10 +38,8 @@ let someCreatedDelivery;
 
    it(' updates delivery', async () => {
       const date = new Date("2022-01-01T12:00:00.000")
-      
-     console.log("someCreatedDelivery",someCreatedDelivery)
-     someCreatedDelivery.packages_idpackages += 1
-     console.log("someCreatedDelivery2S",someCreatedDelivery)
+   
+ 
       const {updatedDelivery} = await Delivery.updateDelivery(someCreatedDelivery)
       console.log("when we update delivery :   ",updatedDelivery)
       const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
@@ -58,7 +57,7 @@ let someCreatedDelivery;
       //const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
      // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
      
-      expect(deletedDelivery[0]).toEqual(someCreatedDelivery)
+      expect(deletedDelivery).toEqual(someCreatedDelivery)
    });
     afterEach(()=>{
       // app.close();
