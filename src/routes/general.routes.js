@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const {axios} = require("axios");
+const axios = require("axios");
 const router = Router();
 const { check, validationResult } = require("express-validator");
 const { execute } = require("../database/mysql.connector")
@@ -12,6 +12,20 @@ router.get("/getAllZipsAndCities",async(req,res)=>{
         }else{
             throw { message: "Database error" }
         }
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({
+            message: "Invalid data",
+            errors: [
+                { value: error, msg: error.message },
+            ],
+        });
+    }
+})
+router.get("/getAllCurrencies",async(req,res)=>{
+    try{
+        const request = await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies.json`).then((response) => response.data)
+        return res.status(200).send({request})
     }catch(error){
         console.log(error);
         return res.status(500).json({

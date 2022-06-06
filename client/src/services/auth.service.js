@@ -11,8 +11,8 @@ export const loginApi = (email, password) => {
       throw error.response.data;
     });
 };
-export const registerApi = (name,email,username,password,phone,address) =>{
-  return axios.post(registerUrl,{name,email,username,password,phone,address}).then((response)=>response.data).catch((error)=>{
+export const registerApi = (typeOfUser,firstName,secondName,companyName,email,password,confirmPassword,phone,duns,address,city,zipcode) =>{
+  return axios.post(registerUrl,{typeOfUser,firstName,secondName,companyName,email,password,confirmPassword,phone,duns,address,city,zipcode}).then((response)=>response.data).catch((error)=>{
     throw error.response.data;
   })
 }

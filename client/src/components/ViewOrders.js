@@ -49,9 +49,13 @@ export const ViewOrders=({user})=>{
       setExpanded(!expanded);
       };
     return(
+      
         <Grid>
          
           <Card>
+          <Typography>
+
+          </Typography>
           <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

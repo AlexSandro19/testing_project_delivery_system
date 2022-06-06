@@ -3,17 +3,28 @@ import { Delivery } from "../components/Delivery";
 import {useState,useEffect,useCallback} from "react";
 import {registerDelivery} from "../redux/actions/delivery";
 import {deletePackage} from "../redux/actions/package";
+import {getCurrencies,convertCurrency} from "../redux/actions/currency";
 import {Loader} from "../components/Loader";
 import { useHistory } from "react-router-dom";
-const AddDelivery=({createdPackage,zipsCities,user,errors,registerDelivery,deletePackage,idpackages,successful})=>{
+const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrencies,zipsCities,user,errors,registerDelivery,deletePackage,idpackages,successful})=>{
   const history = useHistory();
   const locationOfUser = zipsCities.find((item)=>item.zipcode_idzipcode === user.zipcode && item.city_idcity === user.cityId)
-  console.log(idpackages);
-  console.log(createdPackage);
+
   const amount = createdPackage.amount;
   const [formErrors,setFormErrors] = useState([]);
   const [form, setForm] = useState({});
+  const [converted,setConverted] = useState(0);
+  console.log(converted);
+  const convert =useCallback((amount,newCurrency)=>{
+    console.log(amount,newCurrency)
+    convertCurrency(amount,newCurrency)
+    
+  },[amount])
+  
   const loadState = useCallback(() =>{
+    getCurrencies();
+    setConverted(newAmount);
+    console.log(newAmount);
     setForm({
       amount:amount,
       priority:0,
@@ -36,11 +47,8 @@ const AddDelivery=({createdPackage,zipsCities,user,errors,registerDelivery,delet
  
   }, [errors]);
   
-
-  console.log(form);
   const changeHandler = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
-    console.log(form);
   };
   const sendAddDeliveryForm= (e)=>{
     e.preventDefault();
@@ -55,8 +63,19 @@ const AddDelivery=({createdPackage,zipsCities,user,errors,registerDelivery,delet
         <div style={{marginLeft:"15%"}}>
   
     
-          <Delivery amount={amount} form={form} zipsCities={zipsCities} setForm={setForm} idpackages={idpackages} formErrors={formErrors}  deletePackage={deletePackage} sendAddDeliveryForm={sendAddDeliveryForm} changeHandler={changeHandler}>
-  
+          <Delivery
+          converted={converted}
+          convertCurrency={convert}  
+          currency={currency} 
+          amount={amount} 
+          form={form} 
+          zipsCities={zipsCities} 
+          setForm={setForm} 
+          idpackages={idpackages}
+          formErrors={formErrors}  
+          deletePackage={deletePackage} 
+          sendAddDeliveryForm={sendAddDeliveryForm} 
+          changeHandler={changeHandler}>
           </Delivery>
         </div>
       )
@@ -75,6 +94,8 @@ const mapStateToProps = (state) =>({
    amount:state.packages.packages.amount,
    idpackages:state.packages.packages.idpackages,
    successful:state.packages.successful,
+   currency:state.currency.currency,
    errors:state.message.errors,
+   newAmount:state.currency.newAmount
   });
-export default connect(mapStateToProps,{registerDelivery,deletePackage})(AddDelivery)
+export default connect(mapStateToProps,{registerDelivery,deletePackage,getCurrencies,convertCurrency})(AddDelivery)
