@@ -61,7 +61,6 @@ async function loginCreateDeliveryLogout() {
     // // LOGGED OUT // //
 
   } catch(e) {
-    //marking the test as Failed if product has not been added to the cart
     console.log("Error:", e.message)
     await driver.executeScript(
       'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Some elements failed to load."}}'
