@@ -2,7 +2,8 @@
 const {Payment} = require("../../src/model/payment.model")
 const { init } = require("../../src/database/mysql.connector");
 describe('Testing the payment', () => {
-  
+
+   let someCreatedPayment;
     beforeAll(async ()=>{
      init()
     })
@@ -25,16 +26,13 @@ describe('Testing the payment', () => {
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
         //console.log("the deleted one",delete2Delivery)
         expect(createdPayment).toEqual(exctractedPayment)
+        someCreatedDelivery = createdPayment
      });
 
      it(' updates payment', async () => {
         
-        const updPayment = new Payment(
-           1,2,1,1,1,"asdda",3
-       )
-       console.log("updPayment",updPayment)
       
-        const {updatedPayment} = await Payment.updatePayment(updPayment)
+        const {updatedPayment} = await Payment.updatePayment(someCreatedDelivery)
         console.log("when we update delivery :   ",updatedPayment)
         const exctractedPayment = await Payment.getPayment(updatedPayment.idpayment)
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
@@ -44,16 +42,12 @@ describe('Testing the payment', () => {
 
      it(' deletes payment', async () => {
       
-        const deletePayment = new Payment(
-           23,1,1,1,1,"32",1
-       )
-      
-        const {deletedPayment} = await Payment.deletePayment(deletePayment.idpayment)
+        const {deletedPayment} = await Payment.deletePayment(someCreatedDelivery.idpayment)
         console.log("when we delete paymnet :   ",deletedPayment)
         //const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
        
-        expect(deletedPayment).toEqual(deletePayment)
+        expect(deletedPayment).toEqual(someCreatedDelivery)
      });
     afterEach(()=>{
      
