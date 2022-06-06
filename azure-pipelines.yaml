@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- name: MY_SQL_DB_HOST
+  value: test 
+
 steps:
   - task: NodeTool@0
     inputs:
