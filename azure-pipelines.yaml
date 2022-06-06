@@ -21,6 +21,7 @@ steps:
     
   - script: |
       npm run test
+    timeoutInMinutes: 15 # how long to run the job before automatically cancelling
     # env:
     #   MY_SQL_DB_HOST: $(MY_SQL_DB_HOST) 
     #   MY_SQL_DB_USER: $(MY_SQL_DB_USER)
