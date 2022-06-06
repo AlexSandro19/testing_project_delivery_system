@@ -9,11 +9,11 @@ class Location {
     zip_city_zipcode_idzipcode;
     zip_city_city_idcity;
     constructor(
-        idlocation = Number,
-        typeoflocation_idtypeoflocation = Number,
-        address = String,
-        zip_city_zipcode_idzipcode = Number,
-        zip_city_city_idcity = Number,
+        idlocation,
+        typeoflocation_idtypeoflocation,
+        address,
+        zip_city_zipcode_idzipcode,
+        zip_city_city_idcity,
     ) {
         this.idlocation = idlocation;
         this.typeoflocation_idtypeoflocation = typeoflocation_idtypeoflocation;
@@ -155,14 +155,13 @@ class Location {
      */
     static async deleteLocation(id = Number) {
         try {
-            const getDeletedLocation = await execute("SELECT from Location Where idlocation=", [`${id}`]);
-            const response = await execute("DELETE from Location Where idlocation=", [`${id}`]);
-            return new Location(
-                getDeletedLocation[0].idlocation,
-                getDeletedLocation[0].typeoflocation_idtypeoflocation,
-                getDeletedLocation[0].address,
-                getDeletedLocation[0].zip_city_zipcode_idzipcode,
-                getDeletedLocation[0].zip_city_city_idcity)
+            const getDeletedLocation = await execute("SELECT * from Location Where idlocation=?", [`${id}`]);
+            const response = await execute("DELETE from Location Where idlocation=?", [`${id}`]);
+            if (response.affectedRows > 0) {
+                return { deliveryLocation: true, deletedLocation: getDeletedLocation }
+            } else {
+                return { deliveryLocation: false };
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {

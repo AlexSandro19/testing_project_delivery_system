@@ -10,12 +10,11 @@ router.post("/addPayment",
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("amount").exists({ checkFalsy: true }).withMessage("Amount not provided").trim().toFloat()
             .isFloat().withMessage("Wrong value provided"),
-        check("payed").exists({ checkFalsy: true }).withMessage("Information if payment is payed wasn't provided").trim()
+        check("payed").exists().withMessage("Information if payment is payed wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
-        check("prepaid").exists({ checkFalsy: true }).withMessage("Information if payment is prepaid wasn't provided").trim()
+        check("prepaid").exists().withMessage("Information if payment is prepaid wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
-        check("billing_address").exists({ checkFalsy: true }).withMessage("Billing address wasn't provided").trim()
-            // .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+        check("billing_address").optional().exists({ checkFalsy: true }).withMessage("Billing address wasn't provided").trim()
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -39,10 +38,10 @@ router.post("/addPayment",
             console.log("newPayment inside /addPayment", newPayment.toString())
             const { paymentCreated, createdPayment } = await Payment.createPayment(newPayment);
             if (paymentCreated) {
-                return res.status(200).json({  createdPayment });
+                return res.status(200).json({ createdPayment });
 
             } else {
-                return res.status(500).json({ message: "Internal Server Error"  });
+                return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
             console.log(error);
@@ -64,17 +63,14 @@ router.post("/updatePayment",
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("amount").exists({ checkFalsy: true }).withMessage("Amount not provided").trim().toFloat()
             .isFloat().withMessage("Wrong value provided"),
-        check("firstName").exists({ checkFalsy: true }).withMessage("First name not provided").trim()
-            .isAlpha().withMessage("First name should contain only characters")
-            .isLength({ max: 45 }).withMessage("First name should be no more than 45 characters long"),
-        check("payed").exists({ checkFalsy: true }).withMessage("Information if payment is payed wasn't provided").trim()
+        check("payed").exists().withMessage("Information if payment is payed wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
-        check("prepaid").exists({ checkFalsy: true }).withMessage("Information if payment is prepaid wasn't provided").trim()
+        check("prepaid").exists().withMessage("Information if payment is prepaid wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("transactionid").exists({ checkFalsy: true }).withMessage("Transaction id not provided").trim()
             .isLength({ max: 20 }).withMessage("Transaction id can't be no more than 20 characters long"),
-        check("billing_address").exists({ checkFalsy: true }).withMessage("Billing address wasn't provided").trim()
-            .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+        check("billing_address").optional().exists({ checkFalsy: true }).withMessage("Billing address wasn't provided").trim()
+
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -110,11 +106,11 @@ router.post("/updatePayment",
             // console.log("paymentInfoIsSame ", paymentInfoIsSame);
             // console.log("typeof updatedPayment  === undefined ", updatedPayment === undefined);
             if (!paymentInfoIsSame && typeof updatedPayment === 'object') {
-                return res.status(200).json({ response: updatedPayment });
+                return res.status(200).json({ updatedPayment });
             } else if (!paymentInfoIsSame && updatedPayment === undefined) {
-                return res.status(500).json({ response: { message: "Internal Server Error" } });
+                return res.status(500).json({ message: "Internal Server Error" });
             } else if (paymentInfoIsSame) {
-                return res.status(400).json({ response: updatedPayment, message: "Payment was not updated, because the delivery info is the same" });
+                return res.status(400).json({ updatedPayment, message: "Payment was not updated, because the delivery info is the same" });
             }
             // console.log("response from createDelivery inside /addWholeDelivery", response)
         } catch (error) {
@@ -128,8 +124,8 @@ router.post("/updatePayment",
         }
     })
 
-router.delete("deletePayment/:id", [
-    check("paymentId", "Paymnet Id not provided").exists(),
+router.delete("/deletePayment", [
+    check("idpayment", "Paymnet Id not provided").exists(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -139,10 +135,13 @@ router.delete("deletePayment/:id", [
                 message: "Invalid data while deleting a Payment",
             });
         }
-
-        var { paymentId } = req.body
-        const response = await Payment.deletePayment(paymentId)
-        return res.status(200).json({ response })
+        const { idpayment } = req.body
+        const { paymentDeleted, deletedPayment } = await Payment.deletePayment(idpayment)
+        if (paymentDeleted) {
+            return res.status(200).json({ payment: deletedPayment });
+        } else {
+            return res.status(500).json({ message: "Internal Server Error when deleting" });
+        }        
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -154,9 +153,18 @@ router.delete("deletePayment/:id", [
     }
 })
 
-router.get("/", async (req, res) => {
-    const response = await Payment.getAllPayments()
-    return res.json({ response });
+router.post("/getPayment", async (req, res) => {
+    const { idpayment } = req.body
+    const payment = await Payment.getPayment(idpayment);
+    console.log(payment);
+    return res.status(200).json({ payment });
+})
+
+router.get("/getPayments", async (req, res) => {
+
+    const payments = await Payment.getAllPayments();
+    console.log(payments);
+    return res.status(200).json({ payments });
 })
 
 

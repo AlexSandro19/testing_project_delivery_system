@@ -1,4 +1,4 @@
-const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../../../../src/utility/utility.generators");
+const { characterGenerator, numberGenerator, transactionDateGenerator } = require("../../../src/utility/utility.generators");
 
 describe("Run tests for characterGenerator function", () => {
 

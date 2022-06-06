@@ -15,18 +15,18 @@ class User {
     zip_city_city_idcity;
     password
     constructor(
-        idcustomer = Number || null,
-        type_of_user = Number,
-        firstname = String,
-        secondname = String,
-        companyname = String,
-        email = String,
-        phone = String,
-        address = String,
-        duns = String || null,
-        zip_city_zipcode_idzipcode = Number,
-        zip_city_city_idcity = Number,
-        password = String
+        idcustomer = null, // CHANGE IT TO JUST NULL
+        type_of_user,
+        firstname,
+        secondname,
+        companyname,
+        email,
+        phone,
+        address,
+        duns = null,
+        zip_city_zipcode_idzipcode,
+        zip_city_city_idcity,
+        password
     ) {
         this.idcustomer = idcustomer;
         this.type_of_user = type_of_user;
@@ -127,8 +127,8 @@ class User {
             } else {
                 console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
-                    value: "User not found",
-                    message: "User not found",
+                    value: "Users not found",
+                    message: "Users not found",
                 }
             }
         } catch (error) {
@@ -238,11 +238,12 @@ class User {
                 userFromDB[0].duns,
                 userFromDB[0].zip_city_zipcode_idzipcode,
                 userFromDB[0].zip_city_city_idcity,
-                userFromDB[0].password)
+                userFromDB[0].password
+                )
             if (!updatedUser.equals(receivedUser)) {
                 const response = await execute(
                     "UPDATE user "
-                    + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=?,password=? WHERE idcustomer=?;"
+                    + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=?, password=? WHERE idcustomer=?;"
                     , [updatedUser.getTypeOfUser(),
                     updatedUser.getFirstName(),
                     updatedUser.getSecondName(),
@@ -255,7 +256,7 @@ class User {
                     updatedUser.getCity(),
                     updatedUser.getPassword(),
                     updatedUser.getIdCustomer(),
-                    ]);
+                ]);
                 if (response.changedRows > 0) {
                     return { userInfoIsSame: false, updatedUser }
                 } else {
@@ -317,7 +318,7 @@ class User {
     }
     /**
     * Creates a new user entry in the database
-    * @param {user} newUser Provide the new user to create in the database 
+    * @param {User} newUser Provide the new user to create in the database 
     * @returns  Return the newly created user
     */
     static async createUser(
@@ -336,7 +337,7 @@ class User {
                 newUser.getDuns(),
                 newUser.getZipCode(),
                 newUser.getCity(),
-                newUser.getPassword()]);
+                newUser.getPassword(),]);
             console.log("createUser > response: ", response);
             if (response.affectedRows > 0) {
                 newUser.setIdCustomer(response.insertId);
