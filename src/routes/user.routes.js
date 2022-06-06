@@ -61,9 +61,9 @@ router.post("/register",
             console.log(user)
             const { userCreated, createdUser } = await User.createUser(user)
             if (userCreated) {
-                return res.status(200).json({ response: { createdUser } });
+                return res.status(200).json({ createdUser });
             } else {
-                return res.status(500).json({ response: { message: "Internal Server Error" } });
+                return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
             console.log(error);
@@ -105,6 +105,7 @@ router.post("/updateUser", [
     check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
     check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
+    check("confirmPassword").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -119,11 +120,11 @@ router.post("/updateUser", [
         console.log(user);
         const { userInfoIsSame, updatedUser } = await User.updateUser(user)
         if (!userInfoIsSame && typeof updatedUser === 'object') {
-            return res.status(200).json({ response: {user: updatedUser} });
+            return res.status(200).json({ user: updatedUser });
         } else if (!userInfoIsSame && updatedUser === undefined) {
-            return res.status(500).json({ response: { message: "Internal Server Error" } });
+            return res.status(500).json({ message: "Internal Server Error" });
         } else if (userInfoIsSame) {
-            return res.status(400).json({ response:{ updatedUser, message: "User was not updated, because the user info is the same"} });
+            return res.status(400).json({ updatedUser, message: "User was not updated, because the user info is the same" });
         }
     } catch (error) {
         console.log(error);
@@ -188,7 +189,7 @@ router.post("/login", async (req, res) => {
 
 router.delete("/deleteUser", [
     check("idCustomer").exists({ checkFalsy: true }).withMessage("Customer not provided").trim()
-    .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
+        .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
 ],
     async (req, res) => {
         try {
@@ -203,9 +204,9 @@ router.delete("/deleteUser", [
             var { idCustomer } = req.body
             const { userdeleted, deletedUser } = await User.deleteUser(idCustomer)
             if (userdeleted) {
-                return res.status(200).json({ response: {user: deletedUser} });
+                return res.status(200).json({ user: deletedUser });
             } else {
-                return res.status(500).json({ response: { message: "Internal Server Error when deleting" } });
+                return res.status(500).json({ message: "Internal Server Error when deleting" });
             }
         } catch (error) {
             console.log(error);
@@ -218,18 +219,18 @@ router.delete("/deleteUser", [
         }
     })
 
-router.get("/getUser", async (req, res) => {
+router.post("/getUser", async (req, res) => {
     const { idcustomer } = req.body
     const user = await User.getUser(idcustomer);
     console.log(user);
-    return res.status(200).json({ response: { user } });
+    return res.status(200).json({ user });
 })
 
 router.get("/getUsers", async (req, res) => {
 
     const users = await User.getAllUsers();
     console.log(users);
-    return res.status(200).json({ response: { users } });
+    return res.status(200).json({ users });
 })
 
 module.exports = router;
