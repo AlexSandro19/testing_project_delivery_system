@@ -1,4 +1,4 @@
-import { REGISTER_DELIVERY,REGISTER_DELIVERY_SUCCESS,REGISTER_DELIVERY_FAILURE,REQUEST_DELIVERIES} from "../constants/delivery"
+import { REGISTER_DELIVERY,REGISTER_DELIVERY_SUCCESS,REQUEST_DELIVERIES_SUCCESS,REGISTER_DELIVERY_FAILURE,REQUEST_DELIVERIES} from "../constants/delivery"
 import { takeLatest, call, put } from "redux-saga/effects";
 import {addLocationApi} from "../../services/location.service";
 import {createPaymentApi} from "../../services/payment.service";
@@ -84,11 +84,12 @@ function* requestAllDeliveriesFlow(action){
         }))
         console.log(allDeliveries);
         yield put({
-            type:REGISTER_DELIVERY_SUCCESS,
+            type:REQUEST_DELIVERIES_SUCCESS,
             message:{
                 text:"SUCCESSFULLY CREATE DELIVERY",
                 severity:"success"
             },
+            payload:allDeliveries
             
         })
     }catch(e){
