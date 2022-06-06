@@ -5,22 +5,22 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema postnord
+-- Schema na06kbnst7soo40z
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `postnord` ;
+DROP SCHEMA IF EXISTS `na06kbnst7soo40z` ;
 
 -- -----------------------------------------------------
--- Schema postnord
+-- Schema na06kbnst7soo40z
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `postnord` DEFAULT CHARACTER SET utf8 ;
-USE `postnord` ;
+CREATE SCHEMA IF NOT EXISTS `na06kbnst7soo40z` DEFAULT CHARACTER SET utf8 ;
+USE `na06kbnst7soo40z` ;
 
 -- -----------------------------------------------------
--- Table `postnord`.`type_of_user`
+-- Table `na06kbnst7soo40z`.`type_of_user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`type_of_user` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`type_of_user` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`type_of_user` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`type_of_user` (
   `idtypeofuser` INT NOT NULL AUTO_INCREMENT,
   `type_of_user` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`idtypeofuser`),
@@ -29,11 +29,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`zipcode`
+-- Table `na06kbnst7soo40z`.`zipcode`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`zipcode` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`zipcode` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`zipcode` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`zipcode` (
   `idzipcode` INT NOT NULL AUTO_INCREMENT,
   `zipcode` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`idzipcode`),
@@ -42,11 +42,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`country`
+-- Table `na06kbnst7soo40z`.`country`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`country` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`country` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`country` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`country` (
   `idcountry` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(35) NOT NULL,
   PRIMARY KEY (`idcountry`),
@@ -55,11 +55,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`city`
+-- Table `na06kbnst7soo40z`.`city`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`city` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`city` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`city` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`city` (
   `idcity` INT NOT NULL AUTO_INCREMENT,
   `country_idcountry` INT NOT NULL,
   `name` VARCHAR(30) NOT NULL,
@@ -67,41 +67,41 @@ CREATE TABLE IF NOT EXISTS `postnord`.`city` (
   INDEX `fk_city_country1_idx` (`country_idcountry` ASC) VISIBLE,
   CONSTRAINT `fk_city_country1`
     FOREIGN KEY (`country_idcountry`)
-    REFERENCES `postnord`.`country` (`idcountry`)
+    REFERENCES `na06kbnst7soo40z`.`country` (`idcountry`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`zip_city`
+-- Table `na06kbnst7soo40z`.`zip_city`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`zip_city` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`zip_city` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`zip_city` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`zip_city` (
   `zipcode_idzipcode` INT NOT NULL,
   `city_idcity` INT NOT NULL,
   PRIMARY KEY (`zipcode_idzipcode`, `city_idcity`),
   INDEX `fk_zip_city_city1_idx` (`city_idcity` ASC) VISIBLE,
   CONSTRAINT `fk_zip_city_zipcode1`
     FOREIGN KEY (`zipcode_idzipcode`)
-    REFERENCES `postnord`.`zipcode` (`idzipcode`)
+    REFERENCES `na06kbnst7soo40z`.`zipcode` (`idzipcode`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_zip_city_city1`
     FOREIGN KEY (`city_idcity`)
-    REFERENCES `postnord`.`city` (`idcity`)
+    REFERENCES `na06kbnst7soo40z`.`city` (`idcity`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`user`
+-- Table `na06kbnst7soo40z`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`user` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`user` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`user` (
   `idcustomer` INT NOT NULL AUTO_INCREMENT,
   `type_of_user` INT NOT NULL,
   `firstname` VARCHAR(45) NOT NULL,
@@ -121,23 +121,23 @@ CREATE TABLE IF NOT EXISTS `postnord`.`user` (
   INDEX `fk_user_zip_city1_idx` (`zip_city_zipcode_idzipcode` ASC, `zip_city_city_idcity` ASC) VISIBLE,
   CONSTRAINT `fk_customer_typeofreceiver_customer1`
     FOREIGN KEY (`type_of_user`)
-    REFERENCES `postnord`.`type_of_user` (`idtypeofuser`)
+    REFERENCES `na06kbnst7soo40z`.`type_of_user` (`idtypeofuser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_zip_city1`
     FOREIGN KEY (`zip_city_zipcode_idzipcode` , `zip_city_city_idcity`)
-    REFERENCES `postnord`.`zip_city` (`zipcode_idzipcode` , `city_idcity`)
+    REFERENCES `na06kbnst7soo40z`.`zip_city` (`zipcode_idzipcode` , `city_idcity`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`packages`
+-- Table `na06kbnst7soo40z`.`packages`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`packages` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`packages` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`packages` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`packages` (
   `idpackages` INT NOT NULL AUTO_INCREMENT,
   `user_iduser` INT NULL,
   `weight` FLOAT NOT NULL,
@@ -153,23 +153,23 @@ CREATE TABLE IF NOT EXISTS `postnord`.`packages` (
   INDEX `fk_packages_user1_idx` (`receiver_iduser` ASC) VISIBLE,
   CONSTRAINT `fk_packages_customer`
     FOREIGN KEY (`user_iduser`)
-    REFERENCES `postnord`.`user` (`idcustomer`)
+    REFERENCES `na06kbnst7soo40z`.`user` (`idcustomer`)
     ON DELETE SET NULL
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_packages_user1`
     FOREIGN KEY (`receiver_iduser`)
-    REFERENCES `postnord`.`user` (`idcustomer`)
+    REFERENCES `na06kbnst7soo40z`.`user` (`idcustomer`)
     ON DELETE SET NULL
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`typeofpayment`
+-- Table `na06kbnst7soo40z`.`typeofpayment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`typeofpayment` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`typeofpayment` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`typeofpayment` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`typeofpayment` (
   `idtypeofpayment` INT NOT NULL AUTO_INCREMENT,
   `typeofpayment` VARCHAR(6) NOT NULL,
   PRIMARY KEY (`idtypeofpayment`),
@@ -178,11 +178,35 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`typeoflocation`
+-- Table `na06kbnst7soo40z`.`payment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`typeoflocation` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`payment` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`typeoflocation` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`payment` (
+  `idpayment` INT NOT NULL AUTO_INCREMENT,
+  `typeofpayment_idtypeofpayment` INT NOT NULL,
+  `amount` DECIMAL(6,2) NOT NULL,
+  `payed` TINYINT NOT NULL,
+  `prepaid` TINYINT NOT NULL,
+  `transactionid` VARCHAR(20) NULL,
+  `billing_address` VARCHAR(70) NOT NULL,
+  PRIMARY KEY (`idpayment`),
+  INDEX `fk_payment_typeofpayment1_idx` (`typeofpayment_idtypeofpayment` ASC) VISIBLE,
+  UNIQUE INDEX `transactionid_UNIQUE` (`transactionid` ASC) VISIBLE,
+  CONSTRAINT `fk_payment_typeofpayment1`
+    FOREIGN KEY (`typeofpayment_idtypeofpayment`)
+    REFERENCES `na06kbnst7soo40z`.`typeofpayment` (`idtypeofpayment`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `na06kbnst7soo40z`.`typeoflocation`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`typeoflocation` ;
+
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`typeoflocation` (
   `idtypeoflocation` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`idtypeoflocation`),
@@ -191,11 +215,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`location`
+-- Table `na06kbnst7soo40z`.`location`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`location` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`location` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`location` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`location` (
   `idlocation` INT NOT NULL AUTO_INCREMENT,
   `typeoflocation_idtypeoflocation` INT NOT NULL,
   `address` VARCHAR(70) NOT NULL,
@@ -206,53 +230,23 @@ CREATE TABLE IF NOT EXISTS `postnord`.`location` (
   INDEX `fk_location_zip_city1_idx` (`zip_city_zipcode_idzipcode` ASC, `zip_city_city_idcity` ASC) VISIBLE,
   CONSTRAINT `fk_location_typeoflocation1`
     FOREIGN KEY (`typeoflocation_idtypeoflocation`)
-    REFERENCES `postnord`.`typeoflocation` (`idtypeoflocation`)
+    REFERENCES `na06kbnst7soo40z`.`typeoflocation` (`idtypeoflocation`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_location_zip_city1`
     FOREIGN KEY (`zip_city_zipcode_idzipcode` , `zip_city_city_idcity`)
-    REFERENCES `postnord`.`zip_city` (`zipcode_idzipcode` , `city_idcity`)
+    REFERENCES `na06kbnst7soo40z`.`zip_city` (`zipcode_idzipcode` , `city_idcity`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`payment`
+-- Table `na06kbnst7soo40z`.`deliveries`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`payment` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`deliveries` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`payment` (
-  `idpayment` INT NOT NULL AUTO_INCREMENT,
-  `typeofpayment_idtypeofpayment` INT NOT NULL,
-  `amount` DECIMAL(6,2) NOT NULL,
-  `payed` TINYINT NOT NULL,
-  `prepaid` TINYINT NOT NULL,
-  `transactionid` VARCHAR(20),
-  `billing_address` INT,
-  PRIMARY KEY (`idpayment`),
-  INDEX `fk_payment_typeofpayment1_idx` (`typeofpayment_idtypeofpayment` ASC) VISIBLE,
-  UNIQUE INDEX `transactionid_UNIQUE` (`transactionid` ASC) VISIBLE,
-  INDEX `fk_payment_location1_idx` (`billing_address` ASC) VISIBLE,
-  CONSTRAINT `fk_payment_typeofpayment1`
-    FOREIGN KEY (`typeofpayment_idtypeofpayment`)
-    REFERENCES `postnord`.`typeofpayment` (`idtypeofpayment`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_payment_location1`
-    FOREIGN KEY (`billing_address`)
-    REFERENCES `postnord`.`location` (`idlocation`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `postnord`.`deliveries`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`deliveries` ;
-
-CREATE TABLE IF NOT EXISTS `postnord`.`deliveries` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`deliveries` (
   `iddeliveries` INT NOT NULL AUTO_INCREMENT,
   `packages_idpackages` INT NOT NULL,
   `priority` TINYINT NOT NULL,
@@ -263,7 +257,7 @@ CREATE TABLE IF NOT EXISTS `postnord`.`deliveries` (
   `message` VARCHAR(150) NOT NULL,
   `estimated_date` DATETIME NOT NULL,
   `start_date` DATETIME NOT NULL,
-  `end_date` DATETIME,
+  `end_date` DATETIME NULL,
   `uid` VARCHAR(36) NOT NULL,
   PRIMARY KEY (`iddeliveries`),
   INDEX `fk_deliveries_packages1_idx` (`packages_idpackages` ASC) VISIBLE,
@@ -273,33 +267,33 @@ CREATE TABLE IF NOT EXISTS `postnord`.`deliveries` (
   UNIQUE INDEX `uid_UNIQUE` (`uid` ASC) VISIBLE,
   CONSTRAINT `fk_deliveries_packages1`
     FOREIGN KEY (`packages_idpackages`)
-    REFERENCES `postnord`.`packages` (`idpackages`)
+    REFERENCES `na06kbnst7soo40z`.`packages` (`idpackages`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_deliveries_payment1`
     FOREIGN KEY (`payment_idpayment`)
-    REFERENCES `postnord`.`payment` (`idpayment`)
+    REFERENCES `na06kbnst7soo40z`.`payment` (`idpayment`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_deliveries_location1`
     FOREIGN KEY (`start_location`)
-    REFERENCES `postnord`.`location` (`idlocation`)
+    REFERENCES `na06kbnst7soo40z`.`location` (`idlocation`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_deliveries_location2`
     FOREIGN KEY (`end_location`)
-    REFERENCES `postnord`.`location` (`idlocation`)
+    REFERENCES `na06kbnst7soo40z`.`location` (`idlocation`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`driver`
+-- Table `na06kbnst7soo40z`.`driver`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`driver` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`driver` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`driver` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`driver` (
   `idemployees` INT NOT NULL AUTO_INCREMENT,
   `firstname` VARCHAR(45) NOT NULL,
   `secondname` VARCHAR(45) NOT NULL,
@@ -311,11 +305,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`type_of_vehicles`
+-- Table `na06kbnst7soo40z`.`type_of_vehicles`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`type_of_vehicles` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`type_of_vehicles` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`type_of_vehicles` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`type_of_vehicles` (
   `idtype_of_vehicles` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`idtype_of_vehicles`),
@@ -324,11 +318,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`vehicles`
+-- Table `na06kbnst7soo40z`.`vehicles`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`vehicles` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`vehicles` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`vehicles` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`vehicles` (
   `idvehicles` INT NOT NULL AUTO_INCREMENT,
   `type_of_vehicles_idtype_of_vehicles` INT NOT NULL,
   `identifier` VARCHAR(45) NOT NULL,
@@ -338,18 +332,18 @@ CREATE TABLE IF NOT EXISTS `postnord`.`vehicles` (
   INDEX `fk_vehicles_type_of_vehicles1_idx` (`type_of_vehicles_idtype_of_vehicles` ASC) VISIBLE,
   CONSTRAINT `fk_vehicles_type_of_vehicles1`
     FOREIGN KEY (`type_of_vehicles_idtype_of_vehicles`)
-    REFERENCES `postnord`.`type_of_vehicles` (`idtype_of_vehicles`)
+    REFERENCES `na06kbnst7soo40z`.`type_of_vehicles` (`idtype_of_vehicles`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`typeofroute`
+-- Table `na06kbnst7soo40z`.`typeofroute`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`typeofroute` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`typeofroute` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`typeofroute` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`typeofroute` (
   `idtypeofroute` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`idtypeofroute`),
@@ -358,11 +352,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `postnord`.`routes`
+-- Table `na06kbnst7soo40z`.`routes`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `postnord`.`routes` ;
+DROP TABLE IF EXISTS `na06kbnst7soo40z`.`routes` ;
 
-CREATE TABLE IF NOT EXISTS `postnord`.`routes` (
+CREATE TABLE IF NOT EXISTS `na06kbnst7soo40z`.`routes` (
   `idroutes` INT NOT NULL AUTO_INCREMENT,
   `vehicles_idvehicles` INT NOT NULL,
   `employees_idemployees` INT NOT NULL,
@@ -373,7 +367,7 @@ CREATE TABLE IF NOT EXISTS `postnord`.`routes` (
   `deliveries_iddeliveries` INT NOT NULL,
   `route_order` INT NOT NULL,
   `start_date` DATETIME NOT NULL,
-  `end_date` DATETIME NOT NULL,
+  `end_date` DATETIME NULL,
   PRIMARY KEY (`idroutes`),
   INDEX `fk_routes_vehicles1_idx` (`vehicles_idvehicles` ASC) VISIBLE,
   INDEX `fk_routes_employees1_idx` (`employees_idemployees` ASC) VISIBLE,
@@ -383,61 +377,35 @@ CREATE TABLE IF NOT EXISTS `postnord`.`routes` (
   INDEX `fk_routes_deliveries1_idx` (`deliveries_iddeliveries` ASC) VISIBLE,
   CONSTRAINT `fk_routes_vehicles1`
     FOREIGN KEY (`vehicles_idvehicles`)
-    REFERENCES `postnord`.`vehicles` (`idvehicles`)
+    REFERENCES `na06kbnst7soo40z`.`vehicles` (`idvehicles`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_routes_employees1`
     FOREIGN KEY (`employees_idemployees`)
-    REFERENCES `postnord`.`driver` (`idemployees`)
+    REFERENCES `na06kbnst7soo40z`.`driver` (`idemployees`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_routes_typeofroute1`
     FOREIGN KEY (`typeofroute_idtypeofroute`)
-    REFERENCES `postnord`.`typeofroute` (`idtypeofroute`)
+    REFERENCES `na06kbnst7soo40z`.`typeofroute` (`idtypeofroute`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_routes_location1`
     FOREIGN KEY (`start_location`)
-    REFERENCES `postnord`.`location` (`idlocation`)
+    REFERENCES `na06kbnst7soo40z`.`location` (`idlocation`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_routes_location2`
     FOREIGN KEY (`end_location`)
-    REFERENCES `postnord`.`location` (`idlocation`)
+    REFERENCES `na06kbnst7soo40z`.`location` (`idlocation`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_routes_deliveries1`
     FOREIGN KEY (`deliveries_iddeliveries`)
-    REFERENCES `postnord`.`deliveries` (`iddeliveries`)
+    REFERENCES `na06kbnst7soo40z`.`deliveries` (`iddeliveries`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-SET SQL_MODE = '';
-DROP USER IF EXISTS viewer1;
-SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-CREATE USER 'viewer1' IDENTIFIED BY 'viewer123';
-
-GRANT SELECT ON TABLE postnord.* TO 'viewer1';
-SET SQL_MODE = '';
-DROP USER IF EXISTS developer;
-SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-CREATE USER 'developer' IDENTIFIED BY 'developer123';
-
-GRANT CREATE, EVENT, REFERENCES, GRANT OPTION ON postnord.* TO 'developer';
-GRANT CREATE, GRANT OPTION, REFERENCES, ALTER, DELETE, INDEX, INSERT, SELECT, UPDATE, TRIGGER ON TABLE postnord.* TO 'developer';
-SET SQL_MODE = '';
-DROP USER IF EXISTS backend;
-SET SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-CREATE USER 'backend' IDENTIFIED BY 'backend123';
-
-GRANT DELETE, INSERT, SELECT, UPDATE ON TABLE postnord.* TO 'backend';
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
--- begin attached script 'script'
-USE postnord;
 
 INSERT INTO country(name) VALUES
   ("Denmark"),
@@ -511,48 +479,48 @@ INSERT INTO type_of_user(type_of_user) VALUES
   ("sender"),
   ("receiver");
 
-INSERT INTO postnord.user(type_of_user,firstname,secondname,companyname,email,phone,address,zip_city_city_idcity,zip_city_zipcode_idzipcode,duns,password) VALUES
-  (1,"Illana","Colon","Nec Quam Curabitur Industries","bibendum@outlook.couk","(036247) 542513","Ap #321-4086 Ante Rd.",1,2,"663645585","password123"),
-  (1,"Ira","Nelson","Eu Metus Inc.","eleifend@google.org","(018) 63817966","123-1119 Mi. St.",1,2,"689655715","password123"),
-  (1,"Charissa","Rivas","Donec Est Incorporated","adipiscing.ligula@protonmail.ca","(0686) 13656217","P.O. Box 686, 6312 Adipiscing. Rd.",1,2,"103070737","password123"),
-  (1,"Brendan","Whitney","Volutpat Institute","non.bibendum.sed@yahoo.org","(0428) 75196853","655-3508 Sit St.",1,2,"962549849","password123"),
-  (1,"Leo","Vincent","Nulla Foundation","curabitur.egestas@yahoo.couk","(0155) 57355997","Ap #824-5162 Nunc Rd.",1,2,"732450511","password123"),
-  (1,"John","Mitchell","Et Ipsum Cursus Corp.","metus.sit.amet@icloud.couk","(035834) 869237","Ap #764-6103 Lacinia Avenue",1,2,"917715724","password123"),
-  (1,"Vielka","Cruz","Massa Suspendisse Incorporated","mauris.erat.eget@hotmail.ca","(038176) 512071","Ap #416-574 Sociis Street",1,2,"248821411","password123"),
-  (1,"Gretchen","Briggs","Nunc Sed Orci Institute","nisl.nulla.eu@aol.org","(035189) 067288","658-1617 Rutrum Road",1,2,"115282127","password123"),
-  (1,"Quentin","Fitzpatrick","Scelerisque Sed Limited","ipsum.porta@google.org","(075) 42871843","P.O. Box 868, 3742 Et Ave",1,2,"785893285","password123"),
-  (1,"Logan","Carr","In LLC","aliquam.erat.volutpat@outlook.net","(00377) 6613826","Ap #970-3159 Cursus Street",2,1,"655362775","password123"),
-  (1,"Herrod","Hale","Orci Inc.","sem.eget@hotmail.net","(066) 71788596","8509 Donec St.",2,1,"888205255","password123"),
-  (1,"Astra","Wong","Blandit Limited","magnis.dis@outlook.com","(082) 47713827","185-1652 Non, Ave",2,1,"716139384","password123"),
-  (1,"Eagan","Beach","Eget Odio Corp.","fusce.aliquam.enim@outlook.edu","(0600) 45510471","828-2585 Velit. Road",2,1,"653537749","password123"),
-  (1,"Lareina","Terrell","Ipsum Non Institute","blandit.mattis.cras@aol.couk","(076) 12829047","2850 Integer Street",2,1,"688354131","password123"),
-  (1,"Neve","Duke","Mauris Sapien Consulting","ac.facilisis@icloud.couk","(098) 04166369","8480 Vel, Avenue",2,1,"332783477","password123"),
-  (1,"Blake","Guzman","Lectus Convallis Industries","congue.turpis.in@yahoo.edu","(08386) 6857436","Ap #409-5384 Hendrerit Rd.",2,1,"731849459","password123"),
-  (1,"Brianna","Bauer","Id Mollis LLP","sit.amet.nulla@yahoo.net","(0520) 77199559","P.O. Box 433, 7199 Erat Rd.",2,1,"573872224","password123"),
-  (1,"Macey","Jones","Ipsum LLP","a@hotmail.edu","(034271) 753787","P.O. Box 232, 3875 Duis St.",2,1,"237988745","password123"),
-  (1,"Amir","Walter","Sodales PC","diam.luctus.lobortis@aol.net","(035709) 116497","887-1400 Rutrum St.",3,1,"312791777","password123"),
-  (1,"Yeo","Bowen","Feugiat Placerat Velit Corporation","dictum.eleifend.nunc@outlook.couk","(028) 52648152","321-2481 Tincidunt. Rd.",3,1,"614565692","password123"),
-  (1,"Garrett","Moody","Enim Sit Limited","commodo@yahoo.net","(024) 47830724","7296 Non, Road",3,1,"247542148","password123"),
-  (1,"Lila","Garcia","Amet Diam Eu Institute","natoque@google.couk","(053) 82815905","615-721 Semper St.",3,1,"842516418","password123"),
-  (1,"Rashad","Cantu","Lectus Associates","egestas.hendrerit.neque@hotmail.org","(0803) 71893081","Ap #941-6870 Sed Av.",3,1,"754390473","password123"),
-  (1,"Jarrod","Winters","Purus Foundation","lacinia@yahoo.ca","(0944) 68301535","Ap #964-7599 Nec Rd.",3,1,"923785342","password123"),
-  (1,"Lamar","Freeman","Massa Integer Vitae Foundation","augue.porttitor@outlook.edu","(055) 78425671","6122 Ipsum Av.",3,1,"220428504","password123"),
-  (1,"Wynter","Moon","Sem Inc.","sollicitudin.commodo@protonmail.edu","(0735) 01336834","Ap #279-1295 Pharetra Rd.",3,1,"833088360","password123"),
-  (1,"Judith","Alexander","Ut Pellentesque LLP","tristique.senectus.et@icloud.org","(0492) 32456342","P.O. Box 960, 9595 Ligula. St.",3,1,"147312258","password123"),
-  (1,"Ursula","Ferrell","Natoque Penatibus Et Institute","cras@yahoo.couk","(064) 55624649","Ap #416-4407 Auctor Rd.",3,1,"503515131","password123"),
-  (1,"Hasad","Shaw","Ac Metus Vitae Institute","nunc.in@hotmail.couk","(039540) 465572","P.O. Box 606, 8237 Ultrices. Av.",3,1,"563336760","password123"),
-  (1,"Rudyard","Decker","Vestibulum Nec Euismod Industries","aliquet.lobortis@protonmail.ca","(037716) 105586","404-8987 Curae St.",3,1,"887137685","password123"),
-  (1,"Mohammad","Mcdaniel","In Limited","nascetur.ridiculus.mus@protonmail.net","(078) 88518774","9846 Phasellus Av.",3,1,"843785477","password123"),
-  (1,"Adam","O'Neill","Justo Eu Arcu Industries","in.ornare@protonmail.net","(06671) 3757971","P.O. Box 403, 6700 Ligula. St.",3,1,"104809712","password123"),
-  (1,"Kiayada","Huffman","Donec Elementum PC","montes@google.couk","(0443) 18239656","P.O. Box 630, 2091 Vestibulum Av.",3,1,"642381371","password123"),
-  (1,"Tanek","Powers","Adipiscing Lacus Ut Inc.","ultricies.dignissim@outlook.ca","(02825) 3324115","P.O. Box 362, 3312 Eu, Avenue",3,1,"566357423","password123"),
-  (1,"Aspen","Day","Orci In Consequat Ltd","quis.lectus@hotmail.ca","(0087) 87685325","146-5610 Ante. Av.",2,1,"766622781","password123"),
-  (1,"Aladdin","Gallagher","Integer Institute","interdum.enim@protonmail.com","(0702) 45341617","706-2449 Donec Rd.",2,1,"711563815","password123"),
-  (1,"Joel","Bailey","Iaculis Lacus Inc.","molestie.sodales.mauris@google.couk","(0517) 23615846","232-6237 Ornare St.",2,1,"641103494","password123"),
-  (1,"Jerry","Burgess","Vestibulum Mauris Magna LLC","arcu.sed@outlook.edu","(037829) 848034","Ap #584-9132 Ipsum St.",2,1,"838541356","password123"),
-  (1,"Blaze","Mcguire","Erat Consulting","pede.suspendisse.dui@icloud.couk","(032043) 138856","616-7686 Scelerisque St.",1,2,"887915428","password123"),
-  (1,"Ulysses","Stout","Ipsum Inc.","vivamus.euismod.urna@outlook.com","(0862) 39767247","3586 Sollicitudin Av.",1,2,"677867836","password123"),
-  (1,"Pearl","Wise","Sed Eu Eros Ltd","morbi@hotmail.couk","(030523) 386747","781 Pede Road",1,2,"946857319","password123");
+INSERT INTO na06kbnst7soo40z.user(type_of_user,firstname,secondname,companyname,email,phone,address,zip_city_city_idcity,zip_city_zipcode_idzipcode,duns,password) VALUES
+  (1,"Illana","Colon","Nec Quam Curabitur Industries","bibendum@outlook.couk","(036247) 542513","Ap #321-4086 Ante Rd.",1,2,"663645585","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Ira","Nelson","Eu Metus Inc.","eleifend@google.org","(018) 63817966","123-1119 Mi. St.",1,2,"689655715","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Charissa","Rivas","Donec Est Incorporated","adipiscing.ligula@protonmail.ca","(0686) 13656217","P.O. Box 686, 6312 Adipiscing. Rd.",1,2,"103070737","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Brendan","Whitney","Volutpat Institute","non.bibendum.sed@yahoo.org","(0428) 75196853","655-3508 Sit St.",1,2,"962549849","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Leo","Vincent","Nulla Foundation","curabitur.egestas@yahoo.couk","(0155) 57355997","Ap #824-5162 Nunc Rd.",1,2,"732450511","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"John","Mitchell","Et Ipsum Cursus Corp.","metus.sit.amet@icloud.couk","(035834) 869237","Ap #764-6103 Lacinia Avenue",1,2,"917715724","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Vielka","Cruz","Massa Suspendisse Incorporated","mauris.erat.eget@hotmail.ca","(038176) 512071","Ap #416-574 Sociis Street",1,2,"248821411","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Gretchen","Briggs","Nunc Sed Orci Institute","nisl.nulla.eu@aol.org","(035189) 067288","658-1617 Rutrum Road",1,2,"115282127","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Quentin","Fitzpatrick","Scelerisque Sed Limited","ipsum.porta@google.org","(075) 42871843","P.O. Box 868, 3742 Et Ave",1,2,"785893285","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Logan","Carr","In LLC","aliquam.erat.volutpat@outlook.net","(00377) 6613826","Ap #970-3159 Cursus Street",2,1,"655362775","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Herrod","Hale","Orci Inc.","sem.eget@hotmail.net","(066) 71788596","8509 Donec St.",2,1,"888205255","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Astra","Wong","Blandit Limited","magnis.dis@outlook.com","(082) 47713827","185-1652 Non, Ave",2,1,"716139384","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Eagan","Beach","Eget Odio Corp.","fusce.aliquam.enim@outlook.edu","(0600) 45510471","828-2585 Velit. Road",2,1,"653537749","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Lareina","Terrell","Ipsum Non Institute","blandit.mattis.cras@aol.couk","(076) 12829047","2850 Integer Street",2,1,"688354131","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Neve","Duke","Mauris Sapien Consulting","ac.facilisis@icloud.couk","(098) 04166369","8480 Vel, Avenue",2,1,"332783477","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Blake","Guzman","Lectus Convallis Industries","congue.turpis.in@yahoo.edu","(08386) 6857436","Ap #409-5384 Hendrerit Rd.",2,1,"731849459","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Brianna","Bauer","Id Mollis LLP","sit.amet.nulla@yahoo.net","(0520) 77199559","P.O. Box 433, 7199 Erat Rd.",2,1,"573872224","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Macey","Jones","Ipsum LLP","a@hotmail.edu","(034271) 753787","P.O. Box 232, 3875 Duis St.",2,1,"237988745","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Amir","Walter","Sodales PC","diam.luctus.lobortis@aol.net","(035709) 116497","887-1400 Rutrum St.",3,1,"312791777","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Yeo","Bowen","Feugiat Placerat Velit Corporation","dictum.eleifend.nunc@outlook.couk","(028) 52648152","321-2481 Tincidunt. Rd.",3,1,"614565692","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Garrett","Moody","Enim Sit Limited","commodo@yahoo.net","(024) 47830724","7296 Non, Road",3,1,"247542148","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Lila","Garcia","Amet Diam Eu Institute","natoque@google.couk","(053) 82815905","615-721 Semper St.",3,1,"842516418","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Rashad","Cantu","Lectus Associates","egestas.hendrerit.neque@hotmail.org","(0803) 71893081","Ap #941-6870 Sed Av.",3,1,"754390473","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Jarrod","Winters","Purus Foundation","lacinia@yahoo.ca","(0944) 68301535","Ap #964-7599 Nec Rd.",3,1,"923785342","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Lamar","Freeman","Massa Integer Vitae Foundation","augue.porttitor@outlook.edu","(055) 78425671","6122 Ipsum Av.",3,1,"220428504","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Wynter","Moon","Sem Inc.","sollicitudin.commodo@protonmail.edu","(0735) 01336834","Ap #279-1295 Pharetra Rd.",3,1,"833088360","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Judith","Alexander","Ut Pellentesque LLP","tristique.senectus.et@icloud.org","(0492) 32456342","P.O. Box 960, 9595 Ligula. St.",3,1,"147312258","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Ursula","Ferrell","Natoque Penatibus Et Institute","cras@yahoo.couk","(064) 55624649","Ap #416-4407 Auctor Rd.",3,1,"503515131","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Hasad","Shaw","Ac Metus Vitae Institute","nunc.in@hotmail.couk","(039540) 465572","P.O. Box 606, 8237 Ultrices. Av.",3,1,"563336760","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Rudyard","Decker","Vestibulum Nec Euismod Industries","aliquet.lobortis@protonmail.ca","(037716) 105586","404-8987 Curae St.",3,1,"887137685","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Mohammad","Mcdaniel","In Limited","nascetur.ridiculus.mus@protonmail.net","(078) 88518774","9846 Phasellus Av.",3,1,"843785477","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Adam","O'Neill","Justo Eu Arcu Industries","in.ornare@protonmail.net","(06671) 3757971","P.O. Box 403, 6700 Ligula. St.",3,1,"104809712","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Kiayada","Huffman","Donec Elementum PC","montes@google.couk","(0443) 18239656","P.O. Box 630, 2091 Vestibulum Av.",3,1,"642381371","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Tanek","Powers","Adipiscing Lacus Ut Inc.","ultricies.dignissim@outlook.ca","(02825) 3324115","P.O. Box 362, 3312 Eu, Avenue",3,1,"566357423","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Aspen","Day","Orci In Consequat Ltd","quis.lectus@hotmail.ca","(0087) 87685325","146-5610 Ante. Av.",2,1,"766622781","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Aladdin","Gallagher","Integer Institute","interdum.enim@protonmail.com","(0702) 45341617","706-2449 Donec Rd.",2,1,"711563815","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Joel","Bailey","Iaculis Lacus Inc.","molestie.sodales.mauris@google.couk","(0517) 23615846","232-6237 Ornare St.",2,1,"641103494","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Jerry","Burgess","Vestibulum Mauris Magna LLC","arcu.sed@outlook.edu","(037829) 848034","Ap #584-9132 Ipsum St.",2,1,"838541356","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Blaze","Mcguire","Erat Consulting","pede.suspendisse.dui@icloud.couk","(032043) 138856","616-7686 Scelerisque St.",1,2,"887915428","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Ulysses","Stout","Ipsum Inc.","vivamus.euismod.urna@outlook.com","(0862) 39767247","3586 Sollicitudin Av.",1,2,"677867836","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS"),
+  (1,"Pearl","Wise","Sed Eu Eros Ltd","morbi@hotmail.couk","(030523) 386747","781 Pede Road",1,2,"946857319","$2b$12$bgxcFFePzeiFuKl84XrUhu/aUMYCLG3d8CB8CAQikybTiqxxejqhS");
 
 INSERT INTO packages(`user_iduser`,`weight`,`height`,`width`,`depth`,`fragile`,`electronics`,`oddsized`,`receiver_iduser`) VALUES
   (1,2.01,1.01,3.01,1.01,"0","0","0",2),
