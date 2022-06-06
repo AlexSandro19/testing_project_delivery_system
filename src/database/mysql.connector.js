@@ -66,6 +66,5 @@ const execute = (
 module.exports = {
   init,
   execute,
-  executeTransaction,
   end
 }

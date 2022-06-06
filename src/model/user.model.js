@@ -85,8 +85,8 @@ class User {
     getPassword() { return this.password }
     setPassword(value) { this.password = value }
     equals(user = new User) {
-        return user.getIdCustomer() == this.idcustomer &&
-            user.getTypeOfUser() == this.type_of_user &&
+        console.log(user);
+        return user.getTypeOfUser() == this.type_of_user &&
             user.getFirstName() == this.firstname &&
             user.getSecondName() == this.secondname &&
             user.getCompanyName() == this.companyname &&
@@ -222,7 +222,7 @@ class User {
      * @returns  Returns the new user object that has been added to the database
      */
     static async updateUser(
-        newUser = new User
+        updatedUser = new User
     ) {
         try {
             const userFromDB = await execute("SELECT * FROM user WHERE idcustomer=?;", [`${updatedUser.getIdCustomer()}`])
@@ -241,6 +241,7 @@ class User {
                 userFromDB[0].password
                 )
             if (!updatedUser.equals(receivedUser)) {
+                console.log(updatedUser.equals(receivedUser))
                 const response = await execute(
                     "UPDATE user "
                     + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=?, password=? WHERE idcustomer=?;"
@@ -264,11 +265,6 @@ class User {
                 }
             } else {
                 return { userInfoIsSame: true, updatedUser }
-            }
-            else {
-                throw { value:"User info was the same", 
-                message:"Information for the user was the same",
-            }
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);

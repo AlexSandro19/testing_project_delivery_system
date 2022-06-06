@@ -14,7 +14,7 @@ const AddPackage=({errors,registerPackage})=>{
     electronics:0,
     oddsized:0,
   });
-  const [formErrors,setFormErrors] = useState({}); 
+  const [formErrors,setFormErrors] = useState([]); 
   useEffect(() => {
     if (errors) {
     errors.forEach((error) => {

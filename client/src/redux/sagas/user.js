@@ -6,12 +6,13 @@ import { LOGIN_SUCCESS } from "../constants/auth";
 import {UPDATE_USER,SUCCESS,FAILURE} from "../constants/user";
 
 function* updateUserFlow (action){
-    console.log(action.type);
     try{
             const user = action.payload;
             let token = yield call(getLocalAuthToken);
             const updatedUser = yield call(updateUserApi,token.userId,user.email,user.firstName,user.secondName,user.typeOfUser,user.password,user.passwordConfirm,user.cityId,user.zipcode,user.duns,user.phone,user.address,user.companyName)
-            yield put(setUser(token.token, token.exp,updatedUser.response));
+            yield put(setUser(token.token, token.exp,updatedUser.user));
+            console.log(updatedUser);
+
             yield put({
             type: LOGIN_SUCCESS,
             });

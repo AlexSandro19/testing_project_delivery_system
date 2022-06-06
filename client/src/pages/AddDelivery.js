@@ -11,7 +11,7 @@ const AddDelivery=({createdPackage,zipsCities,user,errors,registerDelivery,delet
   console.log(idpackages);
   console.log(createdPackage);
   const amount = createdPackage.amount;
-  const [formErrors,setFormErrors] = useState({});
+  const [formErrors,setFormErrors] = useState([]);
   const [form, setForm] = useState({});
   const loadState = useCallback(() =>{
     setForm({

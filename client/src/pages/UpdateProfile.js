@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import {updateUser} from "../redux/actions/user";
 const UpdateProfilePage=({user,updateUser,errors}) =>{
   const history = useHistory();
-  const [formErrors,setFormErrors] = useState({}); 
+  const [formErrors,setFormErrors] = useState([]); 
   useEffect(() => {
     if (errors) {
     errors.forEach((error) => {
@@ -34,6 +34,7 @@ const UpdateProfilePage=({user,updateUser,errors}) =>{
   const sendProfileUpdateForm= (e)=>{
     e.preventDefault();
     updateUser(user.token,user.exp,form.email,form.firstName,form.secondName,form.typeOfUser,form.password,form.passwordConfirm,form.cityId,form.zipcode,form.duns,form.phone,form.address,form.companyName);
+    console.log(formErrors);
     if(formErrors.length ===  0){
     history.push("/profile");
     }

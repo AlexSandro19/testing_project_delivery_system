@@ -1,10 +1,16 @@
 import { connect } from "react-redux";
-import {useState} from "react";
+import {useState,useEffect,useCallback} from "react";
 import { useHistory } from "react-router-dom";
 import {ViewOrders} from "../components/ViewOrders";
-const ViewOrdersPage=({user})=>{
+import {requestDeliveries} from "../redux/actions/delivery";
+const ViewOrdersPage=({user,requestDeliveries})=>{
   const history = useHistory();
-
+  const requestAllDeliveries = useCallback(()=>{
+    requestDeliveries();
+  },[])
+  useEffect(()=>{
+    requestAllDeliveries()
+  },[requestAllDeliveries])
     return(
       <div style={{marginLeft:"15%"}}>
           <ViewOrders user={user}> </ViewOrders>
@@ -16,6 +22,6 @@ const ViewOrdersPage=({user})=>{
 const mapStateToProps = (state) =>({
   user:state.user
   });
-export default connect(mapStateToProps,{})(ViewOrdersPage)
+export default connect(mapStateToProps,{requestDeliveries})(ViewOrdersPage)
 
 

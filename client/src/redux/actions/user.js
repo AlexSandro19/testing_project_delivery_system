@@ -1,7 +1,7 @@
 import { USER_SET, USER_UNSET,REGISTER_USER,HIDE_MESSAGE,UPDATE_USER } from "../constants/user";
 
 export const setUser = (token, exp,user) => {
-  console.log(exp);
+  console.log(user);
   return {
     type: USER_SET,
     message: {

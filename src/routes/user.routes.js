@@ -98,10 +98,10 @@ router.post("/updateUser", [
         .isLength({ min: 9, max: 9 }).withMessage("DUNS should be 9 characters long (format: XXXXXXXXX)"),
     check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-    check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
+    check("cityId").exists({ checkFalsy: true }).withMessage("City not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
     check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
-    check("confirmPassword").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
+    check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm Password not provided").trim(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -125,16 +125,15 @@ router.post("/updateUser", [
         const hashedPassword = await bcrypt.hash(password, 12);
         const user = new User(idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, cityId,hashedPassword);
    
-        const response = await User.updateUser(user)
-        return res.status(200).json({ response })
         console.log(user);
-        const { userInfoIsSame, updatedUser } = await User.updateUser(user)
+        const { userInfoIsSame, updatedUser } = await User.updateUser(user);
+        console.log(userInfoIsSame);
         if (!userInfoIsSame && typeof updatedUser === 'object') {
             return res.status(200).json({ user: updatedUser });
         } else if (!userInfoIsSame && updatedUser === undefined) {
             return res.status(500).json({ message: "Internal Server Error" });
         } else if (userInfoIsSame) {
-            return res.status(400).json({ updatedUser, message: "User was not updated, because the user info is the same" });
+            return res.status(400).json({ message: "User was not updated, because the user info is the same" });
         }
     } catch (error) {
         console.log(error);
@@ -264,10 +263,6 @@ async(req, res)=>{
       ],
   });
   }
-
-    const users = await User.getAllUsers();
-    console.log(users);
-    return res.status(200).json({ users });
 })
 
 module.exports = router;

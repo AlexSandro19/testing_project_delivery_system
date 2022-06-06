@@ -271,7 +271,7 @@ class Payment {
      * The `ddmmyy` is based on the current date. `yy` is the last two numbers of the year.
      * @returns {String}  Returns a 20 character long semi-unique identifier.
      */
-    static generateTransactionId() {
+     generateTransactionId() {
         return characterGenerator(8) + numberGenerator(5) + "-" + transactionDateGenerator()
     }
 }

@@ -2,7 +2,9 @@ import { REGISTER_DELIVERY,REGISTER_DELIVERY_SUCCESS,REGISTER_DELIVERY_FAILURE,R
 import { takeLatest, call, put } from "redux-saga/effects";
 import {addLocationApi} from "../../services/location.service";
 import {createPaymentApi} from "../../services/payment.service";
-import {createDeliveryApi} from "../../services/delivery.service";
+import {createDeliveryApi,getAllDeliveriesApi} from "../../services/delivery.service";
+import {getAllPackagesApi} from "../../services/package.service";
+import {getLocalAuthToken} from "../../services/auth.service";
 import { USER_UNSET,SUCCESS,FAILURE } from "../constants/user";
 
 function* registerDelivery(action){
@@ -61,8 +63,26 @@ function* registerDelivery(action){
 
 }
 function* requestAllDeliveriesFlow(action){
+    console.log(action.type)
     try{
-  
+        const {userId} = getLocalAuthToken()
+        console.log(userId);
+        const deliveries = yield call(getAllDeliveriesApi)
+        const packages = yield call(getAllPackagesApi);
+        console.log(packages.packages);
+        console.log(deliveries.deliveries)
+        const packagesForUser = packages.packages.filter((item)=> item.user_iduser === userId)
+        console.log(packagesForUser);
+        const allDeliveries = [] 
+        deliveries.deliveries.map((item=>{
+            console.log(item);
+             packagesForUser.map((userPackage)=>{
+                if(userPackage.idpackages === item.packages_idpackages){
+                    allDeliveries.push( {deliveryInfo:item,packageInfo:userPackage});
+                }
+            })
+        }))
+        console.log(allDeliveries);
         yield put({
             type:REGISTER_DELIVERY_SUCCESS,
             message:{

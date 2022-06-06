@@ -9,7 +9,7 @@ const AuthPage=({requesting,successful,loginRequest,errors})=>{
   const [modalOpen, setModalOpen] = useState(true);
  
   
-    const [formErrors, setFormErrors] = useState(errors);
+    const [formErrors, setFormErrors] = useState([]);
     // useEffect(()=>{
     //   if(domain){
     //     setForm({

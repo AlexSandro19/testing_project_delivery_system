@@ -37,50 +37,9 @@ router.post("/addPackage",
             const newPackage = new Package(null,userId, weight,height, width, depth, fragile,electronics,oddsized,null)
             console.log("newPackage inside /addPackage", newPackage.toString())
             const volume = calculateVolume(height,width,depth);
-            const { packageCreated, createdPackage } = await Package.createPackage(newPackage);
+            const response = await Package.createPackage(newPackage);
             const amount = calculateAmount(volume,weight,0,electronics,oddsized,fragile)
-            if (packageCreated) {
-                const idpackages = createdPackage.idpackages
-                const user_iduser = createdPackage.user_iduser
-                return res.status(200).json({ idpackages,user_iduser,weight,height,width,depth,fragile,electronics,oddsized,amount  });
-            } else {
-                return res.status(500).json( { message: "Internal Server Error" });
-            }
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({
-                message: "Invalid data",
-                errors: [
-                    { value: error, msg: error.message },
-                ],
-            });
-        }
-    // console.log("req.body in /addPackage ", req.body)
-    const {userId,weight,height,width,depth,fragile,electronics,oddsized} = req.body;
-    // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
-    const newPackage = new Package(null,userId, weight,height, width, depth, fragile,electronics,oddsized,null)
-    console.log("newPackage inside /addPackage", newPackage.toString())
-    const response = await Package.createPackage(newPackage);
-    const volume = calculateVolume(height,width,depth);
-    const idpackages = response.insertId;
-    console.log(volume)
-    const amount = calculateAmount(volume,weight,0,electronics,oddsized,fragile)
-    console.log(amount);
-
-    // example of what Delivery.createDelivery() should return 
-    // OkPacket {
-    //     fieldCount: 0,
-    //     affectedRows: 1,
-    //     insertId: 14,
-    //     serverStatus: 2,
-    //     warningCount: 0,
-    //     message: '',
-    //     protocol41: true,
-    //     changedRows: 0
-    //   }
-    // values can be accessed through response.insertId
-    // console.log("response from createDelivery inside /addWholeDelivery", response)
-    console.log(newPackage.toString())
+            const idpackages = response.insertId
     if (response.affectedRows > 0){
         return res.status(200).json({ idpackages,weight,height,width,depth,fragile,electronics,oddsized,amount  });
 
@@ -172,7 +131,7 @@ router.post("/updatePackage",
         }
     })
 
-router.delete("/deletePackage", [
+router.post("/deletePackage", [
     check("idpackages", "Id id not provided").exists(),
 ],
     async (req, res) => {
@@ -236,12 +195,23 @@ async(req, res)=>{
         ],
     });
     }
+})
 
 router.get("/getPackages", async (req, res) => {
+    try{
+        const packages = await Package.getAllPackages();
+        console.log(packages);
+        return res.status(200).json({ packages });
+    }catch (error) {
+        console.log(error);
+        return res.status(500).json({
+        message: "Invalid data",
+        errors: [
+            { value: error, msg: error.message },
+        ],
+    });
+    }
 
-    const packages = await Package.getAllPackages();
-    console.log(packages);
-    return res.status(200).json({ packages });
 })
 
 module.exports = router;

@@ -2,16 +2,16 @@ const { DATETIME, DATETIME2 } = require("mysql/lib/protocol/constants/types");
 const { execute } = require("../database/mysql.connector.js");
 
 class Package {
-    #idpackages;
-    #user_iduser;
-    #weight;
-    #height;
-    #width;
-    #depth;
-    #fragile;
-    #electronics;
-    #oddsized;
-    #receiver_iduser;
+    idpackages;
+    user_iduser;
+    weight;
+    height;
+    width;
+    depth;
+    fragile;
+    electronics;
+    oddsized;
+    receiver_iduser;
 
     constructor(
         idpackages,
@@ -25,69 +25,69 @@ class Package {
         oddsized,
         receiver_iduser = null,
     ) {
-        this.#idpackages = idpackages;
-        this.#user_iduser = user_iduser;
-        this.#weight = weight;
-        this.#height = height;
-        this.#width = width;
-        this.#depth = depth;
-        this.#fragile = fragile;
-        this.#electronics = electronics;
-        this.#oddsized = oddsized;
-        this.#receiver_iduser = receiver_iduser;
+        this.idpackages = idpackages;
+        this.user_iduser = user_iduser;
+        this.weight = weight;
+        this.height = height;
+        this.width = width;
+        this.depth = depth;
+        this.fragile = fragile;
+        this.electronics = electronics;
+        this.oddsized = oddsized;
+        this.receiver_iduser = receiver_iduser;
 
     }
     /**
     * Getters and Setters for the private fields
     */
-    getIdPackage() { return this.#idpackages }
-    setIdPackage(value) { this.#idpackages = value; }
+    getIdPackage() { return this.idpackages }
+    setIdPackage(value) { this.idpackages = value; }
 
-    getUserId() { return this.#user_iduser }
-    setUserId(value) { this.#user_iduser = value }
+    getUserId() { return this.user_iduser }
+    setUserId(value) { this.user_iduser = value }
 
-    getWeight() { return this.#weight }
-    setWeight(value) { this.#weight = value }
+    getWeight() { return this.weight }
+    setWeight(value) { this.weight = value }
 
-    getHeight() { return this.#height }
-    setHeight(value) { this.#height = value }
+    getHeight() { return this.height }
+    setHeight(value) { this.height = value }
 
-    getWidth() { return this.#width }
-    setWidth(value) { this.#width = value }
+    getWidth() { return this.width }
+    setWidth(value) { this.width = value }
 
-    getDepth() { return this.#depth }
-    setDepth(value) { this.#depth = value }
+    getDepth() { return this.depth }
+    setDepth(value) { this.depth = value }
 
-    getFragile() { return this.#fragile }
-    setFragile(value) { this.#fragile = value }
+    getFragile() { return this.fragile }
+    setFragile(value) { this.fragile = value }
 
-    getElectronics() { return this.#electronics }
-    setElectronics(value) { this.#electronics = value }
+    getElectronics() { return this.electronics }
+    setElectronics(value) { this.electronics = value }
 
-    getOddSized() { return this.#oddsized }
-    setOddSized(value) { this.#oddsized = value }
+    getOddSized() { return this.oddsized }
+    setOddSized(value) { this.oddsized = value }
 
-    getReceiverId() { return this.#receiver_iduser }
-    setReceiverId(value) { this.#receiver_iduser = value }
+    getReceiverId() { return this.receiver_iduser }
+    setReceiverId(value) { this.receiver_iduser = value }
 
     equals(receivedPackage = new Package) {
-        return receivedPackage.getIdPackage === this.#idpackages &&
-            receivedPackage.getUserId === this.#user_iduser &&
-            receivedPackage.getDepth === this.#depth &&
-            receivedPackage.getHeight === this.#height &&
-            receivedPackage.getWidth === this.#width &&
-            receivedPackage.getWeight === this.#weight &&
-            receivedPackage.getFragile === this.#fragile &&
-            receivedPackage.getOddSized === this.#oddsized &&
-            receivedPackage.getElectronics === this.#electronics &&
-            receivedPackage.getReceiverId === this.#receiver_iduser
+        return receivedPackage.getIdPackage === this.idpackages &&
+            receivedPackage.getUserId === this.user_iduser &&
+            receivedPackage.getDepth === this.depth &&
+            receivedPackage.getHeight === this.height &&
+            receivedPackage.getWidth === this.width &&
+            receivedPackage.getWeight === this.weight &&
+            receivedPackage.getFragile === this.fragile &&
+            receivedPackage.getOddSized === this.oddsized &&
+            receivedPackage.getElectronics === this.electronics &&
+            receivedPackage.getReceiverId === this.receiver_iduser
     }
 
     toString() {
-        return `idpackages= ${this.#idpackages}, user_iduser= ${this.#user_iduser}, ` +
-            `depth= ${this.#depth}, height= ${this.#height}, width= ${this.#width}, ` +
-            `weight= ${this.#weight}, fragile= ${this.#fragile}, oddsized= ${this.#oddsized}, ` +
-            `electronics= ${this.#electronics}, receiver_iduser= ${this.#receiver_iduser}, `
+        return `idpackages= ${this.idpackages}, user_iduser= ${this.user_iduser}, ` +
+            `depth= ${this.depth}, height= ${this.height}, width= ${this.width}, ` +
+            `weight= ${this.weight}, fragile= ${this.fragile}, oddsized= ${this.oddsized}, ` +
+            `electronics= ${this.electronics}, receiver_iduser= ${this.receiver_iduser}, `
     }
 
     /*
@@ -100,10 +100,10 @@ class Package {
      */
     static async getAllPackages() {
         try {
-            const response = await execute("SELECT * FROM Packages", []);
+            const response = await execute("SELECT * FROM packages", []);
+            console.log(response);
             if (response.length > 0) {
-                return response.map(v =>
-                    new Package(
+                return response.map(v => new Package(
                         v.idpackages,
                         v.user_iduser,
                         v.weight,
