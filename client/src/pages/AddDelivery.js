@@ -13,7 +13,8 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
   const amount = createdPackage.amount;
   const [formErrors,setFormErrors] = useState([]);
   const [form, setForm] = useState({});
-  const [converted,setConverted] = useState(0);
+  const [converted,setConverted] = useState('');
+  const [convertedAmount,setConvertedAmount] = useState(0);
   console.log(converted);
   const convert =useCallback((amount,newCurrency)=>{
     console.log(amount,newCurrency)
@@ -23,8 +24,11 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
   
   const loadState = useCallback(() =>{
     getCurrencies();
-    setConverted(newAmount);
     console.log(newAmount);
+    
+    if(convertedAmount === 0){
+      setConvertedAmount(newAmount)
+    }
     setForm({
       amount:amount,
       priority:0,
@@ -33,7 +37,8 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
       endLocation:{locationOfReceiver:{idzipcode:"",idcity:"",name:"",zipcode:""},address:""},
       message:""
     })
-  },[amount])
+  },[amount,newAmount,getCurrencies])
+  const [display,setDisplay] = useState();
   useEffect(() => {
     loadState()
   },[])
@@ -64,7 +69,11 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
   
     
           <Delivery
+          display={display}
+          setDisplay={setDisplay}
+          convertedAmount={convertedAmount}
           converted={converted}
+          setConverted={setConverted}
           convertCurrency={convert}  
           currency={currency} 
           amount={amount} 

@@ -29,7 +29,7 @@ const options = [
   const defaultOption = options[0];
   
 
-export const Delivery=({converted,setConverted,convertCurrency,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
+export const Delivery=({display,setDisplay,convertedAmount,converted,setConverted,convertCurrency,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
 const classes=useStyles();
 const history = useHistory();
 const [modalOpen, setModalOpen] = useState(false);
@@ -116,6 +116,7 @@ return(
                     value={converted}
                     onChange={(e)=>{
                       convertCurrency(amount+form.international*35,e.target.value);
+                      setConverted(e.target.value)
                     }}
                     label="endLocation"
                 >
@@ -124,7 +125,7 @@ return(
                   })}
                 </Select></Grid>
         <Grid item xs={6}>
-          <Typography>Converted Amount: {converted} </Typography>
+          <Typography>Converted Amount: {convertedAmount} </Typography>
         </Grid>
         <Grid item xs={12}>
         <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>
@@ -137,10 +138,14 @@ return(
                     id="endLocation"
                     error={!!formErrors["endLocation"]}
                     helperText={formErrors["endLocation"] ? formErrors["endLocation"] : ""}
-                    value={form.endLocation.locationOfReceiver.name}
+                    value={display}
                     // defaultValue={currentItem.hasWarranty}
                     label="endLocation"
-                    onChange={(e) => setForm({ ...form, endLocation:{locationOfReceiver:e.target.value,address:form.endLocation.address} })}
+                    onChange={(e) => {
+                      setDisplay(e.target.value);
+                      console.log(display);
+                      setForm({ ...form, endLocation:{locationOfReceiver:e.target.value,address:form.endLocation.address}})
+                    }}
                 >
                 {zipsCities.map((item)=>{return(<MenuItem value={{idzipcode:item.zipcode_idzipcode,idcity:item.city_idcity,name:item.name,zipcode:item.zipcode}}>{item.zipcode} {item.name}</MenuItem>)})}
 
