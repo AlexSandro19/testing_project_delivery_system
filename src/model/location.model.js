@@ -202,7 +202,7 @@ class Location {
                 const response = await execute("DELETE from Location WHERE idlocation=?;", [`${id}`]);
                 console.log("response: ",response)
                 if (response.affectedRows > 0){
-                    return { paymentDeleted: true, deletedPayment: getDeletedLocation[0] }
+                    return { locationDeleted: true, deletedLocation: getDeletedLocation[0] }
                     } else {
                         console.log("[mysql.connector][execute][Error]: ", error);
                         throw {
