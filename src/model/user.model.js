@@ -41,6 +41,10 @@ class User {
         this.zip_city_city_idcity = zip_city_city_idcity;
         this.password = password;
     }
+    toString() {
+        console.log("toString called");
+        return "Awesome"
+    }
 
     /**
     * Getters and Setters for the private fields
@@ -81,8 +85,8 @@ class User {
     getPassword() { return this.password }
     setPassword(value) { this.password = value }
     equals(user = new User) {
-        return user.getIdCustomer() == this.idcustomer &&
-            user.getTypeOfUser() == this.type_of_user &&
+        console.log(user);
+        return user.getTypeOfUser() == this.type_of_user &&
             user.getFirstName() == this.firstname &&
             user.getSecondName() == this.secondname &&
             user.getCompanyName() == this.companyname &&
@@ -92,26 +96,16 @@ class User {
             user.getDuns() == this.duns &&
             user.getZipCode() == this.zip_city_zipcode_idzipcode &&
             user.getCity() == this.zip_city_city_idcity &&
-            user.getPassword() == this.password
-    }
-
-    toString() {
-        return `idcustomer= ${this.idcustomer}, type_of_user= ${this.type_of_user}, ` +
-            `firstname= ${this.firstname}, secondname= ${this.secondname}, ` +
-            `companyname= ${this.companyname}, email= ${this.email}, phone= ${this.phone}, ` +
-            `address= ${this.address}, duns= ${this.duns}, ` +
-            `zip_city_zipcode_idzipcode= ${this.zip_city_zipcode_idzipcode}, ` +
-            `zip_city_city_idcity=${this.zip_city_city_idcity}`
-    }
-
+            user.getPassword()== this.password
+        }
     /*
     Static functions used to call the database without needing to initialize the class
     they return instance of User
     */
     /**
      * Gets an array, every item in the array is an instance of user class
-      * 
-      */
+     * 
+     */
     static async getAllUsers() {
         try {
             const response = await execute("SELECT * FROM user", []);
@@ -139,12 +133,11 @@ class User {
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
+            throw { value:"Query failed", 
+                message:error.message,
             }
         }
-
+       
     }
     /**
      * The function get a 1 User from the database with the provided id 
@@ -177,12 +170,11 @@ class User {
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
+            throw { value:"Query failed", 
+                message:error.message,
             }
         }
-
+        
 
     }
     /**
@@ -193,7 +185,6 @@ class User {
     static async getUserByEmail(email) {
         try {
             const response = await execute("SELECT * FROM user WHERE email=?", [`${email}`])
-            console.log("user > getUserByEmail: response", response)
             if (response.length > 0) {
                 return new User(response[0].idcustomer,
                     response[0].type_of_user,
@@ -217,12 +208,12 @@ class User {
         } catch (error) {
             //console.log(error);
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
+            throw { value:"Query failed",
+                param:"email",
+                message:error.message,
             }
         }
-
+       
 
     }
     /**
@@ -231,7 +222,7 @@ class User {
      * @returns  Returns the new user object that has been added to the database
      */
     static async updateUser(
-        updatedUser = User
+        updatedUser = new User
     ) {
         try {
             const userFromDB = await execute("SELECT * FROM user WHERE idcustomer=?;", [`${updatedUser.getIdCustomer()}`])
@@ -250,6 +241,7 @@ class User {
                 userFromDB[0].password
                 )
             if (!updatedUser.equals(receivedUser)) {
+                console.log(updatedUser.equals(receivedUser))
                 const response = await execute(
                     "UPDATE user "
                     + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=?, password=? WHERE idcustomer=?;"
@@ -276,12 +268,11 @@ class User {
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
+            throw { value:"Query failed", 
+                message:error.message,
             }
         }
-
+       
     }
     /**
      * 
@@ -315,12 +306,11 @@ class User {
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
+            throw { value:"Query failed", 
+                message:error.message,
             }
         }
-
+        
     }
     /**
     * Creates a new user entry in the database
@@ -353,12 +343,11 @@ class User {
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
-            }
+            throw { value:"Query failed", 
+                message:error.message,
+            }  
         }
-
+       
     }
 
 }

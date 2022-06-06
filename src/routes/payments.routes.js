@@ -33,15 +33,8 @@ router.post("/addPayment",
                 billing_address
             } = req.body;
 
-            const newPayment = new Payment(
-                null,
-                typeofpayment_idtypeofpayment,
-                amount,
-                payed,
-                prepaid,
-                null,
-                billing_address
-            )
+            const newPayment = new Payment(null,typeofpayment_idtypeofpayment,amount,payed,prepaid,null,billing_address)
+            console.log(billing_address)
             console.log("newPayment inside /addPayment", newPayment.toString())
             const { paymentCreated, createdPayment } = await Payment.createPayment(newPayment);
             if (paymentCreated) {

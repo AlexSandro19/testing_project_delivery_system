@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { check, validationResult } = require("express-validator")
-const { execute } = require("../database/mysql.connector")
+const {execute} = require("../database/mysql.connector");
 const { Location } = require("../model/location.model");
 
 router.post("/addLocation",
@@ -27,14 +27,14 @@ router.post("/addLocation",
       console.log("checkLocationExistence: ", checkLocationExistence)
       if (checkLocationExistence != undefined) {
         console.log("here")
-        return res.status(200).json({ response: checkLocationExistence })
+        return res.status(200).json({createdLocation:checkLocationExistence})
       } else {
         console.log("there")
         const { locationCreated, createdLocation } = await Location.createLocation(newLocation)
         if (locationCreated) {
           return res.status(200).json({ createdLocation });
         } else {
-          return res.status(500).json({ message: "Internal Server Error" });
+          return res.status(500).json({  message: "Internal Server Error" });
         }
       }
     } catch (error) {
