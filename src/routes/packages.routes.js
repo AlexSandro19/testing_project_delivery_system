@@ -154,7 +154,7 @@ router.post("/updatePackage",
     })
 
 router.delete("/deletePackage", [
-    check("Id", "Id id not provided").exists(),
+    check("id", "Id id not provided").exists(),
 ],
     async (req, res) => {
         try {
@@ -165,8 +165,7 @@ router.delete("/deletePackage", [
                     message: "Invalid data while deleting a Package",
                 });
             }
-
-            var { id } = req.body
+            const { id } = req.body
             const response = await Package.deletePackage(id)
             return res.status(200).json({ response })
         } catch (error) {

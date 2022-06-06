@@ -18,7 +18,7 @@ class Payment {
         payed = Boolean,
         prepaid = Boolean,
         transactionid,
-        billing_address = Boolean,
+        billing_address,
 
     ) {
         this.idpayment = idpayment;

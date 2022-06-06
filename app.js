@@ -4,8 +4,6 @@ const app = express();
 
 const path = require("path");
 
-const { init } = require("./src/database/mysql.connector");
-const app = express();
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 

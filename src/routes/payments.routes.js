@@ -10,9 +10,6 @@ router.post("/addPayment",
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("amount").exists({ checkFalsy: true }).withMessage("Amount not provided").trim().toFloat()
             .isFloat().withMessage("Wrong value provided"),
-        check("firstName").exists({ checkFalsy: true }).withMessage("First name not provided").trim()
-            .isAlpha().withMessage("First name should contain only characters")
-            .isLength({ max: 45 }).withMessage("First name should be no more than 45 characters long"),
         check("payed").exists({ checkFalsy: true }).withMessage("Information if payment is payed wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("prepaid").exists({ checkFalsy: true }).withMessage("Information if payment is prepaid wasn't provided").trim()
@@ -43,6 +40,7 @@ router.post("/addPayment",
                 amount,
                 payed,
                 prepaid,
+                null,
                 billing_address
             )
             console.log("newPayment inside /addPayment", newPayment.toString())
@@ -137,8 +135,8 @@ router.post("/updatePayment",
         }
     })
 
-router.delete("deletePayment/:id", [
-    check("paymentId", "Paymnet Id not provided").exists(),
+router.delete("/deletePayment", [
+    check("paymentId", "Payment Id not provided").exists(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

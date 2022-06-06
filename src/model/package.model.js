@@ -210,7 +210,7 @@ class Package {
      * @param {number} id provide the id with which to delete a Package from the database with
      * @returns the deleted Package item and if it was successful
      */
-    static async deletePackage(id = Number) {
+    static async deletePackage(id) {
         try {
             const getDeletedPackage = await execute("SELECT * from Packages Where idpackages=?", [`${id}`]);
             const response = await execute("DELETE from Packages Where idpackages=?", [`${id}`]);

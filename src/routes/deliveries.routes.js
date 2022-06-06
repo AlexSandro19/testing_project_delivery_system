@@ -188,7 +188,7 @@ router.post("/updateDelivery",
         }
     })
 
-router.delete("deleteDelivery/:id", [
+router.delete("/deleteDelivery", [
     check("deliveryId", "Id of delivery not provided").exists(),
 ], async (req, res) => {
     try {
