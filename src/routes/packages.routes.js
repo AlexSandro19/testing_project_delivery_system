@@ -132,7 +132,7 @@ router.post("/updatePackage",
         }
     })
 
-router.delete("/deletePackage", [
+router.post("/deletePackage", [
     check("idpackages", "Id id not provided").exists(),
 ],
     async (req, res) => {

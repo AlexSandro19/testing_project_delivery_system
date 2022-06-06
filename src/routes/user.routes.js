@@ -38,7 +38,7 @@ router.post("/register",
         check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
-        check("confirmPassword").exists({ checkFalsy: true }).withMessage("Confirm password not provided").trim(),
+        check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm password not provided").trim(),
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -48,12 +48,12 @@ router.post("/register",
                     message: "Invalid data while creating a user",
                 });
             }
-            const { typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password, confirmPassword } = req.body;
+            const { typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password, passwordConfirm } = req.body;
 
-            if (password !== confirmPassword) {
+            if (password !== passwordConfirm) {
                 return res.status(400).json({
                     message: "Confirm password is not correct",
-                    errors: [{ value: "confirmPassword", msg: "Confirm password is not correct", param: "confirmPassword" }],
+                    errors: [{ value: "passwordConfirm", msg: "Confirm password is not correct", param: "passwordConfirm" }],
                 });
             }
             const hashedPassword = await bcrypt.hash(password, 12);
@@ -102,10 +102,10 @@ router.post("/updateUser", [
         .isLength({ min: 9, max: 9 }).withMessage("DUNS should be 9 characters long (format: XXXXXXXXX)"),
     check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-    check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
+    check("cityId").exists({ checkFalsy: true }).withMessage("City not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
     check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
-    check("confirmPassword").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
+    check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -202,8 +202,8 @@ router.delete("/deleteUser", [
             }
 
             var { idCustomer } = req.body
-            const { userdeleted, deletedUser } = await User.deleteUser(idCustomer)
-            if (userdeleted) {
+            const { userDeleted, deletedUser } = await User.deleteUser(idCustomer)
+            if (userDeleted) {
                 return res.status(200).json({ user: deletedUser });
             } else {
                 return res.status(500).json({ message: "Internal Server Error when deleting" });
