@@ -83,6 +83,7 @@ class Payment {
     static async getAllPayments() {
         try {
             const response = await execute("SELECT * FROM payment", []);
+            if (response.length > 0) {
             return response.map(v => new Payment(
                 v.idpayment,
                 v.typeofpayment_idtypeofpayment,
@@ -91,6 +92,13 @@ class Payment {
                 v.prepaid,
                 v.transactionid,
                 v.billing_address));
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Payments not found",
+                    message: "Payments not found",
+                }
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -108,7 +116,7 @@ class Payment {
     static async getPayment(id = Number) {
         try {
             const response = await execute("SELECT * FROM payment WHERE idpayment=?", [`${id}`])
-
+            if (response.length > 0) {
             return new Payment(
                 response[0].idpayment,
                 response[0].typeofpayment_idtypeofpayment,
@@ -117,7 +125,13 @@ class Payment {
                 response[0].prepaid,
                 response[0].transactionid,
                 response[0].billing_address)
-
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Payment not found",
+                    message: "Payment not found",
+                }
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -194,10 +208,18 @@ class Payment {
                 if (response.affectedRows > 0) {
                     return { paymentDeleted: true, deletedPayment: getDeletedPayment[0] }
                 } else {
-                    return { paymentDeleted: false };
+                    console.log("[mysql.connector][execute][Error]: ", error);
+                    throw {
+                        value: "Internal Error with deleting",
+                        message: "Internal Error with deleting",
                 }
+            }
             } else {
-                return "Payment was not deleted because a payment with that id does not exist."
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Payment not found",
+                    message: "Payment not found",
+                }
             }
 
         } catch (error) {

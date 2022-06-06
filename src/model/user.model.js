@@ -133,8 +133,8 @@ class User {
             } else {
                 console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
-                    value: "User not found",
-                    message: "User not found",
+                    value: "Users not found",
+                    message: "Users not found",
                 }
             }
         } catch (error) {
