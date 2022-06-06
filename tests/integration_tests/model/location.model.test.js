@@ -1,6 +1,6 @@
 
-const {Location} = require("../../src/model/location.model")
-const { init, end  } = require("../../src/database/mysql.connector");
+const {Location} = require("../../../src/model/location.model")
+const { init, end  } = require("../../../src/database/mysql.connector");
 describe('Testing the location', () => {
     let someCreatedLocation;
     beforeAll(async ()=>{

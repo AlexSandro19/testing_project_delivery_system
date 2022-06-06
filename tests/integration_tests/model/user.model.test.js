@@ -1,6 +1,6 @@
 
-const {User} = require("../../src/model/user.model")
-const { init, end } = require("../../src/database/mysql.connector");
+const {User} = require("../../../src/model/user.model")
+const { init, end } = require("../../../src/database/mysql.connector");
 describe('Testing the user', () => {
     let someCreatedUser;
     beforeAll(async ()=>{

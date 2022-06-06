@@ -1,6 +1,6 @@
 
-const {Package} = require("../../src/model/package.model")
-const { init, end  } = require("../../src/database/mysql.connector");
+const {Package} = require("../../../src/model/package.model")
+const { init, end  } = require("../../../src/database/mysql.connector");
 describe('Testing the package', () => {
    let someCreatedPackage;
     beforeAll(async ()=>{

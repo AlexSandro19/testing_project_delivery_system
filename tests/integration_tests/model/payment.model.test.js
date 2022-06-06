@@ -1,6 +1,6 @@
 
-const {Payment} = require("../../src/model/payment.model")
-const { init, end  } = require("../../src/database/mysql.connector");
+const {Payment} = require("../../../src/model/payment.model")
+const { init, end  } = require("../../../src/database/mysql.connector");
 describe('Testing the payment', () => {
 
    let someCreatedPayment;

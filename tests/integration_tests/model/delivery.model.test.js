@@ -1,6 +1,6 @@
 
-const {Delivery} = require("../../src/model/delivery.model")
-const { init, end  } = require("../../src/database/mysql.connector");
+const {Delivery} = require("../../../src/model/delivery.model")
+const { init, end  } = require("../../../src/database/mysql.connector");
 
 describe('Testing the delivery', () => {
   
