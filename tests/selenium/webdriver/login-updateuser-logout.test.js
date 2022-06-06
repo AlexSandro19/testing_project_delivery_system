@@ -3,7 +3,7 @@ const { By } = require('selenium-webdriver');
 const assert = require('assert');
 
 
-async function loginCreateDeliveryLogout() {
+async function loginUpdateUserLogout() {
   let driver = new webdriver.Builder().forBrowser("firefox").build();
   try{
     await driver.get("http://localhost:3000/");
@@ -23,34 +23,25 @@ async function loginCreateDeliveryLogout() {
 
     // // LOGGED ON // //
 
-    // CREATE DELIVERY
-    const createDelivery = driver.findElement(By.xpath("//a[contains(text(),'Create a Delivery')]"))
+    // UPDATE PROFILE
+    const createDelivery = driver.findElement(By.xpath("//a[contains(text(),'Update Profile')]"))
     await createDelivery.click();
-    // TEST TO SEE IF YOU ARE ON GET PACKAGE 
+    // TEST TO SEE IF YOU ARE ON Update Profile Page
     var url = await driver.getCurrentUrl();
-    assert.equal(url, "http://localhost:3000/addPackage");
-    // ADDING VALUES TO THE PACKAGE
+    assert.equal(url, "http://localhost:3000/updateProfile");
 
-    const weightInput = driver.findElement(By.id("weight"));
-	await weightInput.sendKeys('2.0');
+    const updpassInput = driver.findElement(By.id("password"));
+	await updpassInput.sendKeys('alex123');
 
-    const heightInput = driver.findElement(By.id("height"));
-	await heightInput.sendKeys('2.0');
+    const updpassInputConfirm = driver.findElement(By.id("passwordConfirm"));
+	await updpassInputConfirm.sendKeys('alex123');
 
-    const widthInput = driver.findElement(By.id("width"));
-	await widthInput.sendKeys('2.0');
+    const updSecondName = driver.findElement(By.id("secondName"));
+	await updSecondName.sendKeys('Colonels');
 
-    const depthInput = driver.findElement(By.id("depth"));
-	await depthInput.sendKeys('2.0');
-
-
-    //SUMBITTING
-    const packageSubmit = driver.findElement(By.xpath("//button[@type='submit']"))
-    await packageSubmit.click()
-    
-    // Assert that we moved to delivery
-    var url = await driver.getCurrentUrl();
-    assert.equal(url, "http://localhost:3000/addDelivery");
+    //Sumbit Button
+    const submitUserUpd = driver.findElement(By.xpath("//button[@type='submit']"))
+    await submitUserUpd.click()
 
     // // LOGOUT // // 
     const logout = driver.findElement(By.xpath("//a[contains(text(),'Logout')]"))
@@ -69,6 +60,4 @@ async function loginCreateDeliveryLogout() {
   }
   await driver.quit();
 }
-loginCreateDeliveryLogout(); 
-
-  
+loginUpdateUserLogout(); 
