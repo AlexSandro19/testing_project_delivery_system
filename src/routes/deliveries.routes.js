@@ -22,8 +22,11 @@ router.post("/addDelivery",
         check("message").optional().exists().withMessage("Message not provided").trim()
             .isLength({ max: 150 }).withMessage("Message should be no more than 150 characters long"),
         check("start_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
-            .toDate().withMessage("Value provided is not a date")
-
+            .toDate().withMessage("Value provided is not a date"),
+        check("estimated_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
+            .toDate().withMessage("Value provided is not a date"),
+        check("end_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
+            .toDate().withMessage("Value provided is not a date"),
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -42,11 +45,12 @@ router.post("/addDelivery",
                 start_location,
                 end_location,
                 message,
-                start_date
+                start_date,
+                estimated_date,
+                end_date
+
             } = req.body;
             // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
-            console.log("start_date: ", start_date.getMonth())
-           const estimated_date = await Delivery.getEstimatedDateFromDB(start_location, end_location, start_date);
 
             const newDelivery = new Delivery(
                 null,
@@ -59,7 +63,7 @@ router.post("/addDelivery",
                 message,
                 estimated_date,
                 start_date,
-                null
+                end_date
             )
 
             console.log("newDelivery inside addDelivery", newDelivery)
@@ -79,10 +83,10 @@ router.post("/addDelivery",
             // console.log("newDelivery:", newDelivery.toString());
 
             if (deliveryCreated) {
-                return res.status(200).json({ response: { createdDelivery } });
+                return res.status(200).json({ createdDelivery });
 
             } else {
-                return res.status(500).json({ response: { message: "Internal Server Error" } });
+                return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
             console.log(error);
@@ -101,11 +105,11 @@ router.post("/updateDelivery",
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("packages_idpackages").exists({ checkFalsy: true }).withMessage("Package not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-        check("priority").exists({ checkFalsy: true }).withMessage("Information about delivery priority wasn't provided").trim()
+        check("priority").exists().withMessage("Information about delivery priority wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("payment_idpayment").exists({ checkFalsy: true }).withMessage("Payment not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-        check("international").exists({ checkFalsy: true }).withMessage("Information if delivery is international wasn't provided").trim()
+        check("international").exists().withMessage("Information if delivery is international wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("start_location").exists({ checkFalsy: true }).withMessage("Start location not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
@@ -114,21 +118,16 @@ router.post("/updateDelivery",
         check("message").optional().exists().withMessage("Message not provided").trim()
             .isLength({ max: 150 }).withMessage("Message should be no more than 150 characters long"),
         check("start_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
-            .isDate({ format: "YYYY-MM-DD hh:mm:ss" }).withMessage("Date has wrong format (should be 'YYYY-MM-DD hh:mm:ss')")
-            .isAfter().withMessage("Date selected can't be earlier than today's date.")
             .toDate().withMessage("Value provided is not a date"),
-        check("estimated_date").exists({ checkFalsy: true }).withMessage("Estimated date not provided").trim()
-            .isDate({ format: "YYYY-MM-DD hh:mm:ss" }).withMessage("Date has wrong format (should be 'YYYY-MM-DD hh:mm:ss')")
-            .isAfter().withMessage("Date selected can't be earlier than today's date.")
+        check("estimated_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
             .toDate().withMessage("Value provided is not a date"),
-        check("end_date").optional().exists({ checkFalsy: true }).withMessage("End date not provided").trim()
-            .isDate({ format: "YYYY-MM-DD hh:mm:ss" }).withMessage("Date has wrong format (should be 'YYYY-MM-DD hh:mm:ss')")
-            .isAfter().withMessage("Date selected can't be  earlier than today's date.")
+        check("end_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
             .toDate().withMessage("Value provided is not a date"),
         check("uid").optional().exists().withMessage("UUID not provided").trim()
-            .isLength({ max: 20 }).withMessage("Message should be no more than 20 characters long"), // MUST BE CHANGED
+            .isLength({ max: 36 }).withMessage("Message should be no more than 36 characters long"), // MUST BE CHANGED
     ], async (req, res) => {
         try {
+            console.log("req.body in /updateDelivery ", req.body)
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({
@@ -171,11 +170,11 @@ router.post("/updateDelivery",
             console.log("deliveryInfoIsSame ", deliveryInfoIsSame);
 
             if (!deliveryInfoIsSame && typeof updatedDelivery === 'object') {
-                return res.status(200).json({ response: updatedDelivery });
+                return res.status(200).json({ updatedDelivery });
             } else if (!deliveryInfoIsSame && updatedDelivery === undefined) {
-                return res.status(500).json({ response: { message: "Internal Server Error" } });
+                return res.status(500).json({ message: "Internal Server Error" });
             } else if (deliveryInfoIsSame) {
-                return res.status(400).json({ response: updatedDelivery, message: "Delivery was not updated, because the delivery info is the same" });
+                return res.status(400).json({ updatedDelivery, message: "Delivery was not updated, because the delivery info is the same" });
             }
         } catch (error) {
             console.log(error);
@@ -188,8 +187,8 @@ router.post("/updateDelivery",
         }
     })
 
-router.delete("deleteDelivery/:id", [
-    check("deliveryId", "Id of delivery not provided").exists(),
+router.delete("/deleteDelivery", [
+    check("iddeliveries", "Id of delivery not provided").exists(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -200,9 +199,13 @@ router.delete("deleteDelivery/:id", [
             });
         }
 
-        const { deliveryId } = req.body
-        const response = await Delivery.deleteDelivery(deliveryId)
-        return res.status(200).json({ response })
+        const { iddeliveries } = req.body
+        const { deliveryDeleted, deletedDelivery } = await Delivery.deleteDelivery(iddeliveries)
+        if (deliveryDeleted) {
+            return res.status(200).json({ delivery: deletedDelivery });
+        } else {
+            return res.status(500).json({ message: "Internal Server Error when deleting" });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -212,6 +215,21 @@ router.delete("deleteDelivery/:id", [
             ],
         });
     }
+})
+
+
+router.post("/getDelivery", async (req, res) => {
+    const { iddeliveries } = req.body
+    const delivery = await Delivery.getDelivery(iddeliveries);
+    console.log(delivery);
+    return res.status(200).json({ delivery });
+})
+
+router.get("/getDeliveries", async (req, res) => {
+
+    const deliveries = await Delivery.getAllDeliveries();
+    console.log(deliveries);
+    return res.status(200).json({ deliveries });
 })
 
 // router.post("/addWholeDelivery", async (req, res) => {

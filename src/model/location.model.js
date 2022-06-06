@@ -9,11 +9,11 @@ class Location {
     zip_city_zipcode_idzipcode;
     zip_city_city_idcity;
     constructor(
-        idlocation = Number,
-        typeoflocation_idtypeoflocation = Number,
-        address = String,
-        zip_city_zipcode_idzipcode = Number,
-        zip_city_city_idcity = Number,
+        idlocation,
+        typeoflocation_idtypeoflocation,
+        address,
+        zip_city_zipcode_idzipcode,
+        zip_city_city_idcity,
     ) {
         this.idlocation = idlocation;
         this.typeoflocation_idtypeoflocation = typeoflocation_idtypeoflocation;

@@ -14,11 +14,12 @@
         "jsonwebtoken": "8.5.1",
         "mongoose": "^6.3.3",
         "mysql": "2.18.1",
-        "neo4j-driver": "^4.4.5"
+        "neo4j-driver": "^4.4.5",
+        "supertest": "^6.2.3"
     },
     "scripts": {
         "test": "jest",
-        "server": "nodemon app.js",
+        "server": "nodemon server.js",
         "dev": "npm run server",
         "lint": "npx eslint .",
         "lint fix": "npx eslint . --fix",

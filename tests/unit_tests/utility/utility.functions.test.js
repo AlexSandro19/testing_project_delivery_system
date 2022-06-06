@@ -1,4 +1,4 @@
-const { getDateInSqlFormat } = require("../../src/utility/utility.functions");
+const { getDateInSqlFormat } = require("../../../../src/utility/utility.functions");
 
 describe("Run tests for getDateInSqlFormat function", () => {
     test("Pass a valid Date object and expect a string representation of it in format 'YYYY-MM-DD hh:mm:ss'", () => {
@@ -64,7 +64,7 @@ describe("Run tests for getDateInSqlFormat function", () => {
         expect(result).toBe(null);
     });
 
-    test("Pass a invalid string and expect null", () => {
+    test("Pass a invalid value: string, and expect null", () => {
         //Arrange
         const today = "test";
         //Act
@@ -73,7 +73,7 @@ describe("Run tests for getDateInSqlFormat function", () => {
         expect(result).toBe(null);
     });
 
-    test("Pass a invalid number and expect null", () => {
+    test("Pass a invalid value: number, and expect null", () => {
         //Arrange
         const today = 999;
         //Act
