@@ -125,7 +125,7 @@ return(
                   })}
                 </Select></Grid>
         <Grid item xs={6}>
-          <Typography>Converted Amount: {convertedAmount} </Typography>
+          <Typography>Converted Amount in Dollars: {convertedAmount} </Typography>
         </Grid>
         <Grid item xs={12}>
         <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>

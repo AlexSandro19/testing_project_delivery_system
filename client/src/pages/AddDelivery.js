@@ -16,19 +16,18 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
   const [converted,setConverted] = useState('');
   const [convertedAmount,setConvertedAmount] = useState(0);
   console.log(converted);
-  const convert =useCallback((amount,newCurrency)=>{
-    console.log(amount,newCurrency)
-    convertCurrency(amount,newCurrency)
-    
+  const convert =useCallback(()=>{
+    console.log(amount);
+    convertCurrency(createdPackage.amount+form.international*35,'usd')
   },[amount])
   
   const loadState = useCallback(() =>{
     getCurrencies();
+
     console.log(newAmount);
-    
-    if(convertedAmount === 0){
-      setConvertedAmount(newAmount)
-    }
+  
+    setConvertedAmount(newAmount);
+  
     setForm({
       amount:amount,
       priority:0,
@@ -37,10 +36,11 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
       endLocation:{locationOfReceiver:{idzipcode:"",idcity:"",name:"",zipcode:""},address:""},
       message:""
     })
-  },[amount,newAmount,getCurrencies])
+  },[amount,newAmount])
   const [display,setDisplay] = useState();
   useEffect(() => {
-    loadState()
+    loadState();
+    convert();
   },[])
   useEffect(() => {
     if (errors) {

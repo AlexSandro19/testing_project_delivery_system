@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const {axios} = require("axios");
+const axios = require("axios");
 const router = Router();
 const { check, validationResult } = require("express-validator");
 const { execute } = require("../database/mysql.connector")
