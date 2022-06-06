@@ -9,9 +9,9 @@
 const calculateVolume = (height, width, depth) => { // values is in cm (10,10,1) = 100cm3 = 
     if (checkIfPosNumber(height) && checkIfPosNumber(width) && checkIfPosNumber(depth)){
         const result = height * depth * width; 
-        if (result > 10000000){
+        if (result > 1000000){
             return null;
-        }else if (result > 1 && result <= 10000000){
+        }else if (result > 1 && result <= 1000000){
             return result;
         }else if (result > 0 && result <= 1){
             return 1;
@@ -66,7 +66,7 @@ const weightPricer = (weight)=>{
  * @returns {Number} The price after calculations for how much to pay.
  */
 const calculateAmount = (volume,weight,international,electronics,oddsized,fragile)=>{
-    const checkVolume = checkIfPosNumber(volume) && volume <= 10000000
+    const checkVolume = checkIfPosNumber(volume) && volume <= 1000000
     const checkWeight = checkIfPosNumber(weight) && weight <= 50
     const checkInternational = (international === 1 || international === 0)
     const checkElectronics = (electronics === 1 || electronics === 0)
