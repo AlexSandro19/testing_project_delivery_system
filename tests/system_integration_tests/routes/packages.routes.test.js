@@ -94,7 +94,7 @@ describe("Testing Packages api routes", () => {
   })
  
   test("Check deletePackage api", (done) => {
-    const response = request(app).delete("/packages/deletePackage").send({idpackages: saveCreatedPackage.idpackages})
+    const response = request(app).post("/packages/deletePackage").send({idpackages: saveCreatedPackage.idpackages})
     response.expect(200).expect((res) => {
       console.log("res.body test: ", res.body)
       expect(res.body.package.idpackages).toEqual(saveCreatedPackage.idpackages);

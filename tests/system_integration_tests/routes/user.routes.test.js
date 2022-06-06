@@ -53,9 +53,9 @@ describe("Testing User api routes", () => {
       address: "Norrebro 1", 
       duns: generatedDuns, // has to be unique
       zipcode: "2", 
-      city: "1",
+      cityId: "1",
       password: "alex123",
-      confirmPassword: "alex123"
+      passwordConfirm: "alex123"
      }
     const response = request(app).post("/users/register").send(user)
        console.debug(response);
@@ -115,9 +115,9 @@ describe("Testing User api routes", () => {
       address: saveCreatedUser.address,
       duns: saveCreatedUser.duns,
       zipcode: saveCreatedUser.zip_city_zipcode_idzipcode,
-      city: saveCreatedUser.zip_city_city_idcity,
+      cityId: saveCreatedUser.zip_city_city_idcity,
       password: saveCreatedUser.password,
-      confirmPassword: saveCreatedUser.password,
+      passwordConfirm: saveCreatedUser.password,
     }
     const response = request(app).post("/users/updateUser").send(user)
     response.expect(200).expect((res) => {
