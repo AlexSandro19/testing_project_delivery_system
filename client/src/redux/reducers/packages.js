@@ -8,7 +8,7 @@ import {
   const initialState = {
     requesting: false,
     successful: false,
-    package:{},
+    packages:{},
     errors: [],
   };
 
@@ -20,35 +20,35 @@ import {
         return {
           requesting: true,
           successful: false,
-          package:{},
+          packages:{},
           errors: [],
         };
         case DELETE_PACKAGE:
         return {
           requesting: false,
           successful: true,
-          package:{},
+          packages:{},
           errors: [],
         };
         case DELETE_PACKAGE_FAILURE:
         return {
           requesting: false,
           successful: false,
-          package:{},
+          packages:{},
           errors: action.errors
         };
       case REGISTER_PACKAGE_SUCCESS:
         return {
           requesting: false,
           successful: true,
-          package:action.payload,
+          packages:action.payload,
           errors: [],
         };
       case REGISTER_PACKAGE_FAILURE:
       return {
           requesting: false,
           successful: false,
-          package:{},
+          packages:{},
           errors: action.errors,
       }
       default:

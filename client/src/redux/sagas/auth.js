@@ -8,7 +8,7 @@ import {
 
 import { setUser } from "../actions/user";
 
-import { USER_UNSET } from "../constants/user";
+import { USER_UNSET,SUCCESS,FAILURE } from "../constants/user";
 
 import {
   loginApi,
@@ -33,6 +33,13 @@ function* loginFlow(credentials) {
     yield put({
       type: LOGIN_SUCCESS,
     });
+    yield put ({
+      type:SUCCESS,
+      message:{
+        text: "Successfully logged in!",
+        severity: "success",
+      }
+    })
 
     setAuthToken({
       userId: payload.user.idcustomer,
@@ -44,6 +51,14 @@ function* loginFlow(credentials) {
   } catch (error) {
     yield put({
       type: LOGIN_FAILURE,
+      message: {
+        text: error.message,
+        severity: "error",
+      },
+      errors: error.errors,
+    });
+    yield put({
+      type: FAILURE,
       message: {
         text: error.message,
         severity: "error",
@@ -72,6 +87,13 @@ function* loginWatcher() {
           severity: "error",
         },
       });
+      yield put({
+        type:FAILURE,
+        message:{
+          text:"Session expired. Please login again",
+          severity:"error"
+        }
+      })
       const { payload } = yield take(LOGIN_REQUESTING);
       yield call(loginFlow, payload);
     } else {
@@ -84,6 +106,13 @@ function* loginWatcher() {
     yield take(USER_UNSET);
     token = null;
     yield call(logout);
+    yield put({
+      type:SUCCESS,
+      message:{
+        text:"Logged out successfully",
+        severity:"success"
+      }
+    });
   }
 }
 

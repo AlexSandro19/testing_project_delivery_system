@@ -3,7 +3,8 @@ import axios from "axios";
 const storageName = "userData";
 const createPackageUrl = "/packages/addPackage";
 export const createPackageApi =(userId,form)=>{
-    return axios.post(createPackageUrl,{userId,form}).then((response)=>response.data).catch((error)=>{
+    const {weight,height,width,depth,fragile,electronics,oddsized} = form;
+    return axios.post(createPackageUrl,{userId,weight,height,width,depth,fragile,electronics,oddsized}).then((response)=>response.data).catch((error)=>{
       throw error.response.data;
     })
 }

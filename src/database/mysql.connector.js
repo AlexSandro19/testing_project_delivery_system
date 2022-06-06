@@ -32,7 +32,7 @@ const init = () => {
  */
 const execute = (
   query = String,
-  params = Array(String) | object,
+  params ,
 ) => {
   try {
     if (!pool)

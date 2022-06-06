@@ -8,7 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import { IconButton } from "@mui/material";
 import AuthPage from "./pages/AuthPage"
 import Routes from "./routes"
-//import MessagePage from "./pages/MessagePage"
+import MessagePage from "./pages/MessagePage"
 //import Routes from "./routes";
 import Navigation  from "./components/Navigation";
 const theme = createTheme()
@@ -44,7 +44,7 @@ function App() {
     <div className={classes.root}>
       <CssBaseline />
       <Navigation />
-      
+      <MessagePage/>
       <main className={classes.content}>
       <Routes />
       </main>

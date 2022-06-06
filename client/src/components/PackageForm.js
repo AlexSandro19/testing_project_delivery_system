@@ -56,8 +56,8 @@ return(
                     label="Fragile"
                     onChange={(e) => setForm({ ...form, fragile: e.target.value })}
                 >
-                    <MenuItem value={true}>Yes</MenuItem>
-                    <MenuItem value={false}>No</MenuItem>
+                    <MenuItem value={1}>Yes</MenuItem>
+                    <MenuItem value={0}>No</MenuItem>
                 </Select>
         </Grid>
         <Grid item xs={6}>
@@ -76,8 +76,8 @@ return(
                     label="Electronics"
                     onChange={(e) => setForm({ ...form, electronics: e.target.value })}
                 >
-                    <MenuItem value={true}>Yes</MenuItem>
-                    <MenuItem value={false}>No</MenuItem>
+                    <MenuItem value={1}>Yes</MenuItem>
+                    <MenuItem value={0}>No</MenuItem>
                 </Select></Grid>
         <Grid item xs={6}>
         <InputLabel id="oddsized">Oddsize</InputLabel>
@@ -95,8 +95,8 @@ return(
                     label="Oddsize"
                     onChange={(e) => setForm({ ...form, oddsized: e.target.value })}
                 >
-                    <MenuItem value={true}>Yes</MenuItem>
-                    <MenuItem value={false}>No</MenuItem>
+                    <MenuItem value={1}>Yes</MenuItem>
+                    <MenuItem value={0}>No</MenuItem>
                 </Select>
                 </Grid>
         <Grid item xs={12}>

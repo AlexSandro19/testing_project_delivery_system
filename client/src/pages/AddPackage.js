@@ -10,11 +10,9 @@ const AddPackage=({errors,registerPackage})=>{
     height:"",
     width:"",
     depth:"",
-    fragile:false,
-    electronics:false,
-    oddsized:false,
-    receiverId:"",
-
+    fragile:0,
+    electronics:0,
+    oddsized:0,
   });
   const [formErrors,setFormErrors] = useState({}); 
   useEffect(() => {
@@ -31,7 +29,10 @@ const AddPackage=({errors,registerPackage})=>{
   const sendPackageForm= (e)=>{
     e.preventDefault();
     registerPackage(form);
-    history.push("/addDelivery");
+    if(formErrors.length === 0) {
+      history.push("/addDelivery");
+    }
+  
   }
     return(
       <div style={{marginLeft:"15%"}}>
@@ -46,6 +47,6 @@ const AddPackage=({errors,registerPackage})=>{
 
 }
 const mapStateToProps = (state) =>({
-  errors:state.auth.errors,
+  errors:state.message.errors,
   });
 export default connect(mapStateToProps,{registerPackage})(AddPackage)

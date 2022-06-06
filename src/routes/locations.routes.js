@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { check, validationResult } = require("express-validator")
-
+const {execute} = require("../database/mysql.connector");
 const { Location } = require("../model/location.model");
 
 router.post("/addLocation",
@@ -22,13 +22,18 @@ router.post("/addLocation",
       }
       const { typeOfLocationId, address, zipCode, cityId } = req.body;
       const newLocation = new Location(null, typeOfLocationId, address, zipCode, cityId);
-      console.log(newLocation)
-      const { locationCreated, createdLocation } = await Location.createLocation(newLocation)
-      if (locationCreated) {
-        return res.status(200).json({ response: { createdLocation } });
-
-      } else {
-        return res.status(500).json({ response: { message: "Internal Server Error" } });
+      console.log(newLocation);
+      const checkLocationExistence = await execute("SELECT * from location WHERE zip_city_zipcode_idzipcode=? AND zip_city_city_idcity=? AND address=?",[`${zipCode}`,`${cityId}`,`${address}`])
+      console.log(checkLocationExistence)
+      if(checkLocationExistence.length > 0) {
+        return res.status(200).json({createdLocation:checkLocationExistence[0]})
+      }else{
+        const { locationCreated, createdLocation } = await Location.createLocation(newLocation)
+        if (locationCreated) {
+          return res.status(200).json({ createdLocation });
+        } else {
+          return res.status(500).json({  message: "Internal Server Error" });
+        }
       }
     } catch (error) {
       console.log(error);

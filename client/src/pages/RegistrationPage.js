@@ -3,7 +3,7 @@ import { Registration } from "../components/Registration";
 import {useState} from "react";
 import {registerUser} from "../redux/actions/user"
 import { useHistory } from "react-router-dom";
-const RegistrationPage=({registerUser})=>{
+const RegistrationPage=({registerUser,errors})=>{
   const history = useHistory();
   const [form, setForm] = useState({
     email: "",
@@ -22,9 +22,11 @@ const RegistrationPage=({registerUser})=>{
   };
   const sendRegistrationForm= (e)=>{
     e.preventDefault();
-
+    
     registerUser(form);
+    if(errors.length ===  0){
     history.push("/");
+    }
   }
     return(
       <div style={{marginLeft:"15%"}}>
@@ -39,6 +41,6 @@ const RegistrationPage=({registerUser})=>{
 
 }
 const mapStateToProps = (state) =>({
-    
-  });
+  errors:state.message.errors,
+});
 export default connect(mapStateToProps,{registerUser})(RegistrationPage)

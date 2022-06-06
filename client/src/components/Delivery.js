@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import {useState} from "react";
-import { TextField,Grid, Typography,Button} from "@mui/material";
+import {useState,useCallback,} from "react";
+import { TextField,Grid, Typography,Button,Select,MenuItem,InputLabel} from "@mui/material";
 import  {Dropdown} from "react-bootstrap";
 import { NavLink,useHistory } from "react-router-dom";
 import { DeletePackageDialog } from "./DeletePackageDialog";
@@ -29,13 +29,14 @@ const options = [
   const defaultOption = options[0];
   
 
-export const Delivery=({idpackages,form,sendAddDeliveryForm,changeHandler,deletePackage})=>{
+export const Delivery=({loadFunction,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
 const classes=useStyles();
 const history = useHistory();
 const [modalOpen, setModalOpen] = useState(false);
 const handleClose = () => {
   setModalOpen(false);
 }
+
 const goBack = () => {
   // delete package here;
   deletePackage(idpackages)
@@ -50,30 +51,76 @@ return(
         
         <div>
         <Grid container spacing={4}>
+        <Grid item xs={12}><Typography style={{width:"100%",textAlign:"center"}} variant="h2">Create Delivery</Typography></Grid>
+        <Grid item xs={12}>        <InputLabel id="priority">Priority</InputLabel>
+        <Select
+                    sx={{ marginBottom: '15px' }}
+                    fullWidth
+                    required
+                    name="priority"
+                    labelId="priority"
+                    id="priority"
+                    error={!!formErrors["priority"]}
+                    helperText={formErrors["priority"] ? formErrors["priority"] : ""}
+                    value={form.priority}
+                    // defaultValue={currentItem.hasWarranty}
+                    label="priority"
+                    onChange={(e) => setForm({ ...form, priority: e.target.value })}
+                >
+                  
+                    <MenuItem value={1}>Yes</MenuItem>
+                    <MenuItem value={0}>No</MenuItem>
+                </Select></Grid>
+        <Grid item xs={12}>        <InputLabel id="international">International</InputLabel>
+        <Select
+                    sx={{ marginBottom: '15px' }}
+                    fullWidth
+                    required
+                    name="international"
+                    labelId="international"
+                    id="international"
+                    error={!!formErrors["international"]}
+                    helperText={formErrors["international"] ? formErrors["international"] : ""}
+                    value={form.international}
+                    // defaultValue={currentItem.hasWarranty}
+                    label="international"
+                    onChange={(e) => {
+                        if(e.target.value === 1){
+                          console.log("DAS");
+                          setForm({...form,amount:amount+35,international: e.target.value})
+                        }else{
+                          setForm({...form,amount:amount,international: e.target.value})
+                        }
+                      }}
+                >
+                    <MenuItem value={1}>Yes</MenuItem>
+                    <MenuItem value={0}>No</MenuItem>
+                </Select></Grid>
+        <Grid item xs={6}><InputLabel id="startZipcode">Zipcode</InputLabel><TextField  type="text" disabled={true} value={form.startLocation.locationOfUser.zipcode} onChange={changeHandler} style={{width:"100%"}}  ></TextField></Grid>
+        <Grid item xs={6}><InputLabel id="startCity">City</InputLabel><TextField  type="text" disabled={true} value={form.startLocation.locationOfUser.name} onChange={changeHandler} style={{width:"100%"}}  ></TextField></Grid>
+        <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Address</InputLabel><TextField style={{width:"100%"}}  type="text" disabled={true} value={form.startLocation.address} ></TextField></Grid>
+        <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Address</InputLabel><TextField style={{width:"100%"}} onChange={(e)=>setForm({...form,endLocation:{locationOfReceiver:form.endLocation.locationOfReceiver,address:e.target.value}})}   type="text"  value={form.endLocation.address}  label="Address" id="address" name="address" ></TextField></Grid>
+        <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Amount</InputLabel><TextField style={{width:"100%"}} type="number" disabled={true} value={amount+form.international*35} ></TextField></Grid>
+        <Grid item xs={12}>
+        <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>
+          <Select
+                    sx={{ marginBottom: '15px' }}
+                    fullWidth
+                    required
+                    name="endLocation"
+                    labelId="endLocation"
+                    id="endLocation"
+                    error={!!formErrors["endLocation"]}
+                    helperText={formErrors["endLocation"] ? formErrors["endLocation"] : ""}
+                    value={form.endLocation.locationOfReceiver.name}
+                    // defaultValue={currentItem.hasWarranty}
+                    label="endLocation"
+                    onChange={(e) => setForm({ ...form, endLocation:{locationOfReceiver:e.target.value,address:form.endLocation.address} })}
+                >
+                {zipsCities.map((item)=>{return(<MenuItem value={{idzipcode:item.zipcode_idzipcode,idcity:item.city_idcity,name:item.name,zipcode:item.zipcode}}>{item.zipcode} {item.name}</MenuItem>)})}
 
-        <Grid item xs={12}><Typography style={{width:"100%",textAlign:"center"}} variant="h2">Register</Typography></Grid>
-        <Grid item xs={12}><TextField type="text" value={form.packageId} onChange={changeHandler} style={{width:"100%"}} required label="Package Id" id="packageId" name="packageId" ></TextField></Grid>
-        <Grid item xs={12}><TextField type="text" value={form.priority} onChange={changeHandler} style={{width:"100%"}}  required label="Priority" id="priority" name="priority" ></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.paymentId} onChange={changeHandler} style={{width:"100%"}}  required label="PaymentId" id="paymentId" name="paymentId"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.international} onChange={changeHandler} style={{width:"100%"}}  label="International" id="international" name="international"></TextField></Grid>
-        <Grid item xs={6}><Dropdown>
-  <Dropdown.Toggle variant="success" id="dropdown-basic">
-    Dropdown Button
-  </Dropdown.Toggle>
-
-  <Dropdown.Menu>
-    <Dropdown.Item onClick={"fas"}>Action</Dropdown.Item>
-    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-  </Dropdown.Menu>
-</Dropdown></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.startLocation} onChange={changeHandler} style={{width:"100%"}}  label="startLocation" id="startLocation" name="startLocation"></TextField></Grid>
-        <Grid item xs={7}><TextField type="text" value={form.endLocation} onChange={changeHandler} style={{width:"100%"}} required label="End Location" id="endLocation" name="endLocation"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.message} onChange={changeHandler} style={{width:"100%"}}  label="Message" id="message" name="message"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.estimatedDate} onChange={changeHandler} style={{width:"100%"}}  label="Estimated Date" id="estimatedDate" name="estimatedDate"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.startDate} onChange={changeHandler} style={{width:"100%"}}  label="Start Date" id="startDate" name="startDate"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.endDate} onChange={changeHandler} style={{width:"100%"}}  label="End Date" id="endDate" name="endDate"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.uid} onChange={changeHandler} style={{width:"100%"}}  label="uid" id="uid" name="uid"></TextField></Grid>
+                </Select></Grid>        
+        <Grid item xs={12}><TextField type="text" value={form.message} onChange={changeHandler} style={{width:"100%"}}  label="Message" id="message" name="message"></TextField></Grid>
         <Grid item xs={12}>
         <Button
         style={{margin:"1%",width:"40%",height:"70%"}}        

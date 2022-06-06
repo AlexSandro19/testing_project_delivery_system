@@ -5,7 +5,6 @@ import AuthPage from "./pages/AuthPage"
 import RegistrationPage from "./pages/RegistrationPage";
 import AddPackage from "./pages/AddPackage";
 import AddDelivery from "./pages/AddDelivery";
-import AddPayment from "./pages/AddPayment";
 import ProfilePage from "./pages/Profile";
 import UpdateProfile from "./pages/UpdateProfile";
 import ViewOrdersPage from "./pages/ViewOrders";
@@ -38,7 +37,6 @@ const Routes=({successful})=>{
 <Route path="/register" exact><RegistrationPage /></Route>
 <Route path="/addPackage" exact><AddPackage /></Route>
 <Route path="/addDelivery" exact><AddDelivery /></Route>
-<Route path="/addPayment" exact><AddPayment /></Route>
 <Route path="/updateProfile" exact><UpdateProfile /></Route>
 <Route path="/viewOrders" exact><ViewOrdersPage /></Route>
 

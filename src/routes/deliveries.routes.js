@@ -9,11 +9,11 @@ router.post("/addDelivery",
     [
         check("packages_idpackages").exists({ checkFalsy: true }).withMessage("Package not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-        check("priority").exists({ checkFalsy: true }).withMessage("Information about delivery priority wasn't provided").trim()
+        check("priority").exists({ checkFalsy: false }).withMessage("Information about delivery priority wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("payment_idpayment").exists({ checkFalsy: true }).withMessage("Payment not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
-        check("international").exists({ checkFalsy: true }).withMessage("Information if delivery is international wasn't provided").trim()
+        check("international").exists({ checkFalsy: false }).withMessage("Information if delivery is international wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("start_location").exists({ checkFalsy: true }).withMessage("Start location not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
@@ -22,12 +22,16 @@ router.post("/addDelivery",
         check("message").optional().exists().withMessage("Message not provided").trim()
             .isLength({ max: 150 }).withMessage("Message should be no more than 150 characters long"),
         check("start_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
+            .toDate().withMessage("Value provided is not a date"),
+        check("estimated_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
+            .toDate().withMessage("Value provided is not a date"),
+        check("end_date").exists({ checkFalsy: true }).withMessage("Start date not provided").trim()
             .toDate().withMessage("Value provided is not a date")
-
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
+                console.log(errors.array());
                 return res.status(400).json({
                     errors: errors.array(),
                     message: "Invalid data while creating a user",
@@ -42,12 +46,13 @@ router.post("/addDelivery",
                 start_location,
                 end_location,
                 message,
-                start_date
+                start_date,
+                estimated_date,
+                end_date
             } = req.body;
             // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
             console.log("start_date: ", start_date.getMonth())
-           const estimated_date = await Delivery.getEstimatedDateFromDB(start_location, end_location, start_date);
-
+      
             const newDelivery = new Delivery(
                 null,
                 packages_idpackages,
@@ -59,7 +64,7 @@ router.post("/addDelivery",
                 message,
                 estimated_date,
                 start_date,
-                null
+                end_date
             )
 
             console.log("newDelivery inside addDelivery", newDelivery)

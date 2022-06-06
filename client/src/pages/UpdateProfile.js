@@ -33,9 +33,10 @@ const UpdateProfilePage=({user,updateUser,errors}) =>{
   };
   const sendProfileUpdateForm= (e)=>{
     e.preventDefault();
-    console.log(form);
     updateUser(user.token,user.exp,form.email,form.firstName,form.secondName,form.typeOfUser,form.password,form.passwordConfirm,form.cityId,form.zipcode,form.duns,form.phone,form.address,form.companyName);
+    if(formErrors.length ===  0){
     history.push("/profile");
+    }
   }
     return(
       <div style={{marginLeft:"15%"}}>
@@ -47,7 +48,7 @@ const UpdateProfilePage=({user,updateUser,errors}) =>{
 }
 const mapStateToProps = (state) =>({
   user:state.user,
-  errors:state.errors,
+  errors:state.message.errors,
   });
 export default connect(mapStateToProps,{updateUser})(UpdateProfilePage)
 

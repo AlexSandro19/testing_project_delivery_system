@@ -18,7 +18,7 @@ class Payment {
         payed = Boolean,
         prepaid = Boolean,
         transactionid = null,
-        billing_address = Boolean,
+        billing_address,
 
     ) {
         this.idpayment = idpayment;
@@ -221,7 +221,7 @@ class Payment {
                 newPayment.getAmount(),
                 newPayment.getPayed(),
                 newPayment.getPrepaid(),
-                generateTransactionId(),
+                Payment.generateTransactionId(),
                 newPayment.getBillingAddress()])
             console.log("createPayment response: ", response)
             if (response.affectedRows > 0) {
@@ -246,7 +246,7 @@ class Payment {
      * The `ddmmyy` is based on the current date. `yy` is the last two numbers of the year.
      * @returns {String}  Returns a 20 character long semi-unique identifier.
      */
-    generateTransactionId() {
+    static generateTransactionId() {
         return characterGenerator(8) + numberGenerator(5) + "-" + transactionDateGenerator()
     }
 }

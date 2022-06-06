@@ -1,40 +1,61 @@
 import { connect } from "react-redux";
 import { Delivery } from "../components/Delivery";
-import {useState} from "react";
+import {useState,useEffect,useCallback} from "react";
 import {registerDelivery} from "../redux/actions/delivery";
 import {deletePackage} from "../redux/actions/package";
 import {Loader} from "../components/Loader";
 import { useHistory } from "react-router-dom";
-const AddDelivery=({registerDelivery,deletePackage,idpackages,successful})=>{
+const AddDelivery=({createdPackage,zipsCities,user,errors,registerDelivery,deletePackage,idpackages,successful})=>{
   const history = useHistory();
-  const [form, setForm] = useState({
-    packageId: idpackages,
-    priority:false,
-    paymentId:"",
-    international:false,
-    stratLocation:"",
-    endLocation:"",
-    message:"",
-    estimatedDate:"",
-    startDate:"",
-    endDate:"",
-    uid:"",
+  const locationOfUser = zipsCities.find((item)=>item.zipcode_idzipcode === user.zipcode && item.city_idcity === user.cityId)
+  console.log(idpackages);
+  console.log(createdPackage);
+  const amount = createdPackage.amount;
+  const [formErrors,setFormErrors] = useState({});
+  const [form, setForm] = useState({});
+  const loadState = useCallback(() =>{
+    setForm({
+      amount:amount,
+      priority:0,
+      international:0,
+      startLocation:{locationOfUser:locationOfUser,address:user.address},
+      endLocation:{locationOfReceiver:{idzipcode:"",idcity:"",name:"",zipcode:""},address:""},
+      message:""
+    })
+  },[amount])
+  useEffect(() => {
+    loadState()
+  },[])
+  useEffect(() => {
+    if (errors) {
+    errors.forEach((error) => {
+       console.log(error);
+        setFormErrors((i) => ({ ...i, [error.param]: error.msg }));
+      });
+    }
+ 
+  }, [errors]);
+  
 
-  });
+  console.log(form);
   const changeHandler = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value });
+    console.log(form);
   };
   const sendAddDeliveryForm= (e)=>{
     e.preventDefault();
-    registerDelivery(form);
-    history.push("/");
+    const {amount,priority,international,startLocation,endLocation,message} = form;
+    registerDelivery({idpackages,amount,priority,international,startLocation,endLocation,message});
+    if(formErrors.length ===  0){
+      history.push("/profile");
+    }
   }
-    if(successful){
+    if(successful && form.endLocation){
       return(
         <div style={{marginLeft:"15%"}}>
   
     
-          <Delivery idpackages={idpackages}  form={form} deletePackage={deletePackage} sendAddDeliveryForm={sendAddDeliveryForm} changeHandler={changeHandler}>
+          <Delivery amount={amount} form={form} zipsCities={zipsCities} setForm={setForm} idpackages={idpackages} formErrors={formErrors}  deletePackage={deletePackage} sendAddDeliveryForm={sendAddDeliveryForm} changeHandler={changeHandler}>
   
           </Delivery>
         </div>
@@ -48,7 +69,12 @@ const AddDelivery=({registerDelivery,deletePackage,idpackages,successful})=>{
 }
 const mapStateToProps = (state) =>({
    // options:state.NameOfReducer.options
-   idpackages:state.packages.package.idpackages,
-   successful:state.packages.successful
+   createdPackage:state.packages.packages,
+   zipsCities:state.zipcities.zips_cities,
+   user:state.user,
+   amount:state.packages.packages.amount,
+   idpackages:state.packages.packages.idpackages,
+   successful:state.packages.successful,
+   errors:state.message.errors,
   });
 export default connect(mapStateToProps,{registerDelivery,deletePackage})(AddDelivery)

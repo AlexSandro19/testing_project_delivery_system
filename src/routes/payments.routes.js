@@ -10,15 +10,12 @@ router.post("/addPayment",
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("amount").exists({ checkFalsy: true }).withMessage("Amount not provided").trim().toFloat()
             .isFloat().withMessage("Wrong value provided"),
-        check("firstName").exists({ checkFalsy: true }).withMessage("First name not provided").trim()
-            .isAlpha().withMessage("First name should contain only characters")
-            .isLength({ max: 45 }).withMessage("First name should be no more than 45 characters long"),
         check("payed").exists({ checkFalsy: true }).withMessage("Information if payment is payed wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("prepaid").exists({ checkFalsy: true }).withMessage("Information if payment is prepaid wasn't provided").trim()
             .toInt().isInt({ min: 0, max: 1 }).withMessage("Wrong value provided"),
         check("billing_address").exists({ checkFalsy: true }).withMessage("Billing address wasn't provided").trim()
-            .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+            // .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
     ], async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -37,21 +34,15 @@ router.post("/addPayment",
                 billing_address
             } = req.body;
 
-            const newPayment = new Payment(
-                null,
-                typeofpayment_idtypeofpayment,
-                amount,
-                payed,
-                prepaid,
-                billing_address
-            )
+            const newPayment = new Payment(null,typeofpayment_idtypeofpayment,amount,payed,prepaid,null,billing_address)
+            console.log(billing_address)
             console.log("newPayment inside /addPayment", newPayment.toString())
             const { paymentCreated, createdPayment } = await Payment.createPayment(newPayment);
             if (paymentCreated) {
-                return res.status(200).json({ response: { createdPayment } });
+                return res.status(200).json({  createdPayment });
 
             } else {
-                return res.status(500).json({ response: { message: "Internal Server Error" } });
+                return res.status(500).json({ message: "Internal Server Error"  });
             }
         } catch (error) {
             console.log(error);

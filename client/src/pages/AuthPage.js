@@ -45,7 +45,10 @@ const AuthPage=({requesting,successful,loginRequest,errors})=>{
         event.preventDefault();
         loginRequest(form);
         //handleClose(false);
-        history.push("/profile")
+        if(formErrors.length ===  0) {
+          history.push("/profile")
+        }
+        
         setFormErrors({});
       };
 

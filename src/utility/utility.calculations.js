@@ -25,7 +25,7 @@ const volumePricer = (volume) => {
         if(volume < 800){
             return 0;
         }
-        else if(volume<12500){
+        else if(volume<=12500){
             return 0.5;
         }
         else if(volume>12500){
@@ -46,7 +46,7 @@ const weightPricer = (weight)=>{
         if(weight < 3){
             return 0;
         }
-        else if(weight<5){
+        else if(weight<=5){
             return 0.5;
         }
         else if(weight>5){
@@ -68,12 +68,13 @@ const weightPricer = (weight)=>{
  * @returns {Number} The price after calculations for how much to pay.
  */
 const calculateAmount = (volume,weight,international,electronics,oddsized,fragile)=>{
+  
     const checkVolume = checkIfPosNumber(volume)
     const checkWeight = checkIfPosNumber(weight)
-    const checkInternational = (typeof international == "number" && (international == 1 && international == 0))
-    const checkElectronics = (typeof electronics == "number" && (electronics == 1 && electronics == 0))
-    const checkOddsized = (typeof oddsized == "number" && (oddsized == 1 && oddsized == 0))
-    const checkFragile = (typeof fragile == "number" && (fragile == 1 && fragile == 0))
+    const checkInternational = (international == 1 || international == 0)
+    const checkElectronics = (electronics == 1 || electronics == 0)
+    const checkOddsized = (oddsized == 1 || oddsized == 0)
+    const checkFragile = (fragile == 1 || fragile == 0)
     //35 is 35 dkk for a standard delivery price
     if (checkVolume, checkWeight, checkInternational, checkElectronics, checkOddsized, checkFragile){
         const baseAmountToPay= 35;

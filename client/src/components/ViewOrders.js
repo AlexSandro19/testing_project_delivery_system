@@ -1,8 +1,11 @@
 import { Button, Grid, Link } from "@mui/material";
-import { TextField,Typography } from "@mui/material";
+import { TextField,Typography,Card,CardContent } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { createTheme } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import Collapse from '@mui/material/Collapse';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {useState} from "react";
+import {ExpandMore} from "./ExpandMore";
 const theme = createTheme()
 const useStyles = makeStyles(() => ({
     paper: {
@@ -36,12 +39,33 @@ const useStyles = makeStyles(() => ({
       
     }
   }));
+  
+
 export const ViewOrders=({user})=>{
     const classes= useStyles();
-    
+    const [expanded, setExpanded] = useState(false);
+
+    const handleExpandClick = () => {
+      setExpanded(!expanded);
+      };
     return(
         <Grid>
-
+         
+          <Card>
+          <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>Method:</Typography>
+        </CardContent>
+      </Collapse>
+          </Card>
         </Grid>
         )
 }
