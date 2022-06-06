@@ -72,56 +72,6 @@ return returnValue;
    *                              returned array are at respective positions to the
    *                              provided queries.
    */
-const executeTransaction = (
-  queries,
-  params,
-) => {
-  try {  
-    if (!pool){
-      throw new Error(
-        "Pool was not created. Ensure pool is created when running the app."
-      );
-    }
-    if (queries.length !== params.length) {
-      return Promise.reject(
-          'Number of provided queries did not match the number of provided query values arrays'
-      )
-    }
-    return new Promise((resolve, reject) => { 
-      const results=[];
-      if (!pool)
-      throw new Error(
-        "Pool was not created. Ensure pool is created when running the app."
-      );
-      pool.getConnection((err,connection)=>{
-        if(err){
-          console.error(err);
-          throw new Error("failed to execute MySQL query");
-        }  
-        connection.beginTransaction((error)=>{
-          if(error){
-            connection.rollback(()=>{
-              console.log(error);
-              console.log("ERROR HAS OCCURED WITHIN THE TRANSACTION");
-              connection.release();
-              reject(error)
-            })
-          }else{
-            queries.forEach((element,index) => {
-              console.log(params[index]);
-              results.push(individualQuery(connection, element,params[index]));
-            });
-            resolve(results);
-          }
-
-        })
-      })
-    });
-  } catch (error) {
-    console.error("[mysql.connector][execute][Error]: ", error);
-    throw new Error("failed to execute MySQL query");
-  }
-};
 
 /**
  * executes SQL queries in MySQL db
@@ -167,6 +117,5 @@ const execute = (
 module.exports = {
   init,
   execute,
-  executeTransaction,
   end
 }
