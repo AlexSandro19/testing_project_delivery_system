@@ -298,7 +298,7 @@ class User {
                 const response = await execute("DELETE from user WHERE idcustomer=?;", [`${id}`]);
                 console.log("response: ",response)
                 if (response.affectedRows > 0){
-                        return { userdeleted: true, deletedUser: getDeletedUser[0] }
+                        return { userDeleted: true, deletedUser: getDeletedUser[0] }
                     } else {
                         console.log("[mysql.connector][execute][Error]: ", error);
                         throw {
