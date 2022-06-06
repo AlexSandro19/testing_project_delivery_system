@@ -235,8 +235,11 @@ class Delivery {
      * @param {Delivery} updatedDelivery provide the new delivery with which to update the database
      * @returns the updated delivery objecct
      */
-    static async updateDelivery(updatedDelivery = Delivery) {
+    static async updateDelivery(updatedDelivery) {
         try {
+            console.log("updatedDelivery",updatedDelivery)
+            console.log("updatedDelivery uid",updatedDelivery.getUID())
+        
             const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.getUID()}`])
             console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
             const receivedDelivery = new Delivery(
@@ -334,7 +337,7 @@ class Delivery {
      * @returns  Return the newly created delivery
      */
     static async createDelivery(
-        newDelivery = Delivery
+        newDelivery 
     ) {
         try {
             const response = await execute("INSERT INTO deliveries(packages_idpackages,priority,payment_idpayment,international,start_location,end_location,message,estimated_date,start_date,end_date,uid) "
@@ -353,17 +356,17 @@ class Delivery {
             console.log("newDelivery: ", newDelivery)
             console.log("createDelivery response: ", response)
             if (response.affectedRows > 0) {
+                console.log("msg if")
                 newDelivery.setIdDeliveries(response.insertId);
                 return { deliveryCreated: true, createdDelivery: newDelivery }
             } else {
+                console.log("msg else")   
                 return { deliveryCreated: false };
             }
         } catch (error) {
+            console.log("msg catch") 
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
-            }
+            throw new Error("no password given")
         }
 
         // example of what createDelivery() should return 

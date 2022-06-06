@@ -2,13 +2,13 @@
 const {Package} = require("../../src/model/package.model")
 const { init } = require("../../src/database/mysql.connector");
 describe('Testing the package', () => {
-  
+   let someCreatedPackage;
     beforeAll(async ()=>{
        init()
     })
     it('gets All packages', async () => {
        const packages = await Package.getAllPackages()
-       expect(packages.length).toEqual(4)
+       expect(packages.length).toBeGreaterThan(0)
     });
     it(' adds package', async () => {   
       
@@ -23,16 +23,15 @@ describe('Testing the package', () => {
      // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
       //console.log("the deleted one",delete2Delivery)
       expect(createdPackage).toEqual(exctractedPackage)
+      someCreatedPackage = createdPackage
    });
 
    it(' updates package', async () => {
    
-      const updPackage = new Package(
-        1,1,1,1,1,1,1,1,1,undefined
-     )
-     console.log("updPackage",updPackage)
+      someCreatedPackage.user_iduser +=1
+     
     
-      const {updatedPackage} = await Package.updatePackage(updPackage)
+      const {updatedPackage} = await Package.updatePackage(someCreatedPackage)
       console.log("when we update Package :   ",updatedPackage)
       const exctractedPackage = await Package.getPackage(updatedPackage.idpackages)
      // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
@@ -42,16 +41,13 @@ describe('Testing the package', () => {
 
    it(' deletes package', async () => {
       
-      const deletePackage = new Package(
-         9,1,1,1,1,1,1,1,1,null
-     )
-    
-      const {deletedPackage} = await Package.deletePackage(deletePackage.idpackages)
+     
+      const {deletedPackage} = await Package.deletePackage(someCreatedPackage.idpackages)
       console.log("when we update delivery :   ",deletedPackage)
       //const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
      // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
      
-      expect(deletedPackage[0]).toEqual(deletePackage)
+      expect(deletedPackage).toEqual(someCreatedPackage)
    });
     afterEach(()=>{
     

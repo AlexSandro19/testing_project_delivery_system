@@ -3,7 +3,7 @@ const { execute } = require("../../src/database/mysql.connector");
 
 jest.mock('../../src/database/mysql.connector');
 describe('testing deliveries', () => {
-    it('should work for case 1', async () => {
+    /*it('should work for case 1', async () => {
       
       execute.mockResolvedValue(
         {
@@ -125,5 +125,5 @@ describe('testing deliveries', () => {
       
         console.log("newdelivery",updatedDelivery)
       expect(updatedDelivery).toEqual(updDelivery);
-    });
+    });*/
   })

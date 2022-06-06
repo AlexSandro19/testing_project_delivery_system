@@ -2,13 +2,13 @@
 const {Location} = require("../../src/model/location.model")
 const { init } = require("../../src/database/mysql.connector");
 describe('Testing the location', () => {
-  
+    let someCreatedLocation;
     beforeAll(async ()=>{
         init()
     })
     it('gets All locations', async () => {
        const locations = await Location.getAllLocations()
-       expect(locations.length).toEqual(15)
+       expect(locations.length).toBeGreaterThan(0)
     });
     it(' adds location', async () => {
             newLocation = new Location(
@@ -22,15 +22,14 @@ describe('Testing the location', () => {
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
         //console.log("the deleted one",delete2Delivery)
         expect(createdLocation).toEqual(exctractedLocation)
+        someCreatedLocation = createdLocation
      });
     it(' updates location', async () => {
  
-        const updLocation = new Location(
-           1,2,"1",1,2
-       )
-       console.log("updLocation",updLocation)
+        someCreatedLocation.address += "asd"
       
-        const {updatedLocation} = await Location.updateLocation(updLocation)
+      
+        const {updatedLocation} = await Location.updateLocation(someCreatedLocation)
         console.log("when we update delivery :   ",updatedLocation)
         const exctractedLocation = await Location.getLocation(updatedLocation.idlocation)
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
@@ -40,16 +39,14 @@ describe('Testing the location', () => {
 
      it(' deletes location', async () => {
             
-            const deleteLocation = new Location(
-                 18,1,"1",1,2
-            )
+        
       
-        const {deletedLocation} = await Location.deleteLocation(deleteLocation.idlocation)
+        const {deletedLocation} = await Location.deleteLocation(someCreatedLocation.idlocation)
         console.log("when we update Location :   ",deletedLocation)
         //const exctractedDelivery = await Delivery.getDelivery(updatedDelivery.iddeliveries)
        // const delete2Delivery = await Delivery.deleteDelivery(createdDelivery.iddeliveries)
        
-        expect(deletedLocation[0]).toEqual(deleteLocation)
+        expect(deletedLocation[0]).toEqual(someCreatedLocation)
      });
      
     

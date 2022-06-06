@@ -13,5 +13,6 @@ app.use("/general",require("./src/routes/general.routes"))
 app.use("/packages", require("./src/routes/packages.routes"));
 app.use("/payments", require("./src/routes/payments.routes"));
 app.use("/locations", require("./src/routes/locations.routes"));
+app.use("/general", require("./src/routes/general.routes"));
 
 module.exports = app;
