@@ -13,7 +13,7 @@ describe('Testing the package', () => {
     it(' adds package', async () => {   
       
       const newPackage = new Package(
-         null,1,1,1,1,1,1,1,1,undefined
+         null,1,1,1,1,1,1,1,1,null
      )
      console.log("newPackage",newPackage)
     
@@ -28,7 +28,7 @@ describe('Testing the package', () => {
    it(' updates package', async () => {
    
       const updPackage = new Package(
-        1,1,1,1,1,1,1,1,1,undefined
+        1,1,1,1,1,1,1,1,1,null
      )
      console.log("updPackage",updPackage)
     

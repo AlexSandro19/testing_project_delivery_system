@@ -14,20 +14,20 @@ describe("Testing User api routes", () => {
     end()
   });
   
-  test("Check login api", (done) => {
-    const user = {
-      email: "alex@gmail.com",
-      password: "alex123",
-    }
-    const response = request(app).post("/users/login").send(user)
-    response.expect(200).expect((res) => {
-      expect(res.body.user.email).toEqual(user.email);
-      console.log(res.body)
-    }).end((err, res) => {
-      if (err) return done(err);
-      return done();
-    });
-  })
+  // test("Check login api", (done) => {
+  //   const user = {
+  //     email: "alex@gmail.com",
+  //     password: "alex123",
+  //   }
+  //   const response = request(app).post("/users/login").send(user)
+  //   response.expect(200).expect((res) => {
+  //     expect(res.body.user.email).toEqual(user.email);
+  //     console.log(res.body)
+  //   }).end((err, res) => {
+  //     if (err) return done(err);
+  //     return done();
+  //   });
+  // })
 
   test("Check register api", (done) => {
 
@@ -53,12 +53,13 @@ describe("Testing User api routes", () => {
       address: "Norrebro 1", 
       duns: generatedDuns, // has to be unique
       zipcode: "2", 
-      cityId: "1",
+      city: "1",
       password: "alex123",
       passwordConfirm: "alex123"
      }
+     console.log("test user: ", user)
     const response = request(app).post("/users/register").send(user)
-       console.debug(response);
+       console.log(response);
     response.expect(200).expect((res) => {
       console.log("res.body: ", res.body)
       const {createdUser} = res.body; 
@@ -115,7 +116,7 @@ describe("Testing User api routes", () => {
       address: saveCreatedUser.address,
       duns: saveCreatedUser.duns,
       zipcode: saveCreatedUser.zip_city_zipcode_idzipcode,
-      cityId: saveCreatedUser.zip_city_city_idcity,
+      city: saveCreatedUser.zip_city_city_idcity,
       password: saveCreatedUser.password,
       passwordConfirm: saveCreatedUser.password,
     }

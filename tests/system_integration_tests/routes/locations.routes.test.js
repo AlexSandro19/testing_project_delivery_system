@@ -25,8 +25,8 @@ describe("Testing Location api routes", () => {
     console.debug(response);
     response.expect(200).expect((res) => {
       console.log("res.body: ", res.body)
-      console.log("res.body.response: ", res.body.response)
-      const receivedLocation = res.body.response;
+      console.log("res.body.response: ", res.body.createdLocation)
+      const receivedLocation = res.body.createdLocation;
       console.log("location: " ,receivedLocation)
       expect(receivedLocation.typeoflocation_idtypeoflocation).toEqual(location.typeOfLocationId);
       console.log(res.body)
@@ -88,7 +88,7 @@ describe("Testing Location api routes", () => {
       const response = request(app).delete("/locations/deleteLocation").send({idlocation: saveCreatedLocation.idlocation})
       response.expect(200).expect((res) => {
         console.log("res.body test delete : ", res.body)
-        expect(res.body.payment.idlocation).toEqual(saveCreatedLocation.idlocation);
+        expect(res.body.location.idlocation).toEqual(saveCreatedLocation.idlocation);
       }).end((err, res) => {
         console.log("res: ", res)
         if (err) return done(err);
