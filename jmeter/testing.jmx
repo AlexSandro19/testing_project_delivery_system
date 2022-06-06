@@ -232,6 +232,7 @@
       <TestFragmentController guiclass="TestFragmentControllerGui" testclass="TestFragmentController" testname="Clear Database" enabled="true"/>
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="deliveries/deleteDelivery" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
@@ -243,7 +244,6 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
@@ -260,6 +260,7 @@
         </HTTPSamplerProxy>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="payments/deletePayment" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
@@ -272,7 +273,6 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
@@ -289,6 +289,7 @@
         </HTTPSamplerProxy>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="packages/deletePackage" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
@@ -301,7 +302,6 @@
               </elementProp>
             </collectionProp>
           </elementProp>
-          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
           <stringProp name="HTTPSampler.domain"></stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
@@ -350,7 +350,7 @@
         </ModuleController>
         <hashTree/>
       </hashTree>
-      <kg.apc.jmeter.threads.SteppingThreadGroup guiclass="kg.apc.jmeter.threads.SteppingThreadGroupGui" testclass="kg.apc.jmeter.threads.SteppingThreadGroup" testname="STRESS TEST Stepping Thread Group" enabled="true">
+      <kg.apc.jmeter.threads.SteppingThreadGroup guiclass="kg.apc.jmeter.threads.SteppingThreadGroupGui" testclass="kg.apc.jmeter.threads.SteppingThreadGroup" testname="STRESS TEST Stepping Thread Group" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <stringProp name="ThreadGroup.num_threads">20000</stringProp>
         <stringProp name="Threads initial delay">0</stringProp>
@@ -385,35 +385,35 @@
         </ModuleController>
         <hashTree/>
       </hashTree>
-      <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="SPIKE TEST Ultimate" enabled="false">
+      <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="SPIKE TEST Ultimate" enabled="true">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="-291047427">
-            <stringProp name="100">100</stringProp>
-            <stringProp name="0">0</stringProp>
-            <stringProp name="30">30</stringProp>
+          <collectionProp name="264655691">
+            <stringProp name="1631392">5500</stringProp>
+            <stringProp name="48">0</stringProp>
+            <stringProp name="48687">120</stringProp>
             <stringProp name="1722">60</stringProp>
-            <stringProp name="1629">30</stringProp>
+            <stringProp name="48687">120</stringProp>
           </collectionProp>
-          <collectionProp name="-39348704">
-            <stringProp name="100">100</stringProp>
-            <stringProp name="48873">180</stringProp>
-            <stringProp name="30">30</stringProp>
-            <stringProp name="60">60</stringProp>
-            <stringProp name="1629">30</stringProp>
+          <collectionProp name="1940131820">
+            <stringProp name="1631392">5500</stringProp>
+            <stringProp name="50640">330</stringProp>
+            <stringProp name="48687">120</stringProp>
+            <stringProp name="1722">60</stringProp>
+            <stringProp name="48687">120</stringProp>
           </collectionProp>
-          <collectionProp name="-1828508704">
-            <stringProp name="100">100</stringProp>
-            <stringProp name="50733">360</stringProp>
-            <stringProp name="30">30</stringProp>
-            <stringProp name="60">60</stringProp>
-            <stringProp name="1629">30</stringProp>
+          <collectionProp name="1661553390">
+            <stringProp name="1631392">5500</stringProp>
+            <stringProp name="53616">660</stringProp>
+            <stringProp name="48687">120</stringProp>
+            <stringProp name="1722">60</stringProp>
+            <stringProp name="48687">120</stringProp>
           </collectionProp>
-          <collectionProp name="1859097294">
-            <stringProp name="100">100</stringProp>
-            <stringProp name="52593">540</stringProp>
-            <stringProp name="30">30</stringProp>
-            <stringProp name="60">60</stringProp>
-            <stringProp name="1629">30</stringProp>
+          <collectionProp name="688546750">
+            <stringProp name="1631392">5500</stringProp>
+            <stringProp name="56592">990</stringProp>
+            <stringProp name="48687">120</stringProp>
+            <stringProp name="1722">60</stringProp>
+            <stringProp name="48687">120</stringProp>
           </collectionProp>
         </collectionProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -478,7 +478,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Stress Test\ResultsTree.csv</stringProp>
+        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Spike Test\ResultsTree.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
@@ -515,7 +515,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Stress Test\GraphResults.csv</stringProp>
+        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Spike Test\GraphResults.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
@@ -552,7 +552,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Stress Test\SummaryReport.csv</stringProp>
+        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Spike Test\SummaryReport.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
@@ -591,7 +591,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Stress Test\AggregateReport.csv</stringProp>
+        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Spike Test\AggregateReport.csv</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
