@@ -71,16 +71,17 @@ class Package {
     setReceiverId(value) { this.receiver_iduser = value }
 
     equals(receivedPackage = new Package) {
-        return receivedPackage.getIdPackage === this.idpackages &&
-            receivedPackage.getUserId === this.user_iduser &&
-            receivedPackage.getDepth === this.depth &&
-            receivedPackage.getHeight === this.height &&
-            receivedPackage.getWidth === this.width &&
-            receivedPackage.getWeight === this.weight &&
-            receivedPackage.getFragile === this.fragile &&
-            receivedPackage.getOddSized === this.oddsized &&
-            receivedPackage.getElectronics === this.electronics &&
-            receivedPackage.getReceiverId === this.receiver_iduser
+        const isEqual = receivedPackage.getIdPackage() == this.idpackages &&
+            receivedPackage.getUserId() == this.user_iduser &&
+            receivedPackage.getDepth() == this.depth &&
+            receivedPackage.getHeight() == this.height &&
+            receivedPackage.getWidth() == this.width &&
+            receivedPackage.getWeight() == this.weight &&
+            receivedPackage.getFragile() == this.fragile &&
+            receivedPackage.getOddSized() == this.oddsized &&
+            receivedPackage.getElectronics() == this.electronics &&
+            receivedPackage.getReceiverId() == this.receiver_iduser
+        return isEqual
     }
 
     toString() {
@@ -100,10 +101,10 @@ class Package {
      */
     static async getAllPackages() {
         try {
-            const response = await execute("SELECT * FROM packages", []);
-            console.log(response);
+            const response = await execute("SELECT * FROM Packages", []);
             if (response.length > 0) {
-                return response.map(v => new Package(
+                return response.map(v =>
+                    new Package(
                         v.idpackages,
                         v.user_iduser,
                         v.weight,
@@ -171,37 +172,51 @@ class Package {
      * @returns 
      */
     static async updatePackage(
-        newPackage = Package
+        updatedPackage = Package
     ) {
-        const getUpdatedPackage = await execute("SELECT * FROM Packages WHERE idpackages=?", [`${newPackage.getIdPackage()}`])
-        if (!newPackage.equals(getUpdatedPackage[0])) {
-            const response = await execute(
-                "UPDATE Packages"
-                + " SET user_iduser=?,weight=?,height=?,width=?,depth=?,fragile=?,electronics=?,oddsized=?,receiver_iduser=? WHERE idpackages=?"
-                , [`${newPackage.getUserId()}`
-                    , `${newPackage.getWeight()}`,
-                `${newPackage.getHeight()}`,
-                `${newPackage.getWidth()}`,
-                `${newPackage.getDepth()}`,
-                `${newPackage.getFragile()}`,
-                `${newPackage.getElectronics()}`,
-                `${newPackage.getOddSized()}`,
-                `${newPackage.getReceiverId()}`,
-                `${newPackage.getIdPackage}`,])
-            return new Package(
-                getUpdatedPackage[0].idpackages,
-                getUpdatedPackage[0].user_iduser,
-                getUpdatedPackage[0].weight,
-                getUpdatedPackage[0].height,
-                getUpdatedPackage[0].width,
-                getUpdatedPackage[0].depth,
-                getUpdatedPackage[0].fragile,
-                getUpdatedPackage[0].electronics,
-                getUpdatedPackage[0].oddsized,
-                getUpdatedPackage[0].receiver_id)
-        } else {
-            return "Package was not updated, because the package info is the same"
+        try {
+            const packageFromDB = await execute("SELECT * FROM packages WHERE idpackages=?;", [`${updatedPackage.getIdPackage()}`])
+            const receivedPackage = new Package(
+                packageFromDB[0].idpackages,
+                packageFromDB[0].user_iduser,
+                packageFromDB[0].weight,
+                packageFromDB[0].height,
+                packageFromDB[0].width,
+                packageFromDB[0].depth,
+                packageFromDB[0].fragile,
+                packageFromDB[0].electronics,
+                packageFromDB[0].oddsized,
+                packageFromDB[0].receiver_id)
+            if (!updatedPackage.equals(receivedPackage)) {
+                const response = await execute(
+                    "UPDATE packages "
+                    + " SET user_iduser=?,weight=?,height=?,width=?,depth=?,fragile=?,electronics=?,oddsized=?,receiver_iduser=? WHERE idpackages=?;"
+                    , [updatedPackage.getUserId(),
+                    updatedPackage.getWeight(),
+                    updatedPackage.getHeight(),
+                    updatedPackage.getWidth(),
+                    updatedPackage.getDepth(),
+                    updatedPackage.getFragile(),
+                    updatedPackage.getElectronics(),
+                    updatedPackage.getOddSized(),
+                    updatedPackage.getReceiverId(),
+                    updatedPackage.getIdPackage()])
+                if (response.changedRows > 0) {
+                    return { packageInfoIsSame: false, updatedPackage }
+                } else {
+                    return { packageInfoIsSame: false, updatedPackage: undefined };
+                }
+            } else {
+                return { packageInfoIsSame: true, updatedPackage }
+            }
+        } catch (error) {
+            console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
+            }
         }
+
 
     }
     /**
@@ -209,7 +224,7 @@ class Package {
      * @param {number} id provide the id with which to delete a Package from the database with
      * @returns the deleted Package item and if it was successful
      */
-    static async deletePackage(id = Number) {
+    static async deletePackage(id) {
         try {
             const getDeletedPackage = await execute("SELECT * from Packages WHERE idpackages=?", [`${id}`]);
             console.log("getDeletedPackage", getDeletedPackage);
@@ -236,11 +251,12 @@ class Package {
             }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed", 
-                message:error.message,
-            } 
+            throw {
+                value: "Query failed",
+                message: error.message,
+            }
         }
-        
+
     }
     /**
       * Creates a new Package entry in the database
@@ -250,19 +266,34 @@ class Package {
     static async createPackage(
         newPackage
     ) {
-        const response = await execute("INSERT INTO packages(user_iduser,weight,height,width,depth,fragile,electronics,oddsized,receiver_iduser) "
-            + "VALUES (?,?,?,?,?,?,?,?,?);",
-            [newPackage.getUserId(),
-            newPackage.getWeight(),
-            newPackage.getHeight(),
-            newPackage.getWidth(),
-            newPackage.getDepth(),
-            newPackage.getFragile(),
-            newPackage.getElectronics(),
-            newPackage.getOddSized(),
-            newPackage.getReceiverId()])
-        console.log("createPackage response: ", response)
-        return response;
+        try {
+            const response = await execute("INSERT INTO packages(user_iduser,weight,height,width,depth,fragile,electronics,oddsized,receiver_iduser) "
+                + "VALUES (?,?,?,?,?,?,?,?,?);",
+                [newPackage.getUserId(),
+                newPackage.getWeight(),
+                newPackage.getHeight(),
+                newPackage.getWidth(),
+                newPackage.getDepth(),
+                newPackage.getFragile(),
+                newPackage.getElectronics(),
+                newPackage.getOddSized(),
+                newPackage.getReceiverId()])
+            console.log("createPackage response: ", response)
+            if (response.affectedRows > 0) {
+                newPackage.setIdPackage(response.insertId);
+                return { packageCreated: true, createdPackage: newPackage }
+            } else {
+                return { packageCreated: false };
+            }
+
+        } catch (error) {
+            console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
+            }
+        }
+
     }
 }
 module.exports = {

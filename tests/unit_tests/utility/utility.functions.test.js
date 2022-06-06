@@ -1,4 +1,4 @@
-const { getDateInSqlFormat } = require("../../../../src/utility/utility.functions");
+const { getDateInSqlFormat } = require("../../../src/utility/utility.functions");
 
 describe("Run tests for getDateInSqlFormat function", () => {
     test("Pass a valid Date object and expect a string representation of it in format 'YYYY-MM-DD hh:mm:ss'", () => {

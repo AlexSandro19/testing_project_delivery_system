@@ -197,7 +197,7 @@ describe("Run tests for transactionDateGenerator function", () => {
         expect(type).not.toBe("number");
     });
 
-    test("Pass nothing, and don't expect an undefined", () => {
+    test("Pass nothing, and don't expect an null", () => {
 
         const result = transactionDateGenerator();
         const type = typeof result
