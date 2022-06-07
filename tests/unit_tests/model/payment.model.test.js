@@ -10,8 +10,8 @@ describe("Run tests for Payment.generateTransactionId function", () => {
         const response = new Payment()
         
         //Act
-        // const transactionId = response.generateTransactionId()
-        const transactionId = "eed33see32334-233432"
+        const transactionId = response.generateTransactionId()
+        // const transactionId = "eed33see32334-233432"
         //Assert
         expect(transactionId).toMatch(/^[0-9a-zA-Z]{8}\B[0-9]{5}\b-[0-9]{6}$/gi);
     });

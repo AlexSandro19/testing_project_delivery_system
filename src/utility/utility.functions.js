@@ -19,38 +19,7 @@ const getDateInSqlFormat = (date = null) => {
     }
 }
 
-const generateUUID = () => {
-    let uid = "";
-    while (uid.length < 36) {
-        console.log(uid.length)
-        switch (uid.length) {
-            case 8:
-                console.log(uid);
-                uid = uid + "-";
-                console.log(uid);
-                break;
-            case 13:
-                console.log(uid);
-                uid = uid + "-";
-                console.log(uid);
-                break;
-            case 18:
-                uid = uid + "-";
-                break;
-            case 23:
-                uid = uid + "-";
-                break;
-            default:
-                console.log(uid);
-                uid = uid + "" + characterGenerator(4);
-            case 36:
-                break;
-        }
-    }
-    return uid;
-}
 
 module.exports ={
-    getDateInSqlFormat,
-    generateUUID
+    getDateInSqlFormat
 }
