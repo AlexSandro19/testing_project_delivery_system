@@ -9,11 +9,11 @@ class Location {
     zip_city_zipcode_idzipcode;
     zip_city_city_idcity;
     constructor(
-        idlocation = Number,
-        typeoflocation_idtypeoflocation = Number,
-        address = String,
-        zip_city_zipcode_idzipcode = Number,
-        zip_city_city_idcity = Number,
+        idlocation,
+        typeoflocation_idtypeoflocation,
+        address,
+        zip_city_zipcode_idzipcode,
+        zip_city_city_idcity,
     ) {
         this.idlocation = idlocation;
         this.typeoflocation_idtypeoflocation = typeoflocation_idtypeoflocation;
@@ -88,13 +88,52 @@ class Location {
     static async getLocation(id = Number) {
         try {
             const response = await execute("SELECT * FROM Location WHERE idlocation=?", [`${id}`])
+            if (response.length > 0) {
+                return new Location(
+                    response[0].idlocation,
+                    response[0].typeoflocation_idtypeoflocation,
+                    response[0].address,
+                    response[0].zip_city_zipcode_idzipcode,
+                    response[0].zip_city_city_idcity)
 
-            return new Location(
-                response[0].idlocation,
-                response[0].typeoflocation_idtypeoflocation,
-                response[0].address,
-                response[0].zip_city_zipcode_idzipcode,
-                response[0].zip_city_city_idcity)
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "User not found",
+                    message: "User not found",
+                }
+            }
+        } catch (error) {
+            console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
+            }
+        }
+
+
+    }
+
+    /**
+     * The function get a 1 Location from the database with the provided id 
+     * 
+     * @param 
+     */
+    static async getLocationIfAdressZipCityExists(zipCode, cityId, address) {
+        try {
+            // const response = await execute("SELECT * FROM Location WHERE idlocation=?", [`${id}`])
+            const response = await execute("SELECT * from location WHERE zip_city_zipcode_idzipcode=? AND zip_city_city_idcity=? AND address=?", [`${zipCode}`, `${cityId}`, `${address}`])
+            console.log("getLocationIfAdressZipCityExists > response: ", response)
+            if (response.length > 0) {
+                return new Location(
+                    response[0].idlocation,
+                    response[0].typeoflocation_idtypeoflocation,
+                    response[0].address,
+                    response[0].zip_city_zipcode_idzipcode,
+                    response[0].zip_city_city_idcity)
+            } else {
+                return undefined; 
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -155,14 +194,30 @@ class Location {
      */
     static async deleteLocation(id = Number) {
         try {
-            const getDeletedLocation = await execute("SELECT from Location Where idlocation=", [`${id}`]);
-            const response = await execute("DELETE from Location Where idlocation=", [`${id}`]);
-            return new Location(
-                getDeletedLocation[0].idlocation,
-                getDeletedLocation[0].typeoflocation_idtypeoflocation,
-                getDeletedLocation[0].address,
-                getDeletedLocation[0].zip_city_zipcode_idzipcode,
-                getDeletedLocation[0].zip_city_city_idcity)
+            const getDeletedLocation = await execute("SELECT * from Location WHERE idlocation=?;", [`${id}`]);
+            console.log("getDeletedLocation", getDeletedLocation);
+            console.log("getDeletedLocation.length", getDeletedLocation.length)
+            if (getDeletedLocation.length >  0){
+                console.log("here");
+                const response = await execute("DELETE from Location WHERE idlocation=?;", [`${id}`]);
+                console.log("response: ",response)
+                if (response.affectedRows > 0){
+                    return { locationDeleted: true, deletedLocation: getDeletedLocation[0] }
+                    } else {
+                        console.log("[mysql.connector][execute][Error]: ", error);
+                        throw {
+                            value: "Internal Error with deleting",
+                            message: "Internal Error with deleting",
+                    }
+                }
+            }else{
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Location not found",
+                    message: "Location not found",
+                }
+            }
+
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -170,7 +225,6 @@ class Location {
                 message: error.message,
             }
         }
-
     }
     /**
       * Creates a new Location entry in the database

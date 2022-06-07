@@ -1,0 +1,2 @@
+export const ZIPCITIES_SET= "ZIPCITIES_SET";
+export const ZIPCITIES_GET = "ZIPCITIES_GET";

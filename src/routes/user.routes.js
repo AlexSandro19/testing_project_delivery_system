@@ -5,10 +5,6 @@ const { execute } = require("../database/mysql.connector")
 const { User } = require("../model/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-//add password to database
-//add password to object
-//
-//error catching in models
 router.post("/register",
     [
         check("typeOfUser").exists({ checkFalsy: true }).withMessage("Type of user not provided").trim().toInt()
@@ -20,7 +16,7 @@ router.post("/register",
             .isAlpha().withMessage("Second name should contain only characters")
             .isLength({ max: 45 }).withMessage("Second name should be no more than 45 characters long"),
         check("companyName").exists().withMessage("Company not provided").trim()
-            .isAlphanumeric().withMessage("Company name can have only characters and/or numbers provided")
+            .isAlphanumeric('en-US', { ignore: " " }).withMessage("Company name can have only characters and/or numbers provided")
             .isLength({ max: 45 }).withMessage("Company name should be no more than 45 characters long"),
         check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
             .normalizeEmail().isEmail().withMessage("Wrong email format")
@@ -36,9 +32,12 @@ router.post("/register",
         check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
             .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
         check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
-            .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+            .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
+        check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
+        check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm password not provided").trim(),
     ], async (req, res) => {
         try {
+            console.log("user.register > req.body: ", req.body)
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({
@@ -46,22 +45,21 @@ router.post("/register",
                     message: "Invalid data while creating a user",
                 });
             }
-            const { typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password, confirmPassword } = req.body;
-
-            if (password !== confirmPassword) {
+            const { typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password, passwordConfirm } = req.body;
+            if (password !== passwordConfirm) {
                 return res.status(400).json({
                     message: "Confirm password is not correct",
-                    errors: [{ value: "confirmPassword", msg: "Confirm password is not correct", param: "confirmPassword" }],
+                    errors: [{ value: "passwordConfirm", msg: "Confirm password is not correct", param: "passwordConfirm" }],
                 });
-            }
+              }
             const hashedPassword = await bcrypt.hash(password, 12);
-            const user = new User(null, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, hashedPassword);
-            console.log(user)
+            const user = new User(null, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
+            console.log("user: ", user)
             const { userCreated, createdUser } = await User.createUser(user)
             if (userCreated) {
-                return res.status(200).json({ response: { createdUser } });
+                return res.status(200).json({ createdUser });
             } else {
-                return res.status(500).json({ response: { message: "Internal Server Error" } });
+                return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
             console.log(error);
@@ -85,7 +83,7 @@ router.post("/updateUser", [
         .isAlpha().withMessage("Second name should contain only characters")
         .isLength({ max: 45 }).withMessage("Second name should be no more than 45 characters long"),
     check("companyName").exists().withMessage("Company not provided").trim()
-        .isAlphanumeric().withMessage("Company name can have only characters and/or numbers provided")
+        .isAlphanumeric('en-US', { ignore: " " }).withMessage("Company name can have only characters and/or numbers provided")
         .isLength({ max: 45 }).withMessage("Company name should be no more than 45 characters long"),
     check("email").exists({ checkFalsy: true }).withMessage("Email not provided").trim()
         .normalizeEmail().isEmail().withMessage("Wrong email format")
@@ -101,7 +99,9 @@ router.post("/updateUser", [
     check("zipcode").exists({ checkFalsy: true }).withMessage("Zip code not provided").trim()
         .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
     check("city").exists({ checkFalsy: true }).withMessage("City not provided").trim()
-        .toInt().isInt({ min: 0 }).withMessage("Wrong value provided")
+        .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
+    check("password").exists({ checkFalsy: true }).withMessage("Password not provided").trim(),
+    check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm Password not provided").trim(),
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -111,79 +111,97 @@ router.post("/updateUser", [
                 message: "Invalid data while creating a user",
             });
         }
-        const { idCustomer, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password } = req.body;
-        const user = new User(idCustomer, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, password);
+        const { idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode,password,passwordConfirm, city } = req.body;
+        
+        if (passwordConfirm !== password) {
+          return res.status(400).json({
+            message: "Invalid authorization data",
+            errors: [
+              { value: "", msg: "Wrong password, try again", param: "password" },
+              { value: "", msg: "Wrong password, try again", param: "passwordConfirm" },
+            ],
+          });
+      }
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const user = new User(idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
+   
         console.log(user);
-        const { userInfoIsSame, updatedUser } = await User.updateUser(user)
+        const { userInfoIsSame, updatedUser } = await User.updateUser(user);
+        console.log(userInfoIsSame);
         if (!userInfoIsSame && typeof updatedUser === 'object') {
-            return res.status(200).json({ response: updatedUser });
+            return res.status(200).json({ user: updatedUser });
         } else if (!userInfoIsSame && updatedUser === undefined) {
-            return res.status(500).json({ response: { message: "Internal Server Error" } });
+            return res.status(500).json({ message: "Internal Server Error" });
         } else if (userInfoIsSame) {
-            return res.status(400).json({ response: updatedUser, message: "User was not updated, because the user info is the same" });
+            return res.status(400).json({ message: "User was not updated, because the user info is the same" });
         }
     } catch (error) {
         console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [
-                { value: error.value, msg: error.message },
+                { value: error, msg: error.message },
             ],
         });
     }
 
 })
-router.post("/login", async (req, res) => {
+router.post("/login",
+[check("email","Invalid email provided or not a valid email address").isEmail(),
+check("password","Invalid password provided or not a valid password").notEmpty(),], async (req, res) => {
     try {
-
+        
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array(),
-                message: "Invalid authorization data",
-            });
+          return res.status(400).json({
+            errors: errors.array(),
+            message: "Invalid authorization data",
+          });
         }
-
+  
         const { email, password } = req.body;
+        console.log("req.body: ", req.body)
         const user = await User.getUserByEmail(email)
         console.log(user);
         if (!user) {
             return res.status(400).json({
-                message: "Invalid authorization data",
-                errors: [{ value: email, msg: "User not found", param: "email" }],
+              message: "Invalid authorization data",
+              errors: [{ value: email, msg: "User not found", param: "email" }],
             });
-        }
-
+          }
+        
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({
-                message: "Invalid authorization data",
-                errors: [
-                    { value: "", msg: "Wrong password, try again", param: "password" },
-                ],
+              message: "Invalid authorization data",
+              errors: [
+                { value: "", msg: "Wrong password, try again", param: "password" },
+              ],
             });
         }
 
-        const token = jwt.sign({ id: user.idcustomer }, process.env.JWT_SECRET, {
-            expiresIn: "30m",
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: "30m",
         });
-        return res.status(200).json({ user, token: token, exp: token.exp });
+        console.log(token.exp);
+        return res.status(200).json({ user,token:token,exp:token.exp });
 
     } catch (error) {
         console.log(error.value);
         return res.status(500).json({
-            message: "Invalid data",
-            errors: [
-                { value: error.value, msg: error.message },
-            ],
+          message: "Invalid data",
+          errors: [
+            { value: error.value, msg: error.message },
+          ],
         });
     }
-
+   
 })
 
 router.delete("/deleteUser", [
-    check("Id", "User id not provided").exists(),
+    check("idCustomer").exists({ checkFalsy: true }).withMessage("Customer not provided").trim()
+        .toInt().isInt({ min: 0 }).withMessage("Wrong value provided"),
 ],
     async (req, res) => {
         try {
@@ -195,9 +213,13 @@ router.delete("/deleteUser", [
                 });
             }
 
-            var { id } = req.body
-            const response = await User.deleteUser(id)
-            return res.status(200).json({ response })
+            const { idCustomer } = req.body
+            const { userDeleted, deletedUser } = await User.deleteUser(idCustomer)
+            if (userDeleted) {
+                return res.status(200).json({ user: deletedUser });
+            } else {
+                return res.status(500).json({ message: "Internal Server Error when deleting" });
+            }
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -210,11 +232,9 @@ router.delete("/deleteUser", [
     })
 
 router.post("/getUser", async (req, res) => {
-
-    const user = await User.getUser(43);
+    const { idcustomer } = req.body
+    const user = await User.getUser(idcustomer);
     console.log(user);
-    const users = await User.getAllUsers();
-    console.log(users);
     return res.status(200).json({ user });
 })
 

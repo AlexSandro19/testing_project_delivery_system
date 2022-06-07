@@ -14,16 +14,16 @@ class Package {
     receiver_iduser;
 
     constructor(
-        idpackages = Number,
-        user_iduser = Number,
-        weight = Number,
-        height = Number,
-        width = Number,
-        depth = Number,
-        fragile = Boolean,
-        electronics = Boolean,
-        oddsized = Boolean,
-        receiver_iduser = Number,
+        idpackages,
+        user_iduser,
+        weight,
+        height,
+        width,
+        depth,
+        fragile,
+        electronics,
+        oddsized,
+        receiver_iduser = null,
     ) {
         this.idpackages = idpackages;
         this.user_iduser = user_iduser;
@@ -102,18 +102,26 @@ class Package {
     static async getAllPackages() {
         try {
             const response = await execute("SELECT * FROM Packages", []);
-            return response.map(v =>
-                new Package(
-                    v.idpackages,
-                    v.user_iduser,
-                    v.weight,
-                    v.height,
-                    v.width,
-                    v.depth,
-                    v.fragile,
-                    v.electronics,
-                    v.oddsized,
-                    v.receiver_id));
+            if (response.length > 0) {
+                return response.map(v =>
+                    new Package(
+                        v.idpackages,
+                        v.user_iduser,
+                        v.weight,
+                        v.height,
+                        v.width,
+                        v.depth,
+                        v.fragile,
+                        v.electronics,
+                        v.oddsized,
+                        v.receiver_iduser));
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Package not found",
+                    message: "Package not found",
+                }
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -131,18 +139,25 @@ class Package {
     static async getPackage(id = Number) {
         try {
             const response = await execute("SELECT * FROM Packages WHERE idpackages=?", [`${id}`])
-
-            return new Package(
-                response[0].idpackages,
-                response[0].user_iduser,
-                response[0].weight,
-                response[0].height,
-                response[0].width,
-                response[0].depth,
-                response[0].fragile,
-                response[0].electronics,
-                response[0].oddsized,
-                response[0].receiver_id)
+            if (response.length > 0) {
+                return new Package(
+                    response[0].idpackages,
+                    response[0].user_iduser,
+                    response[0].weight,
+                    response[0].height,
+                    response[0].width,
+                    response[0].depth,
+                    response[0].fragile,
+                    response[0].electronics,
+                    response[0].oddsized,
+                    response[0].receiver_id)
+            } else {
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Package not found",
+                    message: "Package not found",
+                }
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -150,7 +165,6 @@ class Package {
                 message: error.message,
             }
         }
-
 
     }
     /**
@@ -210,21 +224,31 @@ class Package {
      * @param {number} id provide the id with which to delete a Package from the database with
      * @returns the deleted Package item and if it was successful
      */
-    static async deletePackage(id = Number) {
+    static async deletePackage(id) {
         try {
-            const getDeletedPackage = await execute("SELECT from Packages Where idpackages=", [`${id}`]);
-            const response = await execute("DELETE from Packages Where idpackages=", [`${id}`]);
-            return new Package(
-                getDeletedPackage[0].idpackages,
-                getDeletedPackage[0].user_iduser,
-                getDeletedPackage[0].weight,
-                getDeletedPackage[0].height,
-                getDeletedPackage[0].width,
-                getDeletedPackage[0].depth,
-                getDeletedPackage[0].fragile,
-                getDeletedPackage[0].electronics,
-                getDeletedPackage[0].oddsized,
-                getDeletedPackage[0].receiver_id)
+            const getDeletedPackage = await execute("SELECT * from Packages WHERE idpackages=?", [`${id}`]);
+            console.log("getDeletedPackage", getDeletedPackage);
+            console.log("getDeletedPackage.length", getDeletedPackage.length)
+            if (getDeletedPackage.length >  0){
+                console.log("here");
+                const response = await execute("DELETE from Packages WHERE idpackages=?", [`${id}`]);
+                console.log("response: ",response)
+                if (response.affectedRows > 0){
+                    return { packageDeleted: true, deletedPackage: getDeletedPackage[0] }
+                    } else {
+                        console.log("[mysql.connector][execute][Error]: ", error);
+                        throw {
+                            value: "Internal Error with deleting",
+                            message: "Internal Error with deleting",
+                    }
+                }
+            }else{
+                console.log("[mysql.connector][execute][Error]: ", error);
+                throw {
+                    value: "Package not found",
+                    message: "Package not found",
+                }
+            }
         } catch (error) {
             console.log("[mysql.connector][execute][Error]: ", error);
             throw {
@@ -240,7 +264,7 @@ class Package {
       * @returns  Return the newly created Package
       */
     static async createPackage(
-        newPackage = Package
+        newPackage
     ) {
         try {
             const response = await execute("INSERT INTO packages(user_iduser,weight,height,width,depth,fragile,electronics,oddsized,receiver_iduser) "
