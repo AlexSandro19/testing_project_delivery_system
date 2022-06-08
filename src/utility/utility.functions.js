@@ -23,6 +23,5 @@ const getDateInSqlFormat = (date = null) => {
 
 
 module.exports ={
-    getDateInSqlFormat,
-    
+    getDateInSqlFormat
 }
