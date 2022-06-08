@@ -66,6 +66,7 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,zipsCities
   
     
           <Delivery
+          newAmount={newAmount}
           display={display}
           setDisplay={setDisplay}
           convertedAmount={convertedAmount}

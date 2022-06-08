@@ -4,7 +4,7 @@ import { createPackageApi,deletePackageApi  } from "../../services/package.servi
 import { getLocalAuthToken } from "../../services/auth.service";
 import {getConversionApi} from "../../services/currency.service";
 import {
-    CURRENCIES_GET,CURRENCIES_SET,CONVERT,CONVERTED
+    CURRENCIES_GET,CURRENCIES_SET,CONVERT,CONVERTED,RESET
   } from  "../constants/currency";
 function* createPackage(action){
     try{
@@ -49,6 +49,9 @@ function* deletePackageFlow(action){
               text:"You have successfully deleted the package",
               severity:"success"
           }
+      })
+      yield put({
+          type:RESET,
       })
     }catch(error){
         yield put({

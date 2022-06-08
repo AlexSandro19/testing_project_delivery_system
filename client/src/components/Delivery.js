@@ -29,7 +29,7 @@ const options = [
   const defaultOption = options[0];
   
 
-export const Delivery=({display,setDisplay,convertedAmount,converted,setConverted,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
+export const Delivery=({display,setDisplay,convertedAmount,newAmount,setConverted,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
 const classes=useStyles();
 const history = useHistory();
 const [modalOpen, setModalOpen] = useState(false);
@@ -124,7 +124,7 @@ return(
                   })}
                 </Select></Grid> */}
         <Grid item xs={6}>
-          <Typography>Converted Amount in Dollars: {convertedAmount+(35*amount/convertedAmount)*form.international} </Typography>
+          <Typography>Converted Amount in Dollars: {newAmount+(35*amount/newAmount)*form.international} </Typography>
         </Grid>
         <Grid item xs={12}>
         <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>
