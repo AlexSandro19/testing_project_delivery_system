@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,zipsCities,user,errors,registerDelivery,deletePackage,idpackages,successful})=>{
   const history = useHistory();
   const locationOfUser = zipsCities.find((item)=>item.zipcode_idzipcode === user.zipcode && item.city_idcity === user.cityId)
-  //dasd
+  //dasdsdsad
   const amount = createdPackage.amount;
   const [formErrors,setFormErrors] = useState([]);
   const [form, setForm] = useState({});
