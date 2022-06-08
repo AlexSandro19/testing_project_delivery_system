@@ -4,7 +4,7 @@ const assert = require('assert');
 
 
 async function loginLogout() {
-  let driver = new webdriver.Builder().forBrowser("firefox").build();
+  let driver = new webdriver.Builder().forBrowser("chrome").build();
   try {
     await driver.get("http://localhost:3000/");
 
