@@ -2,7 +2,10 @@ import { REGISTER_PACKAGE, REGISTER_PACKAGE_FAILURE, REGISTER_PACKAGE_SUCCESS,DE
 import { takeLatest, call, put } from "redux-saga/effects";
 import { createPackageApi,deletePackageApi  } from "../../services/package.service";
 import { getLocalAuthToken } from "../../services/auth.service";
-
+import {getConversionApi} from "../../services/currency.service";
+import {
+    CURRENCIES_GET,CURRENCIES_SET,CONVERT,CONVERTED,RESET
+  } from  "../constants/currency";
 function* createPackage(action){
     try{
         const form =action.payload;
@@ -10,6 +13,12 @@ function* createPackage(action){
         console.log(token);
         const message= yield call(createPackageApi,token.userId,form);
         console.log(message);
+        const convertedCurency = yield getConversionApi(message.amount,'eur','usd')
+        console.log(convertedCurency);
+        yield put({
+            type:CONVERTED,
+            payload:convertedCurency.newAmount         
+        })
         yield put({
             type:REGISTER_PACKAGE_SUCCESS,
             message:{
@@ -40,6 +49,9 @@ function* deletePackageFlow(action){
               text:"You have successfully deleted the package",
               severity:"success"
           }
+      })
+      yield put({
+          type:RESET,
       })
     }catch(error){
         yield put({
