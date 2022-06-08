@@ -1224,8 +1224,8 @@ describe("Run tests for calculateAmount function", () => {
 })
 
 describe("Run parameterized tests with calculateVolume function", () => {
-    test("Pass invalid value for package weight = 100000, volume = 27.5, international = 1, electronics = 1, oddsized = 1, fragile = null and expect a number with value 35", () => {
-        const parameterizedTest = [
+    test("Test for parameterized values", () => {
+            const parameterizedTest = [
             [1, 1, 1, 1],
             [2.5, 2.5, 2.5, 15.625],
             [5, 5, 5, 125],
@@ -1234,9 +1234,9 @@ describe("Run parameterized tests with calculateVolume function", () => {
             [100, 100, 100, 1000000]
         ]
         parameterizedTest.forEach(test => {
-            const result = calculateAmount(test.weight, test.volume, test.international, test.electronics, test.oddsized, test.fragile);
+            const result = calculateVolume(test[0], test[1], test[2]);
             //Assert
-            expect(result).toBeNull();
+            expect(result).toEqual(test[3]);
             
         });
     });
