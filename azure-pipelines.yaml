@@ -3,58 +3,58 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 trigger:
-  - main
-  - exam
+    - main
+    - alexs-exam
 
 pool:
-  vmImage: ubuntu-latest
+    vmImage: ubuntu-latest
 
 variables:
-- group: MAIN
+    - group: MAIN
 
 steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: "12.x"
-    displayName: "Install Node.js"
+    - task: NodeTool@0
+      inputs:
+          versionSpec: "12.x"
+      displayName: "Install Node.js"
 
-  - script: |
-      npm install
-    displayName: "install dependencies"
-    
-  - script: |
-      npm run test
-    timeoutInMinutes: 15 # how long to run the job before automatically cancelling
-    env:
-      MYSQL_HOST: $(MYSQL_HOST) 
-      MY_SQL_DB_USER: $(MY_SQL_DB_USER)
-      MYSQL_PASSWORD: $(MYSQL_PASSWORD)
-      MYSQL_USER: $(MYSQL_USER)
-      MYSQL_DATABASE: $(MYSQL_DATABASE)
-    displayName: "run tests"
+    - script: |
+          npm install
+      displayName: "install dependencies"
 
-  # - script: |
-  #     yarn run build
-  #   displayName: "build project"
-    
-  - task: PublishTestResults@2
-    condition: always()
-    inputs:
-      testRunner: JUnit
-      testResultsFiles: "**/test-report.xml"
-      failTaskOnFailedTests: true
-      
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: Cobertura # or JaCoCo
-      summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/*coverage.xml"
-      
-  - task: CopyFiles@2
-    inputs:
-      Contents: "$(System.DefaultWorkingDirectory)/src/**" # Pull the build directory (React)
-      TargetFolder: "$(Build.ArtifactStagingDirectory)"
-      
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
-      ArtifactName: "build-folder" # output artifact named www
+    - script: |
+          npm run test
+      timeoutInMinutes: 15 # how long to run the job before automatically cancelling
+      env:
+          MYSQL_HOST: $(MYSQL_HOST)
+          MY_SQL_DB_USER: $(MY_SQL_DB_USER)
+          MYSQL_PASSWORD: $(MYSQL_PASSWORD)
+          MYSQL_USER: $(MYSQL_USER)
+          MYSQL_DATABASE: $(MYSQL_DATABASE)
+      displayName: "run tests"
+
+    # - script: |
+    #     yarn run build
+    #   displayName: "build project"
+
+    - task: PublishTestResults@2
+      condition: always()
+      inputs:
+          testRunner: JUnit
+          testResultsFiles: "**/test-report.xml"
+          failTaskOnFailedTests: true
+
+    - task: PublishCodeCoverageResults@1
+      inputs:
+          codeCoverageTool: Cobertura # or JaCoCo
+          summaryFileLocation: "$(System.DefaultWorkingDirectory)/**/*coverage.xml"
+
+    - task: CopyFiles@2
+      inputs:
+          Contents: "$(System.DefaultWorkingDirectory)/src/**" # Pull the build directory (React)
+          TargetFolder: "$(Build.ArtifactStagingDirectory)"
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+          PathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
+          ArtifactName: "build-folder" # output artifact named www
