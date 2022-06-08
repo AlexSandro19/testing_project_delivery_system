@@ -1,22 +1,40 @@
 import { REGISTER_USER, REGISTER_USER_FAILURE, REGISTER_USER_SUCCESS } from "../constants/user"
 import { takeLatest, call, put } from "redux-saga/effects";
 import { registerApi } from "../../services/auth.service";
-
+import {SUCCESS,FAILURE} from "../constants/user";
 function* register(action){
     try{
-        const {email,password,firstName,lastName,companyName,phone,country,zipCode,city}=action.payload.form;
-        const message= yield call(registerApi,email,password,firstName,lastName,companyName,phone,country,zipCode,city);
+        console.log(action.payload);
+        const {firstName,secondName,companyName,email,password,confirmPassword,address,phone,duns,locationOfUser}=action.payload;
+        const {idzipcode,idcity} = locationOfUser.locationOfUser;
+        console.log(idcity);
+        console.log(idzipcode);
+        const message= yield call(registerApi,1,firstName,secondName,companyName,email,password,confirmPassword,phone,duns,address,idcity,idzipcode);
+        console.log(message);
         yield put({
             type:REGISTER_USER_SUCCESS,
             message:{
-                text:message,
+                text:"You have successfully registered",
                 severity:"success"
             },
-            
+        })
+        yield put({
+            type:SUCCESS,
+            message:{
+                text:"You have successfully registered",
+                severity:"success"
+            }
         })
     }catch(e){
         yield put({
             type:REGISTER_USER_FAILURE,
+            message:{
+                text:e.message,
+                severity:"error",
+            }
+        })
+        yield put({
+            type:FAILURE,
             message:{
                 text:e.message,
                 severity:"error",

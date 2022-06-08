@@ -30,7 +30,7 @@ const options = [
   const defaultOption = options[0];
   
 
-export const Delivery=({converted,setConverted,convertCurrency,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
+export const Delivery=({display,setDisplay,convertedAmount,newAmount,setConverted,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
 const classes=useStyles();
 const history = useHistory();
 const [modalOpen, setModalOpen] = useState(false);
@@ -103,7 +103,7 @@ return(
         <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Address</InputLabel><TextField style={{width:"100%"}}  type="text" disabled={true} value={form.startLocation.address} ></TextField></Grid>
         <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Address</InputLabel><TextField style={{width:"100%"}} onChange={(e)=>setForm({...form,endLocation:{locationOfReceiver:form.endLocation.locationOfReceiver,address:e.target.value}})}   type="text"  value={form.endLocation.address}  label="Address" id="address" name="address" ></TextField></Grid>
         <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Amount</InputLabel><TextField style={{width:"100%"}} type="number" disabled={true} value={amount+form.international*35} ></TextField></Grid>
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
         <InputLabel id="startCity">Currency Converter</InputLabel>
           <Select
                     sx={{ marginBottom: '15px' }}
@@ -116,19 +116,23 @@ return(
                     helperText={formErrors["endLocation"] ? formErrors["endLocation"] : ""}
                     value={converted}
                     onChange={(e)=>{
+<<<<<<< HEAD
                       convertCurrency(amount+form.international*35,e.target.value);
 
                       console.log("convert currency",convertCurrency(amount+form.international*35,e.target.value))
                       console.log("e.target.value",e.target.value)
+=======
+                      setConverted(e.target.value)
+>>>>>>> 802aa84684cbd0e63fd1d5608f3eef67ba3f9b19
                     }}
                     label="endLocation"
                 >
                 {Object.entries(currency).map((item)=>{
                   return(<MenuItem  value={item[0]}>{item[1]}</MenuItem>)
                   })}
-                </Select></Grid>
+                </Select></Grid> */}
         <Grid item xs={6}>
-          <Typography>Converted Amount: {converted} </Typography>
+          <Typography>Converted Amount in Dollars: {newAmount+(35*amount/newAmount)*form.international} </Typography>
         </Grid>
         <Grid item xs={12}>
         <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>
@@ -141,10 +145,14 @@ return(
                     id="endLocation"
                     error={!!formErrors["endLocation"]}
                     helperText={formErrors["endLocation"] ? formErrors["endLocation"] : ""}
-                    value={form.endLocation.locationOfReceiver.name}
+                    value={display}
                     // defaultValue={currentItem.hasWarranty}
                     label="endLocation"
-                    onChange={(e) => setForm({ ...form, endLocation:{locationOfReceiver:e.target.value,address:form.endLocation.address} })}
+                    onChange={(e) => {
+                      setDisplay(e.target.value);
+                      console.log(display);
+                      setForm({ ...form, endLocation:{locationOfReceiver:e.target.value,address:form.endLocation.address}})
+                    }}
                 >
                 {zipsCities.map((item)=>{return(<MenuItem value={{idzipcode:item.zipcode_idzipcode,idcity:item.city_idcity,name:item.name,zipcode:item.zipcode}}>{item.zipcode} {item.name}</MenuItem>)})}
 

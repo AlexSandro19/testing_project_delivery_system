@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 trigger:
   - main
-  - ci-cd-updated
+  - exam
 
 pool:
   vmImage: ubuntu-latest
@@ -22,12 +22,12 @@ steps:
   - script: |
       npm run test
     timeoutInMinutes: 15 # how long to run the job before automatically cancelling
-    # env:
-    #   MY_SQL_DB_HOST: $(MY_SQL_DB_HOST) 
-    #   MY_SQL_DB_USER: $(MY_SQL_DB_USER)
-    #   MY_SQL_DB_PASSWORD: $(MY_SQL_DB_PASSWORD)
-    #   MY_SQL_DB_DATABASE: $(MY_SQL_DB_DATABASE)
-    #   MY_SQL_DB_PORT: $(MY_SQL_DB_PORT)
+    env:
+      MYSQL_HOST: $(MYSQL_HOST) 
+      MY_SQL_DB_USER: $(MY_SQL_DB_USER)
+      MYSQL_PASSWORD: $(MYSQL_PASSWORD)
+      MYSQL_USER: $(MYSQL_USER)
+      MYSQL_DATABASE: $(MYSQL_DATABASE)
     displayName: "run tests"
 
   # - script: |

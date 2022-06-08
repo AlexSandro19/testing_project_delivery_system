@@ -1,6 +1,8 @@
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { TextField,Grid, Typography,Button } from "@mui/material";
+import { TextField,Grid, Typography,Button,InputLabel,Select,MenuItem } from "@mui/material";
+import { useHistory } from "react-router-dom";
+
 const useStyles=makeStyles(()=>({
     back:{
         margin:"2%",
@@ -19,8 +21,10 @@ const useStyles=makeStyles(()=>({
 
 }))
 
-export const Registration=({form,sendRegistrationForm,changeHandler})=>{
+export const Registration=({setForm,zipsCities,form,formErrors,sendRegistrationForm,changeHandler})=>{
 const classes=useStyles();
+const history = useHistory();
+
 return(
     <div>
        
@@ -36,21 +40,50 @@ return(
         <Grid item xs={12}><Typography style={{width:"100%",textAlign:"center"}} variant="h2">Register</Typography></Grid>
         <Grid item xs={12}><TextField type="email" value={form.email} onChange={changeHandler} style={{width:"100%"}} required label="Email" id="email" name="email" ></TextField></Grid>
         <Grid item xs={12}><TextField type="password" value={form.password} onChange={changeHandler} style={{width:"100%"}}  required label="Password" id="password" name="password" ></TextField></Grid>
-        <Grid item xs={12}><TextField type="password" onChange={changeHandler} style={{width:"100%"}}  required label="Confirm password" id="passwordConfirm" name="passwordConfirm" ></TextField></Grid>
+        <Grid item xs={12}><TextField type="password" onChange={changeHandler} style={{width:"100%"}}  required label="Confirm password" id="confirmPassword" name="confirmPassword" ></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.firstName} onChange={changeHandler} style={{width:"100%"}}  required label="First Name" id="firstName" name="firstName"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.lastName} onChange={changeHandler} style={{width:"100%"}}  label="Last Name" id="lastName" name="lastName"></TextField></Grid>
+        <Grid item xs={6}><TextField type="text" value={form.secondName} onChange={changeHandler} style={{width:"100%"}}  label="Second Name" id="secondName" name="secondName"></TextField></Grid>
         <Grid item xs={6}><TextField type="text" value={form.companyName} onChange={changeHandler} style={{width:"100%"}}  label="Comapny Name" id="companyName" name="companyName"></TextField></Grid>
-        <Grid item xs={7}><TextField type="tel" value={form.phone} onChange={changeHandler} style={{width:"100%"}} required label="Phone number" id="phone" name="phone"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.country} onChange={changeHandler} style={{width:"100%"}}  label="Country" id="country" name="country"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.zipCode} onChange={changeHandler} style={{width:"100%"}}  label="Zip Code" id="zipCode" name="zipCode"></TextField></Grid>
-        <Grid item xs={6}><TextField type="text" value={form.city} onChange={changeHandler} style={{width:"100%"}}  label="City" id="city" name="city"></TextField></Grid>
+        <Grid item xs={6}><TextField type="tel" value={form.phone} onChange={changeHandler} style={{width:"100%"}} required label="Phone number" id="phone" name="phone"></TextField></Grid>
+        <Grid item xs={6}><TextField type="text" value={form.address} onChange={changeHandler} style={{width:"100%"}} required label="Address" id="address" name="address"></TextField></Grid>
+
+        <Grid item xs={6}><TextField type="text" value={form.DUNS} onChange={changeHandler} style={{width:"100%"}} required label="Company Identification" id="duns" name="duns"></TextField></Grid>
+        <Grid item xs={12}>
+        <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>
+          <Select
+                    sx={{ marginBottom: '15px' }}
+                    fullWidth
+                    required
+                    name=""
+                    labelId="endLocation"
+                    id="endLocation"
+                    error={!!formErrors["endLocation"]}
+                    helperText={formErrors["endLocation"] ? formErrors["endLocation"] : ""}
+                    value={form.locationOfUser.name}
+                    // defaultValue={currentItem.hasWarranty}
+                    label="endLocation"
+                    onChange={(e) => setForm({ ...form, locationOfUser:{locationOfUser:e.target.value} })}
+                >
+                {zipsCities.map((item)=>{return(<MenuItem value={{idzipcode:item.zipcode_idzipcode,idcity:item.city_idcity,name:item.name,zipcode:item.zipcode}}>{item.zipcode} {item.name}</MenuItem>)})}
+
+                </Select></Grid>        
         <Grid item xs={5}>
         <Button 
-        variant="contained"
-        color="primary" type="submit"
-        >
-            Register
-        </Button></Grid>
+               variant="contained" 
+               color="error"
+               onClick={()=>{history.push("/profile")}}
+               style={{margin:"1%",width:"40%",height:"70%"}}
+                >Cancel
+                </Button>
+                <Button
+               style={{margin:"1%",width:"40%",height:"70%"}}
+               variant="contained"
+               color="primary" 
+               type="submit"
+               onClick={sendRegistrationForm}
+               >
+                Register
+               </Button></Grid>
 
         </Grid>
         </div>

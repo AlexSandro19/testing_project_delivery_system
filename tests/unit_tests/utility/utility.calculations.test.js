@@ -1223,20 +1223,21 @@ describe("Run tests for calculateAmount function", () => {
     })
 })
 
-
-
 describe("Run parameterized tests with calculateVolume function", () => {
-    it.each([
-        [1, 1, 1, 1],
-        [2.5, 2.5, 2.5, 15.625],
-        [5, 5, 5, 125],
-        [0.01, 0.01, 0.01, 1],
-        [20.5, 30.5, 40.5, 25322.625],
-        [100, 100, 100, 1000000],
-    ])(
-        (height, width, depth, result) => {
-            const response = calculateVolume(height, width, depth);
-            expect(response).toEqual(result);
-        }
-    );
+    test("Pass invalid value for package weight = 100000, volume = 27.5, international = 1, electronics = 1, oddsized = 1, fragile = null and expect a number with value 35", () => {
+        const parameterizedTest = [
+            [1, 1, 1, 1],
+            [2.5, 2.5, 2.5, 15.625],
+            [5, 5, 5, 125],
+            [0.01, 0.01, 0.01, 1],
+            [20.5, 30.5, 40.5, 25322.625],
+            [100, 100, 100, 1000000]
+        ]
+        parameterizedTest.forEach(test => {
+            const result = calculateAmount(test.weight, test.volume, test.international, test.electronics, test.oddsized, test.fragile);
+            //Assert
+            expect(result).toBeNull();
+            
+        });
+    });
 });

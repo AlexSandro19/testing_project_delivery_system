@@ -6,6 +6,7 @@ import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useState} from "react";
 import {ExpandMore} from "./ExpandMore";
+import {OrderCard} from "./OrderCard"
 const theme = createTheme()
 const useStyles = makeStyles(() => ({
     paper: {
@@ -41,31 +42,25 @@ const useStyles = makeStyles(() => ({
   }));
   
 
-export const ViewOrders=({user})=>{
+export const ViewOrders=({user,deliveries})=>{
     const classes= useStyles();
     const [expanded, setExpanded] = useState(false);
-
+    console.log(deliveries);
     const handleExpandClick = () => {
       setExpanded(!expanded);
       };
     return(
-        <Grid>
-         
-          <Card>
-          <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-        </CardContent>
-      </Collapse>
-          </Card>
+
+        <Grid container spacing={2}> 
+         {deliveries.map((delivery)=>{
+           return(
+            <Grid item xs={12}>
+              <OrderCard delivery={delivery}></OrderCard>
+           </Grid>
+           )
+          
+         })}
+        
         </Grid>
         )
 }

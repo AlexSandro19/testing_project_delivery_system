@@ -22,12 +22,14 @@ router.post("/addLocation",
       }
       const { typeOfLocationId, address, zipCode, cityId } = req.body;
       const newLocation = new Location(null, typeOfLocationId, address, zipCode, cityId);
-      console.log(newLocation);
-      const checkLocationExistence = await execute("SELECT * from location WHERE zip_city_zipcode_idzipcode=? AND zip_city_city_idcity=? AND address=?",[`${zipCode}`,`${cityId}`,`${address}`])
-      console.log(checkLocationExistence)
-      if(checkLocationExistence.length > 0) {
-        return res.status(200).json({createdLocation:checkLocationExistence[0]})
-      }else{
+      const checkLocationExistence = await Location.getLocationIfAdressZipCityExists(zipCode, cityId, address)
+      console.log(newLocation)
+      console.log("checkLocationExistence: ", checkLocationExistence)
+      if (checkLocationExistence != undefined) {
+        console.log("here")
+        return res.status(200).json({createdLocation:checkLocationExistence})
+      } else {
+        console.log("there")
         const { locationCreated, createdLocation } = await Location.createLocation(newLocation)
         if (locationCreated) {
           return res.status(200).json({ createdLocation });
@@ -68,11 +70,11 @@ router.post("/updateLocation",
       console.log(location)
       const { locationInfoIsSame, updatedLocation } = await Location.updateLocation(location)
       if (!locationInfoIsSame && typeof updatedLocation === 'object') {
-        return res.status(200).json({ response: updatedLocation });
+        return res.status(200).json({ updatedLocation });
       } else if (!locationInfoIsSame && updatedLocation === undefined) {
-        return res.status(500).json({ response: { message: "Internal Server Error" } });
+        return res.status(500).json({ message: "Internal Server Error" });
       } else if (locationInfoIsSame) {
-        return res.status(400).json({ response: updatedLocation, message: "Location was not updated, because the location info is the same" });
+        return res.status(400).json({ updatedLocation, message: "Location was not updated, because the location info is the same" });
       }
     } catch (error) {
       console.log(error);
@@ -86,7 +88,7 @@ router.post("/updateLocation",
   })
 
 router.delete("/deleteLocation", [
-  check("Id", "Id id not provided").exists(),
+  check("idlocation", "Id id not provided").exists(),
 ],
   async (req, res) => {
     try {
@@ -98,9 +100,13 @@ router.delete("/deleteLocation", [
         });
       }
 
-      var { id } = req.body
-      const response = await Location.deleteLocation(id)
-      return res.status(200).json({ response })
+      var { idlocation } = req.body
+      const { locationDeleted, deletedLocation }  = await Location.deleteLocation(idlocation)
+      if (locationDeleted) {
+        return res.status(200).json({ location: deletedLocation });
+    } else {
+        return res.status(500).json({ message: "Internal Server Error when deleting" });
+    }
     } catch (error) {
       console.log(error);
       return res.status(500).json({

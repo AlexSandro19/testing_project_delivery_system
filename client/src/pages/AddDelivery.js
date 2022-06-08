@@ -3,28 +3,28 @@ import { Delivery } from "../components/Delivery";
 import {useState,useEffect,useCallback} from "react";
 import {registerDelivery} from "../redux/actions/delivery";
 import {deletePackage} from "../redux/actions/package";
-import {getCurrencies,convertCurrency} from "../redux/actions/currency";
+import {convertCurrency} from "../redux/actions/currency";
 import {Loader} from "../components/Loader";
 import { useHistory } from "react-router-dom";
-const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrencies,zipsCities,user,errors,registerDelivery,deletePackage,idpackages,successful})=>{
+const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,zipsCities,user,errors,registerDelivery,deletePackage,idpackages,successful})=>{
   const history = useHistory();
   const locationOfUser = zipsCities.find((item)=>item.zipcode_idzipcode === user.zipcode && item.city_idcity === user.cityId)
 
   const amount = createdPackage.amount;
   const [formErrors,setFormErrors] = useState([]);
   const [form, setForm] = useState({});
-  const [converted,setConverted] = useState(0);
-  console.log(converted);
-  const convert =useCallback((amount,newCurrency)=>{
-    console.log(amount,newCurrency)
-    convertCurrency(amount,newCurrency)
-    
-  },[amount])
+
+  const [convertedAmount,setConvertedAmount] = useState(0);
+  // const convert =useCallback(()=>{
+  //   console.log(amount);
+  //   //convertCurrency(createdPackage.amount,'usd')
+  // },[amount])
   
   const loadState = useCallback(() =>{
-    getCurrencies();
-    setConverted(newAmount);
-    console.log(newAmount)
+    console.log(newAmount);
+  
+    setConvertedAmount(newAmount);
+  
     setForm({
       amount:amount,
       priority:0,
@@ -33,9 +33,11 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
       endLocation:{locationOfReceiver:{idzipcode:"",idcity:"",name:"",zipcode:""},address:""},
       message:""
     })
-  },[amount])
+  },[amount,newAmount])
+  const [display,setDisplay] = useState();
   useEffect(() => {
-    loadState()
+    loadState();
+    // convert();
   },[])
   useEffect(() => {
     if (errors) {
@@ -64,8 +66,10 @@ const AddDelivery=({newAmount,convertCurrency,currency,createdPackage,getCurrenc
   
     
           <Delivery
-          converted={converted}
-          convertCurrency={convert}  
+          newAmount={newAmount}
+          display={display}
+          setDisplay={setDisplay}
+          convertedAmount={convertedAmount}
           currency={currency} 
           amount={amount} 
           form={form} 
@@ -98,4 +102,4 @@ const mapStateToProps = (state) =>({
    errors:state.message.errors,
    newAmount:state.currency.newAmount
   });
-export default connect(mapStateToProps,{registerDelivery,deletePackage,getCurrencies,convertCurrency})(AddDelivery)
+export default connect(mapStateToProps,{registerDelivery,deletePackage,convertCurrency})(AddDelivery)

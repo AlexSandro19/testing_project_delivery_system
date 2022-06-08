@@ -82,7 +82,7 @@ class Delivery {
         const seconds = (this.estimated_date.getSeconds() >= 10) ? `${this.estimated_date.getSeconds()}` : `0${this.estimated_date.getSeconds()}`
         // Date format that Mysql expects to receive: YYYY-MM-DD HH:MI:SS 
         const res = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`
-        console.log("getEstimatedDateInSqlFormat: ", res)
+        // console.log("getEstimatedDateInSqlFormat: ", res)
         return res
     }
     getStartDate() { return this.start_date }
@@ -100,7 +100,7 @@ class Delivery {
     getUID() { return this.uid }
     setUID(value) { this.uid = value }
 
-    equals(delivery = new Delivery) {
+    equals(delivery) {
         console.log("delivery: ", delivery);
         console.log("delivery.getIdDeliveries(): ", delivery.getIdDeliveries());
 
@@ -235,9 +235,12 @@ class Delivery {
      * @param {Delivery} updatedDelivery provide the new delivery with which to update the database
      * @returns the updated delivery objecct
      */
-    static async updateDelivery(updatedDelivery = Delivery) {
+    static async updateDelivery(updatedDelivery) {
         try {
-            const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.getUID()}`])
+            console.log("updatedDelivery",updatedDelivery)
+            console.log("updatedDelivery uid",updatedDelivery.uid)
+        
+            const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.uid}`])
             console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
             const receivedDelivery = new Delivery(
                 deliveryFromDB[0].iddeliveries,
@@ -334,7 +337,7 @@ class Delivery {
      * @returns  Return the newly created delivery
      */
     static async createDelivery(
-        newDelivery = Delivery
+        newDelivery 
     ) {
         try {
             const response = await execute("INSERT INTO deliveries(packages_idpackages,priority,payment_idpayment,international,start_location,end_location,message,estimated_date,start_date,end_date,uid) "
@@ -353,17 +356,17 @@ class Delivery {
             console.log("newDelivery: ", newDelivery)
             console.log("createDelivery response: ", response)
             if (response.affectedRows > 0) {
+                console.log("msg if")
                 newDelivery.setIdDeliveries(response.insertId);
                 return { deliveryCreated: true, createdDelivery: newDelivery }
             } else {
+                console.log("msg else")   
                 return { deliveryCreated: false };
             }
         } catch (error) {
+            console.log("msg catch") 
             console.log("[mysql.connector][execute][Error]: ", error);
-            throw {
-                value: "Query failed",
-                message: error.message,
-            }
+            throw new Error("no password given")
         }
 
         // example of what createDelivery() should return 
@@ -387,17 +390,17 @@ class Delivery {
     generateUUID() {
         let uid = "";
         while (uid.length < 36) {
-            console.log(uid.length)
+            // console.log(uid.length)
             switch (uid.length) {
                 case 8:
-                    console.log(uid);
+                    // console.log(uid);
                     uid = uid + "-";
-                    console.log(uid);
+                    // console.log(uid);
                     break;
                 case 13:
-                    console.log(uid);
+                    // console.log(uid);
                     uid = uid + "-";
-                    console.log(uid);
+                    // console.log(uid);
                     break;
                 case 18:
                     uid = uid + "-";
@@ -406,7 +409,7 @@ class Delivery {
                     uid = uid + "-";
                     break;
                 default:
-                    console.log(uid);
+                    // console.log(uid);
                     uid = uid + "" + characterGenerator(4);
                 case 36:
                     break;
