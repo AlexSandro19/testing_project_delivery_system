@@ -29,7 +29,7 @@ const options = [
   const defaultOption = options[0];
   
 
-export const Delivery=({display,setDisplay,convertedAmount,converted,setConverted,convertCurrency,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
+export const Delivery=({display,setDisplay,convertedAmount,converted,setConverted,currency,amount,zipsCities,idpackages,form,setForm,formErrors,sendAddDeliveryForm,changeHandler,deletePackage})=>{
 const classes=useStyles();
 const history = useHistory();
 const [modalOpen, setModalOpen] = useState(false);
@@ -102,7 +102,7 @@ return(
         <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Address</InputLabel><TextField style={{width:"100%"}}  type="text" disabled={true} value={form.startLocation.address} ></TextField></Grid>
         <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Address</InputLabel><TextField style={{width:"100%"}} onChange={(e)=>setForm({...form,endLocation:{locationOfReceiver:form.endLocation.locationOfReceiver,address:e.target.value}})}   type="text"  value={form.endLocation.address}  label="Address" id="address" name="address" ></TextField></Grid>
         <Grid item xs={12} style={{width:"100%"}}><InputLabel id="startAddress">Amount</InputLabel><TextField style={{width:"100%"}} type="number" disabled={true} value={amount+form.international*35} ></TextField></Grid>
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
         <InputLabel id="startCity">Currency Converter</InputLabel>
           <Select
                     sx={{ marginBottom: '15px' }}
@@ -115,7 +115,6 @@ return(
                     helperText={formErrors["endLocation"] ? formErrors["endLocation"] : ""}
                     value={converted}
                     onChange={(e)=>{
-                      convertCurrency(amount+form.international*35,e.target.value);
                       setConverted(e.target.value)
                     }}
                     label="endLocation"
@@ -123,9 +122,9 @@ return(
                 {Object.entries(currency).map((item)=>{
                   return(<MenuItem  value={item[0]}>{item[1]}</MenuItem>)
                   })}
-                </Select></Grid>
+                </Select></Grid> */}
         <Grid item xs={6}>
-          <Typography>Converted Amount in Dollars: {convertedAmount} </Typography>
+          <Typography>Converted Amount in Dollars: {convertedAmount+(35*amount/convertedAmount)*form.international} </Typography>
         </Grid>
         <Grid item xs={12}>
         <InputLabel id="startCity">Delivery City and Zipcode</InputLabel>
