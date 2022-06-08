@@ -22,8 +22,8 @@
         "test": "jest",
         "server": "nodemon server.js",
         "dev": "npm run server",
-        "lint": "npx eslint .",
-        "lint fix": "npx eslint . --fix",
+        "lint": "npx eslint ./src",
+        "lint fix": "npx eslint ./src --fix",
         "pretty": "npx prettier . --write"
     },
     "repository": {
