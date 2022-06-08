@@ -72,7 +72,7 @@ class Location {
                 v.zip_city_zipcode_idzipcode,
                 v.zip_city_city_idcity));
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -103,7 +103,7 @@ class Location {
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -122,7 +122,7 @@ class Location {
         try {
             // const response = await execute("SELECT * FROM Location WHERE idlocation=?", [`${id}`])
             const response = await execute("SELECT * from location WHERE zip_city_zipcode_idzipcode=? AND zip_city_city_idcity=? AND address=?", [`${zipCode}`, `${cityId}`, `${address}`])
-            console.log("getLocationIfAdressZipCityExists > response: ", response)
+            // console.log("getLocationIfAdressZipCityExists > response: ", response)
             if (response.length > 0) {
                 return new Location(
                     response[0].idlocation,
@@ -131,10 +131,10 @@ class Location {
                     response[0].zip_city_zipcode_idzipcode,
                     response[0].zip_city_city_idcity)
             } else {
-                return undefined; 
+                return undefined;
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -177,7 +177,7 @@ class Location {
                 return { locationInfoIsSame: true, updatedLocation }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -194,21 +194,21 @@ class Location {
     static async deleteLocation(id = Number) {
         try {
             const getDeletedLocation = await execute("SELECT * from Location WHERE idlocation=?;", [`${id}`]);
-            console.log("getDeletedLocation", getDeletedLocation);
-            console.log("getDeletedLocation.length", getDeletedLocation.length)
-            if (getDeletedLocation.length >  0){
-                console.log("here");
+            // console.log("getDeletedLocation", getDeletedLocation);
+            // console.log("getDeletedLocation.length", getDeletedLocation.length)
+            if (getDeletedLocation.length > 0) {
+                // console.log("here");
                 const response = await execute("DELETE from Location WHERE idlocation=?;", [`${id}`]);
-                console.log("response: ",response)
-                if (response.affectedRows > 0){
+                // console.log("response: ",response)
+                if (response.affectedRows > 0) {
                     return { locationDeleted: true, deletedLocation: getDeletedLocation[0] }
-                    } else {
-                        throw {
-                            value: "Internal Error with deleting",
-                            message: "Internal Error with deleting",
+                } else {
+                    throw {
+                        value: "Internal Error with deleting",
+                        message: "Internal Error with deleting",
                     }
                 }
-            }else{
+            } else {
                 throw {
                     value: "Location not found",
                     message: "Location not found",
@@ -216,7 +216,7 @@ class Location {
             }
 
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -246,7 +246,7 @@ class Location {
                 return { locationCreated: false };
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,

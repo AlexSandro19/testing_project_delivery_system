@@ -24,7 +24,7 @@ router.post("/addPayment",
                     message: "Invalid data while creating a user",
                 });
             }
-            console.log("req.body in /addPayment ", req.body)
+            // console.log("req.body in /addPayment ", req.body)
             const {
                 typeofpayment_idtypeofpayment,
                 amount,
@@ -33,9 +33,9 @@ router.post("/addPayment",
                 billing_address
             } = req.body;
 
-            const newPayment = new Payment(null,typeofpayment_idtypeofpayment,amount,payed,prepaid,null,billing_address)
-            console.log(billing_address)
-            console.log("newPayment inside /addPayment", newPayment.toString())
+            const newPayment = new Payment(null, typeofpayment_idtypeofpayment, amount, payed, prepaid, null, billing_address)
+            // console.log(billing_address)
+            // console.log("newPayment inside /addPayment", newPayment.toString())
             const { paymentCreated, createdPayment } = await Payment.createPayment(newPayment);
             if (paymentCreated) {
                 return res.status(200).json({ createdPayment });
@@ -44,7 +44,7 @@ router.post("/addPayment",
                 return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -80,7 +80,7 @@ router.post("/updatePayment",
                     message: "Invalid data while creating a user",
                 });
             }
-            console.log("req.body in /updatePayment ", req.body)
+            // console.log("req.body in /updatePayment ", req.body)
             const {
                 idpayment,
                 typeofpayment_idtypeofpayment,
@@ -100,11 +100,11 @@ router.post("/updatePayment",
                 transactionid,
                 billing_address
             )
-            console.log("updatePayment inside /updatePayment", payment.toString())
+            // console.log("updatePayment inside /updatePayment", payment.toString())
             const { paymentInfoIsSame, updatedPayment } = await Payment.updatePayment(payment);
-            // console.log("updatedPayment ", updatedPayment);
-            // console.log("paymentInfoIsSame ", paymentInfoIsSame);
-            // console.log("typeof updatedPayment  === undefined ", updatedPayment === undefined);
+            // // console.log("updatedPayment ", updatedPayment);
+            // // console.log("paymentInfoIsSame ", paymentInfoIsSame);
+            // // console.log("typeof updatedPayment  === undefined ", updatedPayment === undefined);
             if (!paymentInfoIsSame && typeof updatedPayment === 'object') {
                 return res.status(200).json({ updatedPayment });
             } else if (!paymentInfoIsSame && updatedPayment === undefined) {
@@ -112,9 +112,9 @@ router.post("/updatePayment",
             } else if (paymentInfoIsSame) {
                 return res.status(400).json({ updatedPayment, message: "Payment was not updated, because the delivery info is the same" });
             }
-            // console.log("response from createDelivery inside /addWholeDelivery", response)
+            // // console.log("response from createDelivery inside /addWholeDelivery", response)
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -141,9 +141,9 @@ router.delete("/deletePayment", [
             return res.status(200).json({ payment: deletedPayment });
         } else {
             return res.status(500).json({ message: "Internal Server Error when deleting" });
-        }        
+        }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [
@@ -156,14 +156,14 @@ router.delete("/deletePayment", [
 router.post("/getPayment", async (req, res) => {
     const { idpayment } = req.body
     const payment = await Payment.getPayment(idpayment);
-    console.log(payment);
+    // console.log(payment);
     return res.status(200).json({ payment });
 })
 
 router.get("/getPayments", async (req, res) => {
 
     const payments = await Payment.getAllPayments();
-    console.log(payments);
+    // console.log(payments);
     return res.status(200).json({ payments });
 })
 

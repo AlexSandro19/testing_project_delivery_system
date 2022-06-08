@@ -500,7 +500,7 @@ describe("Run tests for calculateAmount function", () => {
             const fragile = 0;
             //Act
             const result = calculateAmount(weight, volume, international, electronics, oddsized, fragile);
-            console.log(result)
+            // console.log(result)
             //Assert
             expect(result).toEqual(52.5);
         });
@@ -1225,7 +1225,7 @@ describe("Run tests for calculateAmount function", () => {
 
 describe("Run parameterized tests with calculateVolume function", () => {
     test("Test for parameterized values", () => {
-            const parameterizedTest = [
+        const parameterizedTest = [
             [1, 1, 1, 1],
             [2.5, 2.5, 2.5, 15.625],
             [5, 5, 5, 125],
@@ -1237,7 +1237,7 @@ describe("Run parameterized tests with calculateVolume function", () => {
             const result = calculateVolume(test[0], test[1], test[2]);
             //Assert
             expect(result).toEqual(test[3]);
-            
+
         });
     });
 });

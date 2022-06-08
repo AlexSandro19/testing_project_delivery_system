@@ -16,9 +16,9 @@ const init = () => {
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE
     });
-    console.debug('MySql Adapter Pool generated successfully');
+    // console.debug('MySql Adapter Pool generated successfully');
   } catch (error) {
-    console.error("[mysql.connector][init][Error]: ", error);
+    // console.error("[mysql.connector][init][Error]: ", error);
     throw new Error("failed to initialized pool");
   }
 };
@@ -32,7 +32,7 @@ const init = () => {
  */
 const execute = (
   query = String,
-  params ,
+  params,
 ) => {
   try {
     if (!pool)
@@ -47,18 +47,18 @@ const execute = (
       });
     });
   } catch (error) {
-    console.error("[mysql.connector][execute][Error]: ", error);
-    throw {value: error.message,message: error.message,param:'inpur'}
+    // console.error("[mysql.connector][execute][Error]: ", error);
+    throw { value: error.message, message: error.message, param: 'inpur' }
   }
 };
 
 /**
  * closes the connection
  */
- const end = () => {
+const end = () => {
   pool.end(function (err) {
     if (err) {
-      return console.log("error:" + err.message);
+      return // console.log("error:" + err.message);
     }
   });
 }

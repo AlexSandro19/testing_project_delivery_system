@@ -32,10 +32,10 @@ router.post("/addPackage",
                     message: "Invalid data while creating a user",
                 });
             }
-            // console.log("req.body in /addPackage ", req.body)
+            // // console.log("req.body in /addPackage ", req.body)
             const { userId, weight, height, width, depth, fragile, electronics, oddsized } = req.body;
             const newPackage = new Package(null, userId, weight, height, width, depth, fragile, electronics, oddsized, null)
-            console.log("newPackage inside /addPackage", newPackage.toString())
+            // console.log("newPackage inside /addPackage", newPackage.toString())
             const volume = calculateVolume(height, width, depth);
             const { packageCreated, createdPackage } = await Package.createPackage(newPackage);
             const amount = calculateAmount(volume, weight, 0, electronics, oddsized, fragile)
@@ -47,7 +47,7 @@ router.post("/addPackage",
                 return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -86,7 +86,7 @@ router.post("/updatePackage",
                     message: "Invalid data while creating a user",
                 });
             }
-            // console.log("req.body in /addPackage ", req.body)
+            // // console.log("req.body in /addPackage ", req.body)
             const {
                 idpackages,
                 user_iduser,
@@ -98,7 +98,7 @@ router.post("/updatePackage",
                 electronics,
                 oddsized,
             } = req.body;
-            // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
+            // // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
             const newPackage = new Package(
                 idpackages,
                 user_iduser,
@@ -111,7 +111,7 @@ router.post("/updatePackage",
                 oddsized,
                 null
             )
-            console.log("newPackage inside /addPackage", newPackage.toString())
+            // console.log("newPackage inside /addPackage", newPackage.toString())
             const { packageInfoIsSame, updatedPackage } = await Package.updatePackage(newPackage);
             if (!packageInfoIsSame && typeof updatedPackage === 'object') {
                 return res.status(200).json({ updatedPackage });
@@ -121,7 +121,7 @@ router.post("/updatePackage",
                 return res.status(400).json({ updatedPackage, message: "Package was not updated, because the package info is the same" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -152,7 +152,7 @@ router.post("/deletePackage", [
                 return res.status(500).json({ message: "Internal Server Error when deleting" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -168,10 +168,10 @@ router.post("/getPackage", async (req, res) => {
     try {
         const { idpackages } = req.body
         const receivedPackage = await Package.getPackage(idpackages);
-        console.log(receivedPackage);
+        // console.log(receivedPackage);
         return res.status(200).json({ package: receivedPackage });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [
@@ -186,10 +186,10 @@ router.post("/getPackage", async (req, res) => {
 router.get("/getPackages", async (req, res) => {
     try {
         const packages = await Package.getAllPackages();
-        console.log(packages);
+        // console.log(packages);
         return res.status(200).json({ packages });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [

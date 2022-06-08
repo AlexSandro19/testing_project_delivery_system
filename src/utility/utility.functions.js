@@ -1,8 +1,8 @@
 const { execute } = require("../database/mysql.connector.js");
 
 const getDateInSqlFormat = (date = null) => {
-    // console.log("date: ", date)
-    // console.log("typeof date: ", typeof date)
+    // // console.log("date: ", date)
+    // // console.log("typeof date: ", typeof date)
     if (date instanceof Date && !isNaN(date)) {
         const year = date.getFullYear()
         const month = ((date.getMonth() + 1) >= 10) ? `${date.getMonth() + 1}` : `0${date.getMonth() + 1}`
@@ -12,7 +12,7 @@ const getDateInSqlFormat = (date = null) => {
         const seconds = (date.getSeconds() >= 10) ? `${date.getSeconds()}` : `0${date.getSeconds()}`
         // Date format that Mysql expects to receive: YYYY-MM-DD hh:mm:ss 
         const res = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-        // console.log("getDateInSqlFormat: ", res)
+        // // console.log("getDateInSqlFormat: ", res)
         return res
     } else {
         return null
@@ -20,6 +20,6 @@ const getDateInSqlFormat = (date = null) => {
 }
 
 
-module.exports ={
+module.exports = {
     getDateInSqlFormat
 }

@@ -122,7 +122,7 @@ class Package {
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -157,7 +157,7 @@ class Package {
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -208,7 +208,7 @@ class Package {
                 return { packageInfoIsSame: true, updatedPackage }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -225,28 +225,28 @@ class Package {
     static async deletePackage(id) {
         try {
             const getDeletedPackage = await execute("SELECT * from Packages WHERE idpackages=?", [`${id}`]);
-            console.log("getDeletedPackage", getDeletedPackage);
-            console.log("getDeletedPackage.length", getDeletedPackage.length)
-            if (getDeletedPackage.length >  0){
-                console.log("here");
+            // console.log("getDeletedPackage", getDeletedPackage);
+            // console.log("getDeletedPackage.length", getDeletedPackage.length)
+            if (getDeletedPackage.length > 0) {
+                // console.log("here");
                 const response = await execute("DELETE from Packages WHERE idpackages=?", [`${id}`]);
-                console.log("response: ",response)
-                if (response.affectedRows > 0){
+                // console.log("response: ",response)
+                if (response.affectedRows > 0) {
                     return { packageDeleted: true, deletedPackage: getDeletedPackage[0] }
-                    } else {
-                        throw {
-                            value: "Internal Error with deleting",
-                            message: "Internal Error with deleting",
+                } else {
+                    throw {
+                        value: "Internal Error with deleting",
+                        message: "Internal Error with deleting",
                     }
                 }
-            }else{
+            } else {
                 throw {
                     value: "Package not found",
                     message: "Package not found",
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -274,7 +274,7 @@ class Package {
                 newPackage.getElectronics(),
                 newPackage.getOddSized(),
                 newPackage.getReceiverId()])
-            console.log("createPackage response: ", response)
+            // console.log("createPackage response: ", response)
             if (response.affectedRows > 0) {
                 newPackage.setIdPackage(response.insertId);
                 return { packageCreated: true, createdPackage: newPackage }
@@ -283,7 +283,7 @@ class Package {
             }
 
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,

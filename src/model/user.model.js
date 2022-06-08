@@ -42,7 +42,7 @@ class User {
         this.password = password;
     }
     toString() {
-        console.log("toString called");
+        // console.log("toString called");
         return "Awesome"
     }
 
@@ -85,7 +85,7 @@ class User {
     getPassword() { return this.password }
     setPassword(value) { this.password = value }
     equals(user = new User) {
-        console.log(user);
+        // console.log(user);
         return user.getTypeOfUser() == this.type_of_user &&
             user.getFirstName() == this.firstname &&
             user.getSecondName() == this.secondname &&
@@ -96,8 +96,8 @@ class User {
             user.getDuns() == this.duns &&
             user.getZipCode() == this.zip_city_zipcode_idzipcode &&
             user.getCity() == this.zip_city_city_idcity &&
-            user.getPassword()== this.password
-        }
+            user.getPassword() == this.password
+    }
     /*
     Static functions used to call the database without needing to initialize the class
     they return instance of User
@@ -131,12 +131,13 @@ class User {
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed", 
-                message:error.message,
+            // console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
             }
         }
-       
+
     }
     /**
      * The function get a 1 User from the database with the provided id 
@@ -167,12 +168,13 @@ class User {
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed", 
-                message:error.message,
+            // console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
             }
         }
-        
+
 
     }
     /**
@@ -203,14 +205,15 @@ class User {
                 }
             }
         } catch (error) {
-            //console.log(error);
-            console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed",
-                param:"email",
-                message:error.message,
+            //// console.log(error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                param: "email",
+                message: error.message,
             }
         }
-       
+
 
     }
     /**
@@ -236,9 +239,9 @@ class User {
                 userFromDB[0].zip_city_zipcode_idzipcode,
                 userFromDB[0].zip_city_city_idcity,
                 userFromDB[0].password
-                )
+            )
             if (!updatedUser.equals(receivedUser)) {
-                console.log(updatedUser.equals(receivedUser))
+                // console.log(updatedUser.equals(receivedUser))
                 const response = await execute(
                     "UPDATE user "
                     + "SET type_of_user=?,firstname=?,secondname=?,companyname=?,email=?,phone=?,address=?,duns=?,zip_city_zipcode_idzipcode=?,zip_city_city_idcity=?, password=? WHERE idcustomer=?;"
@@ -254,7 +257,7 @@ class User {
                     updatedUser.getCity(),
                     updatedUser.getPassword(),
                     updatedUser.getIdCustomer(),
-                ]);
+                    ]);
                 if (response.changedRows > 0) {
                     return { userInfoIsSame: false, updatedUser }
                 } else {
@@ -264,12 +267,13 @@ class User {
                 return { userInfoIsSame: true, updatedUser }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed", 
-                message:error.message,
+            // console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
             }
         }
-       
+
     }
     /**
      * 
@@ -279,33 +283,34 @@ class User {
     static async deleteUser(id = Number) {
         try {
             const getDeletedUser = await execute("SELECT * from user WHERE idcustomer=?;", [`${id}`]);
-            console.log("getDeletedUser", getDeletedUser);
-            console.log("getDeletedUser.length", getDeletedUser.length)
-            if (getDeletedUser.length >  0){
-                console.log("here");
+            // console.log("getDeletedUser", getDeletedUser);
+            // console.log("getDeletedUser.length", getDeletedUser.length)
+            if (getDeletedUser.length > 0) {
+                // console.log("here");
                 const response = await execute("DELETE from user WHERE idcustomer=?;", [`${id}`]);
-                console.log("response: ",response)
-                if (response.affectedRows > 0){
-                        return { userDeleted: true, deletedUser: getDeletedUser[0] }
-                    } else {
-                        throw {
-                            value: "Internal Error with deleting",
-                            message: "Internal Error with deleting",
+                // console.log("response: ",response)
+                if (response.affectedRows > 0) {
+                    return { userDeleted: true, deletedUser: getDeletedUser[0] }
+                } else {
+                    throw {
+                        value: "Internal Error with deleting",
+                        message: "Internal Error with deleting",
                     }
                 }
-            }else{
+            } else {
                 throw {
                     value: "User not found",
                     message: "User not found",
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed", 
-                message:error.message,
+            // console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
             }
         }
-        
+
     }
     /**
     * Creates a new user entry in the database
@@ -329,7 +334,7 @@ class User {
                 newUser.getZipCode(),
                 newUser.getCity(),
                 newUser.getPassword(),]);
-            console.log("createUser > response: ", response);
+            // console.log("createUser > response: ", response);
             if (response.affectedRows > 0) {
                 newUser.setIdCustomer(response.insertId);
                 return { userCreated: true, createdUser: newUser }
@@ -337,12 +342,13 @@ class User {
                 return { userCreated: false };
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
-            throw { value:"Query failed", 
-                message:error.message,
-            }  
+            // console.log("[mysql.connector][execute][Error]: ", error);
+            throw {
+                value: "Query failed",
+                message: error.message,
+            }
         }
-       
+
     }
 
 }

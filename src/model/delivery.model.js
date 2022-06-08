@@ -82,7 +82,7 @@ class Delivery {
         const seconds = (this.estimated_date.getSeconds() >= 10) ? `${this.estimated_date.getSeconds()}` : `0${this.estimated_date.getSeconds()}`
         // Date format that Mysql expects to receive: YYYY-MM-DD HH:MI:SS 
         const res = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`
-        // console.log("getEstimatedDateInSqlFormat: ", res)
+        // // console.log("getEstimatedDateInSqlFormat: ", res)
         return res
     }
     getStartDate() { return this.start_date }
@@ -101,8 +101,8 @@ class Delivery {
     setUID(value) { this.uid = value }
 
     equals(delivery) {
-        console.log("delivery: ", delivery);
-        console.log("delivery.getIdDeliveries(): ", delivery.getIdDeliveries());
+        // console.log("delivery: ", delivery);
+        // console.log("delivery.getIdDeliveries(): ", delivery.getIdDeliveries());
 
         const isEqual = delivery.getIdDeliveries() == this.iddeliveries &&
             delivery.getPackageId() == this.packages_idpackages &&
@@ -118,7 +118,7 @@ class Delivery {
             (this.end_date != undefined || this.end_date != null ? this.end_date.toString() : null) &&
             delivery.getUID() == this.uid
 
-        console.log("Delivery > isEqual: ", isEqual);
+        // console.log("Delivery > isEqual: ", isEqual);
         return isEqual
     }
 
@@ -162,7 +162,7 @@ class Delivery {
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -201,7 +201,7 @@ class Delivery {
             }
 
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -213,14 +213,14 @@ class Delivery {
     static async getEstimatedDateFromDB(start_location, end_location, start_date) {
         try {
             const dateForSQL = getDateInSqlFormat(start_date)
-            console.log("dateForSQL", dateForSQL)
+            // console.log("dateForSQL", dateForSQL)
             const response = await execute("SELECT get_estimated_date(?,?,?) AS estimated_date;", [start_location, end_location, dateForSQL])
-            console.log(response[0].estimated_date);
-            console.log(response[0].estimated_date.toString());
+            // console.log(response[0].estimated_date);
+            // console.log(response[0].estimated_date.toString());
             return start_date;
 
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -235,11 +235,11 @@ class Delivery {
      */
     static async updateDelivery(updatedDelivery) {
         try {
-            console.log("updatedDelivery",updatedDelivery)
-            console.log("updatedDelivery uid",updatedDelivery.uid)
-        
+            // console.log("updatedDelivery",updatedDelivery)
+            // console.log("updatedDelivery uid",updatedDelivery.uid)
+
             const deliveryFromDB = await execute("SELECT * FROM deliveries WHERE uid=?;", [`${updatedDelivery.uid}`])
-            console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
+            // console.log("updateDelivery > deliveryFromDB[0]: ", deliveryFromDB[0])
             const receivedDelivery = new Delivery(
                 deliveryFromDB[0].iddeliveries,
                 deliveryFromDB[0].packages_idpackages,
@@ -253,7 +253,7 @@ class Delivery {
                 deliveryFromDB[0].start_date,
                 deliveryFromDB[0].end_date,
                 deliveryFromDB[0].uid)
-            console.log("updateDelivery > receivedDelivery: ", receivedDelivery)
+            // console.log("updateDelivery > receivedDelivery: ", receivedDelivery)
             if (!updatedDelivery.equals(receivedDelivery)) {
                 const response = await execute(
                     "UPDATE deliveries "
@@ -270,7 +270,7 @@ class Delivery {
                     updatedDelivery.getEndDateInSqlFormat(),
                     updatedDelivery.getUID(),
                     updatedDelivery.getIdDeliveries()])
-                console.log("Inside Delivery Model > updateDelivery > response: ", response);
+                // console.log("Inside Delivery Model > updateDelivery > response: ", response);
                 if (response.changedRows > 0) {
                     return { deliveryInfoIsSame: false, updatedDelivery }
                 } else {
@@ -280,7 +280,7 @@ class Delivery {
                 return { deliveryInfoIsSame: true, updatedDelivery }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -298,28 +298,28 @@ class Delivery {
         try {
 
             const getDeletedDelivery = await execute("SELECT * from deliveries WHERE iddeliveries=?", [`${id}`]);
-            console.log("getDeletedUser", getDeletedDelivery);
-            console.log("getDeletedDelivery.length", getDeletedDelivery.length)
-            if (getDeletedDelivery.length >  0){
-                console.log("here");
+            // console.log("getDeletedUser", getDeletedDelivery);
+            // console.log("getDeletedDelivery.length", getDeletedDelivery.length)
+            if (getDeletedDelivery.length > 0) {
+                // console.log("here");
                 const response = await execute("DELETE from deliveries WHERE iddeliveries=?", [`${id}`]);
-                console.log("response: ",response)
-                if (response.affectedRows > 0){
-                        return { deliveryDeleted: true, deletedDelivery: getDeletedDelivery[0] }
-                    } else {
-                        throw {
-                            value: "Internal Error with deleting",
-                            message: "Internal Error with deleting",
+                // console.log("response: ",response)
+                if (response.affectedRows > 0) {
+                    return { deliveryDeleted: true, deletedDelivery: getDeletedDelivery[0] }
+                } else {
+                    throw {
+                        value: "Internal Error with deleting",
+                        message: "Internal Error with deleting",
                     }
                 }
-            }else{
+            } else {
                 throw {
                     value: "Delivery not found",
                     message: "Delivery not found",
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -333,7 +333,7 @@ class Delivery {
      * @returns  Return the newly created delivery
      */
     static async createDelivery(
-        newDelivery 
+        newDelivery
     ) {
         try {
             const response = await execute("INSERT INTO deliveries(packages_idpackages,priority,payment_idpayment,international,start_location,end_location,message,estimated_date,start_date,end_date,uid) "
@@ -349,19 +349,19 @@ class Delivery {
                 newDelivery.getStartDate(),
                 newDelivery.getEndDate(),
                 newDelivery.getUID()])
-            console.log("newDelivery: ", newDelivery)
-            console.log("createDelivery response: ", response)
+            // console.log("newDelivery: ", newDelivery)
+            // console.log("createDelivery response: ", response)
             if (response.affectedRows > 0) {
-                console.log("msg if")
+                // console.log("msg if")
                 newDelivery.setIdDeliveries(response.insertId);
                 return { deliveryCreated: true, createdDelivery: newDelivery }
             } else {
-                console.log("msg else")   
+                // console.log("msg else")   
                 return { deliveryCreated: false };
             }
         } catch (error) {
-            console.log("msg catch") 
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("msg catch") 
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw new Error("no password given")
         }
 
@@ -386,17 +386,17 @@ class Delivery {
     generateUUID() {
         let uid = "";
         while (uid.length < 36) {
-            console.log("uid.length: ", uid.length)
+            // console.log("uid.length: ", uid.length)
             switch (uid.length) {
                 case 8:
-                    // console.log(uid);
+                    // // console.log(uid);
                     uid = uid + "-";
-                    // console.log(uid);
+                    // // console.log(uid);
                     break;
                 case 13:
-                    // console.log(uid);
+                    // // console.log(uid);
                     uid = uid + "-";
-                    // console.log(uid);
+                    // // console.log(uid);
                     break;
                 case 18:
                     uid = uid + "-";
@@ -405,7 +405,7 @@ class Delivery {
                     uid = uid + "-";
                     break;
                 default:
-                    // console.log(uid);
+                    // // console.log(uid);
                     uid = uid + "" + characterGenerator(4);
                     break;
             }

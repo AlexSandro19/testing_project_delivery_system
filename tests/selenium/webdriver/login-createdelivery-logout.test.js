@@ -5,18 +5,18 @@ const assert = require('assert');
 
 async function loginCreateDeliveryLogout() {
   let driver = new webdriver.Builder().forBrowser("firefox").build();
-  try{
+  try {
     await driver.get("http://localhost:3000/");
 
     // // LOGIN // //
 
     // EMAIL
     const emailInput = driver.findElement(By.id("email"));
-	await emailInput.sendKeys('bibendum@outlook.couk');
+    await emailInput.sendKeys('bibendum@outlook.couk');
 
     // PASSWORD
     const passInput = driver.findElement(By.id("password"));
-	await passInput.sendKeys('alex123');
+    await passInput.sendKeys('alex123');
 
     const submitB = driver.findElement(By.css(".MuiButton-containedPrimary"));
     await submitB.click();
@@ -32,22 +32,22 @@ async function loginCreateDeliveryLogout() {
     // ADDING VALUES TO THE PACKAGE
 
     const weightInput = driver.findElement(By.id("weight"));
-	await weightInput.sendKeys('2.0');
+    await weightInput.sendKeys('2.0');
 
     const heightInput = driver.findElement(By.id("height"));
-	await heightInput.sendKeys('2.0');
+    await heightInput.sendKeys('2.0');
 
     const widthInput = driver.findElement(By.id("width"));
-	await widthInput.sendKeys('2.0');
+    await widthInput.sendKeys('2.0');
 
     const depthInput = driver.findElement(By.id("depth"));
-	await depthInput.sendKeys('2.0');
+    await depthInput.sendKeys('2.0');
 
 
     //SUMBITTING
     const packageSubmit = driver.findElement(By.xpath("//button[@type='submit']"))
     await packageSubmit.click()
-    
+
     // Assert that we moved to delivery
     var url = await driver.getCurrentUrl();
     assert.equal(url, "http://localhost:3000/addDelivery");
@@ -60,14 +60,13 @@ async function loginCreateDeliveryLogout() {
     assert.equal(url, "http://localhost:3000/");
     // // LOGGED OUT // //
 
-  } catch(e) {
-    console.log("Error:", e.message)
+  } catch (e) {
+    // console.log("Error:", e.message)
     await driver.executeScript(
       'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Some elements failed to load."}}'
     );
   }
   await driver.quit();
 }
-loginCreateDeliveryLogout(); 
+loginCreateDeliveryLogout();
 
-  

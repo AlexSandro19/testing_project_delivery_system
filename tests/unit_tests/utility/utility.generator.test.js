@@ -25,7 +25,7 @@ describe("Run tests for characterGenerator function", () => {
         const length = 11
         //Act
         const result = characterGenerator(length);
-        // console.debug(result)
+        // // console.debug(result)
         //Assert
         expect(result).toMatch(/[a-zA-Z0-9]{11}/);
     });
@@ -102,7 +102,7 @@ describe("Run tests for numberGenerator function", () => {
         const length = 5
         //Act
         const result = numberGenerator(length);
-        // console.debug(result)
+        // // console.debug(result)
         //Assert
         expect(result).toMatch(/[0-9]{5}/);
     });

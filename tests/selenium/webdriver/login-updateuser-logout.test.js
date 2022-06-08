@@ -5,18 +5,18 @@ const assert = require('assert');
 
 async function loginUpdateUserLogout() {
   let driver = new webdriver.Builder().forBrowser("firefox").build();
-  try{
+  try {
     await driver.get("http://localhost:3000/");
 
     // // LOGIN // //
 
     // EMAIL
     const emailInput = driver.findElement(By.id("email"));
-	await emailInput.sendKeys('bibendum@outlook.couk');
+    await emailInput.sendKeys('bibendum@outlook.couk');
 
     // PASSWORD
     const passInput = driver.findElement(By.id("password"));
-	await passInput.sendKeys('alex123');
+    await passInput.sendKeys('alex123');
 
     const submitB = driver.findElement(By.css(".MuiButton-containedPrimary"));
     await submitB.click();
@@ -31,13 +31,13 @@ async function loginUpdateUserLogout() {
     assert.equal(url, "http://localhost:3000/updateProfile");
 
     const updpassInput = driver.findElement(By.id("password"));
-	await updpassInput.sendKeys('alex123');
+    await updpassInput.sendKeys('alex123');
 
     const updpassInputConfirm = driver.findElement(By.id("passwordConfirm"));
-	await updpassInputConfirm.sendKeys('alex123');
+    await updpassInputConfirm.sendKeys('alex123');
 
     const updSecondName = driver.findElement(By.id("secondName"));
-	await updSecondName.sendKeys('Colonels');
+    await updSecondName.sendKeys('Colonels');
 
     //Sumbit Button
     const submitUserUpd = driver.findElement(By.xpath("//button[@type='submit']"))
@@ -51,8 +51,8 @@ async function loginUpdateUserLogout() {
     assert.equal(url, "http://localhost:3000/");
     // // LOGGED OUT // //
 
-  } catch(e) {
-    console.log("Error:", e.message)
+  } catch (e) {
+    // console.log("Error:", e.message)
     await driver.executeScript(
       'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Some elements failed to load."}}'
     );

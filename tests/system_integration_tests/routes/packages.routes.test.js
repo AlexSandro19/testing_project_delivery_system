@@ -2,12 +2,12 @@ const request = require("supertest");
 const app = require("../../../app");
 const { init, end } = require("../../../src/database/mysql.connector")
 
-let saveCreatedPackage; 
+let saveCreatedPackage;
 
 describe("Testing Packages api routes", () => {
- 
+
   beforeAll(() => {
-      init()
+    init()
   });
 
   afterAll(() => {
@@ -27,12 +27,12 @@ describe("Testing Packages api routes", () => {
       oddsized: "0",
     }
     const response = request(app).post("/packages/addPackage").send(samplePackage)
-       console.debug(response);
+    // console.debug(response);
     response.expect(200).expect((res) => {
-      console.log("res.body: ", res.body)
-      const {idpackages,user_iduser,weight,height,width,depth,fragile,electronics,oddsized,amount} = res.body; 
+      // console.log("res.body: ", res.body)
+      const { idpackages, user_iduser, weight, height, width, depth, fragile, electronics, oddsized, amount } = res.body;
       expect(user_iduser).toEqual(samplePackage.userId);
-      saveCreatedPackage = {idpackages,user_iduser,weight,height,width,depth,fragile,electronics,oddsized,amount}
+      saveCreatedPackage = { idpackages, user_iduser, weight, height, width, depth, fragile, electronics, oddsized, amount }
     }).end((err, res) => {
       if (err) return done(err);
       return done();
@@ -40,13 +40,13 @@ describe("Testing Packages api routes", () => {
   })
 
   test("Check getPackage api", (done) => {
-    console.log("saveCreatedPackage: ", saveCreatedPackage)
-    const response = request(app).post("/packages/getPackage").send({idpackages: saveCreatedPackage.idpackages})
+    // console.log("saveCreatedPackage: ", saveCreatedPackage)
+    const response = request(app).post("/packages/getPackage").send({ idpackages: saveCreatedPackage.idpackages })
     response.expect(200).expect((res) => {
-      // console.log("res.body.response.user.idcustomer: ", res.body.response.user.idcustomer);
-      // console.log("res.body.response.user.idcustomer: ", typeof res.body.response.user.idcustomer);
-      // console.log("saveCreatedUser.idcustomer: ", saveCreatedDelivery.idcustomer);
-      // console.log("saveCreatedUser.idcustomer: ", typeof saveCreatedDelivery.idcustomer);
+      // // console.log("res.body.response.user.idcustomer: ", res.body.response.user.idcustomer);
+      // // console.log("res.body.response.user.idcustomer: ", typeof res.body.response.user.idcustomer);
+      // // console.log("saveCreatedUser.idcustomer: ", saveCreatedDelivery.idcustomer);
+      // // console.log("saveCreatedUser.idcustomer: ", typeof saveCreatedDelivery.idcustomer);
 
       expect(res.body.package.idpackages).toEqual(saveCreatedPackage.idpackages)
     }).end((err, res) => {
@@ -59,7 +59,7 @@ describe("Testing Packages api routes", () => {
   test("Check getPackages api", (done) => {
     const response = request(app).get("/packages/getPackages").send()
     response.expect(200).expect((res) => {
-      console.log("res.body test: ", res.body)
+      // console.log("res.body test: ", res.body)
       expect(res.body.packages.length).toBeGreaterThan(0);
     }).end((err, res) => {
       if (err) return done(err);
@@ -68,7 +68,7 @@ describe("Testing Packages api routes", () => {
   })
 
   test("Check updatePackage api", (done) => {
-    let generatedWeight = Math.floor(Math.random() * 5) + 1 
+    let generatedWeight = Math.floor(Math.random() * 5) + 1
     const samplePackage = {
       idpackages: saveCreatedPackage.idpackages,
       user_iduser: saveCreatedPackage.user_iduser,
@@ -81,25 +81,25 @@ describe("Testing Packages api routes", () => {
       oddsized: saveCreatedPackage.oddsized,
       receiver_iduser: null,
     }
-    console.log("samplePackage: ", samplePackage)
+    // console.log("samplePackage: ", samplePackage)
     const response = request(app).post("/packages/updatePackage").send(samplePackage)
     response.expect(200).expect((res) => {
-      console.log("res.body test: ", res.body)
+      // console.log("res.body test: ", res.body)
       expect(res.body.updatedPackage.idpackages).toEqual(saveCreatedPackage.idpackages);;
     }).end((err, res) => {
-      console.log("res: ", res)
+      // console.log("res: ", res)
       if (err) return done(err);
       return done();
     });
   })
- 
+
   test("Check deletePackage api", (done) => {
-    const response = request(app).post("/packages/deletePackage").send({idpackages: saveCreatedPackage.idpackages})
+    const response = request(app).post("/packages/deletePackage").send({ idpackages: saveCreatedPackage.idpackages })
     response.expect(200).expect((res) => {
-      console.log("res.body test: ", res.body)
+      // console.log("res.body test: ", res.body)
       expect(res.body.package.idpackages).toEqual(saveCreatedPackage.idpackages);
     }).end((err, res) => {
-      console.log("res: ", res)
+      // console.log("res: ", res)
       if (err) return done(err);
       return done();
     });
