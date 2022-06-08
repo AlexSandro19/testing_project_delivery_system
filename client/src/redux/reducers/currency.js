@@ -1,5 +1,5 @@
 import {
-    CURRENCIES_GET,CURRENCIES_SET,CONVERTED
+    CURRENCIES_GET,CURRENCIES_SET,CONVERTED,RESET
   } from  "../constants/currency"
   const initialState = {
     currency:[],
@@ -24,6 +24,11 @@ import {
           return{
             ...state,
             newAmount:action.payload
+          }
+        case RESET:
+          return{
+            ...state,
+            newAmount:0,
           }
       default:
         return state;

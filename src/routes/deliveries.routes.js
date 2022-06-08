@@ -31,13 +31,13 @@ router.post("/addDelivery",
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                console.log(errors.array());
+                // console.log(errors.array());
                 return res.status(400).json({
                     errors: errors.array(),
                     message: "Invalid data while creating a user",
                 });
             }
-            // console.log("req.body in /addDelivery ", req.body)
+            // // console.log("req.body in /addDelivery ", req.body)
             const {
                 packages_idpackages,
                 priority,
@@ -51,7 +51,7 @@ router.post("/addDelivery",
                 end_date
 
             } = req.body;
-            // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
+            // // console.log(await Delivery.updateDeliveries(1,true,1,true,1,1,"","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","2021-07-19T01:30:07.000Z","D332CD90-8A43"))
 
             const newDelivery = new Delivery(
                 null,
@@ -67,7 +67,7 @@ router.post("/addDelivery",
                 end_date
             )
 
-            console.log("newDelivery inside addDelivery", newDelivery)
+            // console.log("newDelivery inside addDelivery", newDelivery)
             const { deliveryCreated, createdDelivery } = await Delivery.createDelivery(newDelivery);
             // example of what Delivery.createDelivery() should return 
             // OkPacket {
@@ -81,7 +81,7 @@ router.post("/addDelivery",
             //     changedRows: 0
             //   }
             // values can be accessed through response.insertId
-            // console.log("newDelivery:", newDelivery.toString());
+            // // console.log("newDelivery:", newDelivery.toString());
 
             if (deliveryCreated) {
                 return res.status(200).json({ createdDelivery });
@@ -90,7 +90,7 @@ router.post("/addDelivery",
                 return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -128,7 +128,7 @@ router.post("/updateDelivery",
             .isLength({ max: 36 }).withMessage("Message should be no more than 36 characters long"), // MUST BE CHANGED
     ], async (req, res) => {
         try {
-            console.log("req.body in /updateDelivery ", req.body)
+            // console.log("req.body in /updateDelivery ", req.body)
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({
@@ -136,7 +136,7 @@ router.post("/updateDelivery",
                     message: "Invalid data while creating a user",
                 });
             }
-            console.log("req.body in /updateDelivery ", req.body)
+            // console.log("req.body in /updateDelivery ", req.body)
             const {
                 iddeliveries,
                 packages_idpackages,
@@ -165,10 +165,10 @@ router.post("/updateDelivery",
                 ((end_date != null) ? new Date(end_date) : null),
                 uid
             )
-            console.log("delivery inside /updateDelivery", delivery.toString())
+            // console.log("delivery inside /updateDelivery", delivery.toString())
             const { deliveryInfoIsSame, updatedDelivery } = await Delivery.updateDelivery(delivery);
-            console.log("updatedDelivery ", updatedDelivery);
-            console.log("deliveryInfoIsSame ", deliveryInfoIsSame);
+            // console.log("updatedDelivery ", updatedDelivery);
+            // console.log("deliveryInfoIsSame ", deliveryInfoIsSame);
 
             if (!deliveryInfoIsSame && typeof updatedDelivery === 'object') {
                 return res.status(200).json({ updatedDelivery });
@@ -178,7 +178,7 @@ router.post("/updateDelivery",
                 return res.status(400).json({ updatedDelivery, message: "Delivery was not updated, because the delivery info is the same" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -208,7 +208,7 @@ router.delete("/deleteDelivery", [
             return res.status(500).json({ message: "Internal Server Error when deleting" });
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [
@@ -220,13 +220,13 @@ router.delete("/deleteDelivery", [
 
 
 router.post("/getDelivery", async (req, res) => {
-    try{
+    try {
         const { iddeliveries } = req.body
         const delivery = await Delivery.getDelivery(iddeliveries);
-        console.log(delivery);
+        // console.log(delivery);
         return res.status(200).json({ delivery });
-    }catch (error) {
-        console.log(error);
+    } catch (error) {
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [
@@ -238,12 +238,12 @@ router.post("/getDelivery", async (req, res) => {
 })
 
 router.get("/getDeliveries", async (req, res) => {
-    try{
+    try {
         const deliveries = await Delivery.getAllDeliveries();
-        console.log(deliveries);
+        // console.log(deliveries);
         return res.status(200).json({ deliveries });
-    }catch (error) {
-        console.log(error);
+    } catch (error) {
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [

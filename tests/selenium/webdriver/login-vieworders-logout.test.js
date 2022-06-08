@@ -5,16 +5,16 @@ const assert = require('assert');
 
 async function viewOrder() {
   let driver = new webdriver.Builder().forBrowser("firefox").build();
-  try{
+  try {
     await driver.get("http://localhost:3000/");
 
     // EMAIL
     const emailInput = driver.findElement(By.id("email"));
-	await emailInput.sendKeys('bibendum@outlook.couk');
+    await emailInput.sendKeys('bibendum@outlook.couk');
 
     // PASSWORD
     const passInput = driver.findElement(By.id("password"));
-	await passInput.sendKeys('alex123');
+    await passInput.sendKeys('alex123');
 
     const submitB = driver.findElement(By.css(".MuiButton-containedPrimary"));
     await submitB.click();
@@ -38,8 +38,8 @@ async function viewOrder() {
 
 
 
-  } catch(e) {
-    console.log("Error:", e.message)
+  } catch (e) {
+    // console.log("Error:", e.message)
     await driver.executeScript(
       'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed","reason": "Some elements failed to load."}}'
     );

@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000;
 async function start() {
     try {
         // app.listen(PORT, () =>
-        //     console.log(`App has been started on port ${PORT}...`)
+        //     // console.log(`App has been started on port ${PORT}...`)
         // );
         init();
     } catch (e) {
@@ -14,9 +14,8 @@ async function start() {
     }
 }
 
-module.exports = app.listen(PORT, () =>
-{
-console.log(`App has been started on port ${PORT}...`)
-start()
+module.exports = app.listen(PORT, () => {
+    // console.log(`App has been started on port ${PORT}...`)
+    start()
 }
 );

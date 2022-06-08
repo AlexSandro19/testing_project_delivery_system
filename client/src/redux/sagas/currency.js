@@ -2,8 +2,8 @@ import {
     CURRENCIES_GET,CURRENCIES_SET,CONVERT,CONVERTED
   } from  "../constants/currency";
 import { takeLatest, call, put } from "redux-saga/effects";
-import {getAllCurrenciesApi,getConversionApi} from "../../services/currency.service";
-function* getAllZipsAndCities(action){
+import {getAllCurrenciesApi,getConversionApi,} from "../../services/currency.service";
+function* getAllCurrencies(action){
     try{
         const response =yield call(getAllCurrenciesApi);
         console.log(response);
@@ -25,6 +25,7 @@ function* getAllZipsAndCities(action){
 function* getConversion(action){
     try{
         const {amount,toConvertCurrency} = action.payload;
+        const currencies =yield call(getAllCurrenciesApi);
         console.log(amount);
         console.log(toConvertCurrency);
         const response =yield call(getConversionApi,amount,'eur',toConvertCurrency);
@@ -46,7 +47,7 @@ function* getConversion(action){
 }
 function* registrationWatcher(){
     yield takeLatest(CONVERT,getConversion)
-    yield takeLatest(CURRENCIES_GET,getAllZipsAndCities);
+    yield takeLatest(CURRENCIES_GET,getAllCurrencies);
 
 }
 

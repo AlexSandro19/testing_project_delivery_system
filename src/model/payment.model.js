@@ -26,9 +26,9 @@ class Payment {
         this.amount = amount;
         this.payed = payed;
         this.prepaid = prepaid;
-        this.transactionid =(transactionid == null || transactionid == undefined || typeof transactionid == 'undefined'
-        ? this.transactionid = this.generateTransactionId()
-        : this.transactionid = transactionid);
+        this.transactionid = (transactionid == null || transactionid == undefined || typeof transactionid == 'undefined'
+            ? this.transactionid = this.generateTransactionId()
+            : this.transactionid = transactionid);
         this.billing_address = billing_address;
     }
     /**
@@ -84,23 +84,22 @@ class Payment {
         try {
             const response = await execute("SELECT * FROM payment", []);
             if (response.length > 0) {
-            return response.map(v => new Payment(
-                v.idpayment,
-                v.typeofpayment_idtypeofpayment,
-                v.amount,
-                v.payed,
-                v.prepaid,
-                v.transactionid,
-                v.billing_address));
+                return response.map(v => new Payment(
+                    v.idpayment,
+                    v.typeofpayment_idtypeofpayment,
+                    v.amount,
+                    v.payed,
+                    v.prepaid,
+                    v.transactionid,
+                    v.billing_address));
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Payments not found",
                     message: "Payments not found",
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -117,23 +116,22 @@ class Payment {
         try {
             const response = await execute("SELECT * FROM payment WHERE idpayment=?", [`${id}`])
             if (response.length > 0) {
-            return new Payment(
-                response[0].idpayment,
-                response[0].typeofpayment_idtypeofpayment,
-                response[0].amount,
-                response[0].payed,
-                response[0].prepaid,
-                response[0].transactionid,
-                response[0].billing_address)
+                return new Payment(
+                    response[0].idpayment,
+                    response[0].typeofpayment_idtypeofpayment,
+                    response[0].amount,
+                    response[0].payed,
+                    response[0].prepaid,
+                    response[0].transactionid,
+                    response[0].billing_address)
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Payment not found",
                     message: "Payment not found",
                 }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -160,8 +158,8 @@ class Payment {
                 paymentFromDB[0].transactionid,
                 paymentFromDB[0].billing_address
             )
-            console.log("updatedPayment: ", updatedPayment);
-            console.log("receivedPayment: ", receivedPayment);
+            // console.log("updatedPayment: ", updatedPayment);
+            // console.log("receivedPayment: ", receivedPayment);
             if (!updatedPayment.equals(receivedPayment)) {
                 const response = await execute(
                     "UPDATE payment "
@@ -174,19 +172,19 @@ class Payment {
                         updatedPayment.getTransactionid(),
                         updatedPayment.getBillingAddress(),
                         updatedPayment.getIdPayment(),])
-                console.log("Inside Payment Model > updatePayment > response: ", response);
+                // console.log("Inside Payment Model > updatePayment > response: ", response);
                 if (response.changedRows > 0) {
-                    // console.log("here > response.changedRows > 0")
+                    // // console.log("here > response.changedRows > 0")
                     return { paymentInfoIsSame: false, updatedPayment }
                 } else {
-                    // console.log("here > response.changedRows > 0 > else")
+                    // // console.log("here > response.changedRows > 0 > else")
                     return { paymentInfoIsSame: false, updatedPayment: undefined };
                 }
             } else {
                 return { paymentInfoIsSame: true, updatedPayment }
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -208,14 +206,12 @@ class Payment {
                 if (response.affectedRows > 0) {
                     return { paymentDeleted: true, deletedPayment: getDeletedPayment[0] }
                 } else {
-                    console.log("[mysql.connector][execute][Error]: ", error);
                     throw {
                         value: "Internal Error with deleting",
                         message: "Internal Error with deleting",
+                    }
                 }
-            }
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Payment not found",
                     message: "Payment not found",
@@ -223,7 +219,7 @@ class Payment {
             }
 
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -248,7 +244,7 @@ class Payment {
                 newPayment.getPrepaid(),
                 newPayment.getTransactionid(),
                 newPayment.getBillingAddress()])
-            console.log("createPayment response: ", response)
+            // console.log("createPayment response: ", response)
             if (response.affectedRows > 0) {
                 newPayment.setIdPayment(response.insertId);
                 return { paymentCreated: true, createdPayment: newPayment }
@@ -256,7 +252,7 @@ class Payment {
                 return { paymentCreated: false };
             }
         } catch (error) {
-            console.log("[mysql.connector][execute][Error]: ", error);
+            // console.log("[mysql.connector][execute][Error]: ", error);
             throw {
                 value: "Query failed",
                 message: error.message,
@@ -271,7 +267,7 @@ class Payment {
      * The `ddmmyy` is based on the current date. `yy` is the last two numbers of the year.
      * @returns {String}  Returns a 20 character long semi-unique identifier.
      */
-     generateTransactionId() {
+    generateTransactionId() {
         return characterGenerator(8) + numberGenerator(5) + "-" + transactionDateGenerator()
     }
 }

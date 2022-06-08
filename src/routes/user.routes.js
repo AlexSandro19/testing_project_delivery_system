@@ -37,7 +37,7 @@ router.post("/register",
         check("passwordConfirm").exists({ checkFalsy: true }).withMessage("Confirm password not provided").trim(),
     ], async (req, res) => {
         try {
-            console.log("user.register > req.body: ", req.body)
+            // console.log("user.register > req.body: ", req.body)
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({
@@ -51,10 +51,10 @@ router.post("/register",
                     message: "Confirm password is not correct",
                     errors: [{ value: "passwordConfirm", msg: "Confirm password is not correct", param: "passwordConfirm" }],
                 });
-              }
+            }
             const hashedPassword = await bcrypt.hash(password, 12);
-            const user = new User(null, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
-            console.log("user: ", user)
+            const user = new User(null, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, hashedPassword);
+            // console.log("user: ", user)
             const { userCreated, createdUser } = await User.createUser(user)
             if (userCreated) {
                 return res.status(200).json({ createdUser });
@@ -62,7 +62,7 @@ router.post("/register",
                 return res.status(500).json({ message: "Internal Server Error" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -111,23 +111,23 @@ router.post("/updateUser", [
                 message: "Invalid data while creating a user",
             });
         }
-        const { idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode,password,passwordConfirm, city } = req.body;
-        
+        const { idCustomer, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, password, passwordConfirm, city } = req.body;
+
         if (passwordConfirm !== password) {
-          return res.status(400).json({
-            message: "Invalid authorization data",
-            errors: [
-              { value: "", msg: "Wrong password, try again", param: "password" },
-              { value: "", msg: "Wrong password, try again", param: "passwordConfirm" },
-            ],
-          });
-      }
+            return res.status(400).json({
+                message: "Invalid authorization data",
+                errors: [
+                    { value: "", msg: "Wrong password, try again", param: "password" },
+                    { value: "", msg: "Wrong password, try again", param: "passwordConfirm" },
+                ],
+            });
+        }
         const hashedPassword = await bcrypt.hash(password, 12);
-        const user = new User(idCustomer,typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city,hashedPassword);
-   
-        console.log(user);
+        const user = new User(idCustomer, typeOfUser, firstName, secondName, companyName, email, phone, address, duns, zipcode, city, hashedPassword);
+
+        // console.log(user);
         const { userInfoIsSame, updatedUser } = await User.updateUser(user);
-        console.log(userInfoIsSame);
+        // console.log(userInfoIsSame);
         if (!userInfoIsSame && typeof updatedUser === 'object') {
             return res.status(200).json({ user: updatedUser });
         } else if (!userInfoIsSame && updatedUser === undefined) {
@@ -136,7 +136,7 @@ router.post("/updateUser", [
             return res.status(400).json({ message: "User was not updated, because the user info is the same" });
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return res.status(500).json({
             message: "Invalid data",
             errors: [
@@ -147,57 +147,57 @@ router.post("/updateUser", [
 
 })
 router.post("/login",
-[check("email","Invalid email provided or not a valid email address").isEmail(),
-check("password","Invalid password provided or not a valid password").notEmpty(),], async (req, res) => {
-    try {
-        
-        const errors = validationResult(req);
+    [check("email", "Invalid email provided or not a valid email address").isEmail(),
+    check("password", "Invalid password provided or not a valid password").notEmpty(),], async (req, res) => {
+        try {
 
-        if (!errors.isEmpty()) {
-          return res.status(400).json({
-            errors: errors.array(),
-            message: "Invalid authorization data",
-          });
-        }
-  
-        const { email, password } = req.body;
-        console.log("req.body: ", req.body)
-        const user = await User.getUserByEmail(email)
-        console.log(user);
-        if (!user) {
-            return res.status(400).json({
-              message: "Invalid authorization data",
-              errors: [{ value: email, msg: "User not found", param: "email" }],
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array(),
+                    message: "Invalid authorization data",
+                });
+            }
+
+            const { email, password } = req.body;
+            // console.log("req.body: ", req.body)
+            const user = await User.getUserByEmail(email)
+            // console.log(user);
+            if (!user) {
+                return res.status(400).json({
+                    message: "Invalid authorization data",
+                    errors: [{ value: email, msg: "User not found", param: "email" }],
+                });
+            }
+
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                return res.status(400).json({
+                    message: "Invalid authorization data",
+                    errors: [
+                        { value: "", msg: "Wrong password, try again", param: "password" },
+                    ],
+                });
+            }
+
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                expiresIn: "30m",
             });
-          }
-        
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({
-              message: "Invalid authorization data",
-              errors: [
-                { value: "", msg: "Wrong password, try again", param: "password" },
-              ],
+            // console.log(token.exp);
+            return res.status(200).json({ user, token: token, exp: token.exp });
+
+        } catch (error) {
+            // console.log(error.value);
+            return res.status(500).json({
+                message: "Invalid data",
+                errors: [
+                    { value: error.value, msg: error.message },
+                ],
             });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-          expiresIn: "30m",
-        });
-        console.log(token.exp);
-        return res.status(200).json({ user,token:token,exp:token.exp });
-
-    } catch (error) {
-        console.log(error.value);
-        return res.status(500).json({
-          message: "Invalid data",
-          errors: [
-            { value: error.value, msg: error.message },
-          ],
-        });
-    }
-   
-})
+    })
 
 router.delete("/deleteUser", [
     check("idCustomer").exists({ checkFalsy: true }).withMessage("Customer not provided").trim()
@@ -221,7 +221,7 @@ router.delete("/deleteUser", [
                 return res.status(500).json({ message: "Internal Server Error when deleting" });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({
                 message: "Invalid data",
                 errors: [
@@ -234,14 +234,14 @@ router.delete("/deleteUser", [
 router.post("/getUser", async (req, res) => {
     const { idcustomer } = req.body
     const user = await User.getUser(idcustomer);
-    console.log(user);
+    // console.log(user);
     return res.status(200).json({ user });
 })
 
 router.get("/getUsers", async (req, res) => {
 
     const users = await User.getAllUsers();
-    console.log(users);
+    // console.log(users);
     return res.status(200).json({ users });
 })
 

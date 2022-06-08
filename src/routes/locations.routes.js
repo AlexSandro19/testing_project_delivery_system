@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const { check, validationResult } = require("express-validator")
-const {execute} = require("../database/mysql.connector");
+const { execute } = require("../database/mysql.connector");
 const { Location } = require("../model/location.model");
 
 router.post("/addLocation",
@@ -23,22 +23,22 @@ router.post("/addLocation",
       const { typeOfLocationId, address, zipCode, cityId } = req.body;
       const newLocation = new Location(null, typeOfLocationId, address, zipCode, cityId);
       const checkLocationExistence = await Location.getLocationIfAdressZipCityExists(zipCode, cityId, address)
-      console.log(newLocation)
-      console.log("checkLocationExistence: ", checkLocationExistence)
+      // console.log(newLocation)
+      // console.log("checkLocationExistence: ", checkLocationExistence)
       if (checkLocationExistence != undefined) {
-        console.log("here")
-        return res.status(200).json({createdLocation:checkLocationExistence})
+        // console.log("here")
+        return res.status(200).json({ createdLocation: checkLocationExistence })
       } else {
-        console.log("there")
+        // console.log("there")
         const { locationCreated, createdLocation } = await Location.createLocation(newLocation)
         if (locationCreated) {
           return res.status(200).json({ createdLocation });
         } else {
-          return res.status(500).json({  message: "Internal Server Error" });
+          return res.status(500).json({ message: "Internal Server Error" });
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return res.status(500).json({
         message: "Invalid data",
         errors: [
@@ -67,7 +67,7 @@ router.post("/updateLocation",
       }
       const { idlocation, typeOfLocationId, address, zipCode, cityId } = req.body;
       const location = new Location(idlocation, typeOfLocationId, address, zipCode, cityId);
-      console.log(location)
+      // console.log(location)
       const { locationInfoIsSame, updatedLocation } = await Location.updateLocation(location)
       if (!locationInfoIsSame && typeof updatedLocation === 'object') {
         return res.status(200).json({ updatedLocation });
@@ -77,7 +77,7 @@ router.post("/updateLocation",
         return res.status(400).json({ updatedLocation, message: "Location was not updated, because the location info is the same" });
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return res.status(500).json({
         message: "Invalid data",
         errors: [
@@ -101,14 +101,14 @@ router.delete("/deleteLocation", [
       }
 
       var { idlocation } = req.body
-      const { locationDeleted, deletedLocation }  = await Location.deleteLocation(idlocation)
+      const { locationDeleted, deletedLocation } = await Location.deleteLocation(idlocation)
       if (locationDeleted) {
         return res.status(200).json({ location: deletedLocation });
-    } else {
+      } else {
         return res.status(500).json({ message: "Internal Server Error when deleting" });
-    }
+      }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       return res.status(500).json({
         message: "Invalid data",
         errors: [
