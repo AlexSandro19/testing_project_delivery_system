@@ -116,7 +116,6 @@ class Package {
                         v.oddsized,
                         v.receiver_iduser));
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Package not found",
                     message: "Package not found",
@@ -152,7 +151,6 @@ class Package {
                     response[0].oddsized,
                     response[0].receiver_id)
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Package not found",
                     message: "Package not found",
@@ -236,14 +234,12 @@ class Package {
                 if (response.affectedRows > 0){
                     return { packageDeleted: true, deletedPackage: getDeletedPackage[0] }
                     } else {
-                        console.log("[mysql.connector][execute][Error]: ", error);
                         throw {
                             value: "Internal Error with deleting",
                             message: "Internal Error with deleting",
                     }
                 }
             }else{
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Package not found",
                     message: "Package not found",

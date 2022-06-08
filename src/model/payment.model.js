@@ -93,7 +93,6 @@ class Payment {
                 v.transactionid,
                 v.billing_address));
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Payments not found",
                     message: "Payments not found",
@@ -126,7 +125,6 @@ class Payment {
                 response[0].transactionid,
                 response[0].billing_address)
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Payment not found",
                     message: "Payment not found",
@@ -208,14 +206,12 @@ class Payment {
                 if (response.affectedRows > 0) {
                     return { paymentDeleted: true, deletedPayment: getDeletedPayment[0] }
                 } else {
-                    console.log("[mysql.connector][execute][Error]: ", error);
                     throw {
                         value: "Internal Error with deleting",
                         message: "Internal Error with deleting",
                 }
             }
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Payment not found",
                     message: "Payment not found",

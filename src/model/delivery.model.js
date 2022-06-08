@@ -156,7 +156,6 @@ class Delivery {
                     v.end_date,
                     v.uid));
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Delivery not found",
                     message: "Delivery not found",
@@ -195,7 +194,6 @@ class Delivery {
                     response[0].uid)
 
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Delivery not found",
                     message: "Delivery not found",
@@ -309,14 +307,12 @@ class Delivery {
                 if (response.affectedRows > 0){
                         return { deliveryDeleted: true, deletedDelivery: getDeletedDelivery[0] }
                     } else {
-                        console.log("[mysql.connector][execute][Error]: ", error);
                         throw {
                             value: "Internal Error with deleting",
                             message: "Internal Error with deleting",
                     }
                 }
             }else{
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Delivery not found",
                     message: "Delivery not found",
@@ -390,7 +386,7 @@ class Delivery {
     generateUUID() {
         let uid = "";
         while (uid.length < 36) {
-            // console.log(uid.length)
+            console.log("uid.length: ", uid.length)
             switch (uid.length) {
                 case 8:
                     // console.log(uid);
@@ -411,7 +407,6 @@ class Delivery {
                 default:
                     // console.log(uid);
                     uid = uid + "" + characterGenerator(4);
-                case 36:
                     break;
             }
         }

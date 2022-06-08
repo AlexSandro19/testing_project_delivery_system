@@ -97,7 +97,6 @@ class Location {
                     response[0].zip_city_city_idcity)
 
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "User not found",
                     message: "User not found",
@@ -204,14 +203,12 @@ class Location {
                 if (response.affectedRows > 0){
                     return { locationDeleted: true, deletedLocation: getDeletedLocation[0] }
                     } else {
-                        console.log("[mysql.connector][execute][Error]: ", error);
                         throw {
                             value: "Internal Error with deleting",
                             message: "Internal Error with deleting",
                     }
                 }
             }else{
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Location not found",
                     message: "Location not found",

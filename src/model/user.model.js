@@ -125,7 +125,6 @@ class User {
                     v.password))
 
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "Users not found",
                     message: "Users not found",
@@ -162,7 +161,6 @@ class User {
                     response[0].password)
 
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "User not found",
                     message: "User not found",
@@ -199,7 +197,6 @@ class User {
                     response[0].zip_city_city_idcity,
                     response[0].password)
             } else {
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "User not found",
                     message: "User not found",
@@ -291,14 +288,12 @@ class User {
                 if (response.affectedRows > 0){
                         return { userDeleted: true, deletedUser: getDeletedUser[0] }
                     } else {
-                        console.log("[mysql.connector][execute][Error]: ", error);
                         throw {
                             value: "Internal Error with deleting",
                             message: "Internal Error with deleting",
                     }
                 }
             }else{
-                console.log("[mysql.connector][execute][Error]: ", error);
                 throw {
                     value: "User not found",
                     message: "User not found",
