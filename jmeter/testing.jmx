@@ -106,7 +106,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-    &quot;user_iduser&quot;:&quot;${ID}&quot;,&#xd;
+    &quot;userId&quot;:&quot;${ID}&quot;,&#xd;
     &quot;weight&quot;:&quot;2.05&quot;,&#xd;
     &quot;height&quot;:&quot;1.05&quot;,&#xd;
     &quot;width&quot;:&quot;3.10&quot;,&#xd;
@@ -137,7 +137,7 @@
         <hashTree>
           <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Package Id Extractor" enabled="true">
             <stringProp name="JSONPostProcessor.referenceNames">PACKAGE_ID</stringProp>
-            <stringProp name="JSONPostProcessor.jsonPathExprs">$.response.createdPackage.idpackages</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.idpackages</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
           </JSONPostProcessor>
           <hashTree/>
@@ -181,7 +181,7 @@
         <hashTree>
           <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Payment Id Extractor" enabled="true">
             <stringProp name="JSONPostProcessor.referenceNames">ID_PAYMENT</stringProp>
-            <stringProp name="JSONPostProcessor.jsonPathExprs">$.response.createdPayment.idpayment</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.createdPayment.idpayment</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
           </JSONPostProcessor>
           <hashTree/>
@@ -200,7 +200,9 @@
     &quot;start_location&quot;:&quot;1&quot;,&#xd;
     &quot;end_location&quot;:&quot;11&quot;,&#xd;
     &quot;message&quot;:&quot;no message&quot;,&#xd;
-    &quot;start_date&quot;:&quot;2022-01-01T12:00:00.000&quot;&#xd;
+    &quot;start_date&quot;:&quot;2022-01-01T12:00:00.000&quot;,&#xd;
+    &quot;estimated_date&quot;:&quot;2022-01-01T12:00:00.000&quot;,&#xd;
+    &quot;end_date&quot;:&quot;2022-01-01T12:00:00.000&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -223,7 +225,7 @@
         <hashTree>
           <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Delivery ID extractor" enabled="true">
             <stringProp name="JSONPostProcessor.referenceNames">DELIVERY_ID</stringProp>
-            <stringProp name="JSONPostProcessor.jsonPathExprs">$.response.createdDelivery.iddeliveries</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.createdDelivery.iddeliveries</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
           </JSONPostProcessor>
           <hashTree/>
@@ -238,7 +240,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;deliveryId&quot;:&quot;${DELIVERY_ID}&quot;	&#xd;
+	&quot;iddeliveries&quot;:&quot;${DELIVERY_ID}&quot;	&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -252,7 +254,7 @@
           <stringProp name="HTTPSampler.method">DELETE</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
@@ -266,7 +268,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;paymentId&quot;:&quot;${ID_PAYMENT}&quot;&#xd;
+	&quot;idpayment&quot;:&quot;${ID_PAYMENT}&quot;&#xd;
 }&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -295,7 +297,7 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-		&quot;id&quot;:&quot;${PACKAGE_ID}&quot;&#xd;
+		&quot;idpackages&quot;:&quot;${PACKAGE_ID}&quot;&#xd;
 }&#xd;
 </stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -307,7 +309,7 @@
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path">packages/deletePackage</stringProp>
-          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -318,7 +320,7 @@
         </HTTPSamplerProxy>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="LOAD TEST " enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="LOAD TEST " enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -385,30 +387,30 @@
         </ModuleController>
         <hashTree/>
       </hashTree>
-      <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="SPIKE TEST Ultimate" enabled="true">
+      <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="SPIKE TEST Ultimate" enabled="false">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="264655691">
+          <collectionProp name="295048801">
             <stringProp name="1631392">5500</stringProp>
             <stringProp name="48">0</stringProp>
             <stringProp name="48687">120</stringProp>
             <stringProp name="1722">60</stringProp>
             <stringProp name="48687">120</stringProp>
           </collectionProp>
-          <collectionProp name="1940131820">
+          <collectionProp name="1970524930">
             <stringProp name="1631392">5500</stringProp>
             <stringProp name="50640">330</stringProp>
             <stringProp name="48687">120</stringProp>
             <stringProp name="1722">60</stringProp>
             <stringProp name="48687">120</stringProp>
           </collectionProp>
-          <collectionProp name="1661553390">
+          <collectionProp name="1691946500">
             <stringProp name="1631392">5500</stringProp>
             <stringProp name="53616">660</stringProp>
             <stringProp name="48687">120</stringProp>
             <stringProp name="1722">60</stringProp>
             <stringProp name="48687">120</stringProp>
           </collectionProp>
-          <collectionProp name="688546750">
+          <collectionProp name="718939860">
             <stringProp name="1631392">5500</stringProp>
             <stringProp name="56592">990</stringProp>
             <stringProp name="48687">120</stringProp>
@@ -592,6 +594,43 @@
           </value>
         </objProp>
         <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Spike Test\AggregateReport.csv</stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <sentBytes>true</sentBytes>
+            <url>true</url>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
