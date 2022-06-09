@@ -18,7 +18,7 @@ async function loginLogout() {
 
     const submitB = driver.findElement(By.css(".MuiButton-containedPrimary"));
     await submitB.click();
-    // Thread.sleep(4000);  
+    
     var url = await driver.getCurrentUrl();
     assert.equal(url, "http://localhost:3000/profile");
 
