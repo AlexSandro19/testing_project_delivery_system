@@ -480,7 +480,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">C:\Users\Dorin\OneDrive\Desktop\testing_project_delivery_system\jmeter\Spike Test\ResultsTree.csv</stringProp>
+        <stringProp name="filename">E:\Sem6\testing_project_delivery_system\jmeter\Spike Test\ViewResultsTree.csv</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
